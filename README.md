@@ -1,3 +1,5 @@
+!!! This information is severely outdated !!!
+
 Version history:
 V1.0 2021-04-09 Initial adaption from Henk's Osmium version
 V1.1 2021-04-10 Switched to osmconvert for tile extraction for speed. 
