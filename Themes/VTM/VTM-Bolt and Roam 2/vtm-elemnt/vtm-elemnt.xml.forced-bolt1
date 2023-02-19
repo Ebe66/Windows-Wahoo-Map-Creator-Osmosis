@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#FFFFFF" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
+	<stylemenu id="stylemenu" defaultvalue="BOLT_2" defaultlang="en">
+		<layer id="ROAM">
+			<name lang="en" value="Roam"/>
+			<cat id="roam"/>
+			<cat id="trails-osm"/>
+		</layer>
+		<layer id="BOLT">
+			<name lang="en" value="Bolt"/>
+			<cat id="bolt"/>
+			<cat id="trails-osm"/>
+		</layer>
+		<layer id="BOLT_2">
+   <!--
+			<name lang="en" value="Bolt2"/>
+			<cat id="bolt2"/>
+			<cat id="trails-osm"/>
+		</layer> -->
+   <name lang="en" value="Bolt"/>
+			<cat id="bolt"/>
+			<cat id="trails-osm"/>
+		</layer>
+	</stylemenu>
+	<!-- region styles -->
+	<!-- Footpath -->
+	<style-line id="bolt-footpath" cat="bolt" stroke="#000000" width="0.5" dasharray="9,3" cap="butt"/>
+	<style-line id="roam-footpath" cat="roam" stroke="#000000" width="0.5" dasharray="9,3" cap="butt"/>
+	<style-line id="bolt2-footpath" cat="bolt2" stroke="#555555" width="0.6" dasharray="9,3" cap="butt"/>
+	<!-- Steps -->
+	<style-line id="bolt-steps" cat="bolt" stroke="#000000" width="0.5" dasharray="9,9" cap="butt"/>
+	<style-line id="roam-steps" cat="roam" stroke="#000000" width="0.5" dasharray="9,9" cap="butt"/>
+	<style-line id="bolt2-steps" cat="bolt2" stroke="#000000" width="0.5" dasharray="9,9" cap="butt"/>
+	<!-- Cycle Trails (like MTB) -->
+	<style-line id="bolt-trail" cat="bolt" stroke="#000000" width="1.0"/>
+	<style-line id="roam-trail" cat="roam" stroke="#00AA00" width="1.0"/>
+	<style-line id="bolt2-trail" cat="bolt2" stroke="#00AA00" width="1.5"/>
+	<!-- Paved Tracks -->
+	<style-line id="bolt-track-paved" cat="bolt" stroke="#000000" width="1.0"/>
+	<style-line id="roam-track-paved" cat="roam" stroke="#000000" width="1.0"/>
+	<style-line id="bolt2-track-paved" cat="bolt2" stroke="#000000" width="1.3"/>
+	<style-line id="bolt-track-paved-cycle" use="bolt-track-paved"/>
+	<style-line id="roam-track-paved-cycle" use="roam-track-paved" stroke="#0000FF"/>
+	<style-line id="bolt2-track-paved-cycle" use="bolt2-track-paved"/>
+	<!-- Non-paved tracks -->
+	<style-line id="bolt-track-raw" cat="bolt" stroke="#000000" width="1.0"/>
+	<style-line id="roam-track-raw" cat="roam" width="1.0"/>
+	<style-line id="bolt2-track-raw" cat="bolt2" stroke="#555555" width="1.1" dasharray="3,3"/>
+	
+	<style-line id="roam-track-raw-cycle" use="roam-track-raw" stroke="#000000"/>
+	<style-line id="bolt-track-raw-cycle" use="bolt-track-raw"/>
+	<style-line id="bolt2-track-raw-cycle" cat="bolt2" stroke="#555555" width="1.1" dasharray="6,3"/>
+	<!-- Tracks that don't have other info -->
+ <style-line id="bolt-track-other" cat="bolt" stroke="#000000" width="1.0" dasharray="10,10"/>
+	<style-line id="roam-track-other" cat="roam" stroke="#000000" width="1.0" dasharray="10,10"/>
+	<style-line id="bolt2-track-other" cat="bolt2" stroke="#555555" width="1.1" dasharray="5,5"/>
+	
+ <style-line id="bolt-track-other-cycle" use="bolt-track-other"/>
+	<style-line id="roam-track-other-cycle" use="roam-track-other" stroke="#00FF00"/>
+	<style-line id="bolt2-track-other-cycle" use="bolt2-track-other" stroke="#00AA00"/>
+	<!-- Paved Cycleways-->
+	<style-line id="bolt-cycle" cat="bolt" stroke="#000000" width="1.0"/>
+	<style-line id="roam-cycle" cat="roam" stroke="#00FF00" width="1.0"/>
+	<style-line id="bolt2-cycle" cat="bolt2" stroke="#00AA00" width="1.5"/>
+	<!-- end region -->
+	<!-- region land/sea/waterways -->
+	<m e="way" k="natural" v="sea">
+		<area cat="bolt" src="patterns/gray.png"/>
+		<area cat="roam" fill="#00FFFF"/>
+		<area cat="bolt2" fill="#00FFFF"/>
+	</m>
+	<m e="way" k="natural" v="nosea">
+		<area cat="bolt" fill="#ffffff" mesh="true"/>
+		<area cat="roam" fill="#ffffff" mesh="true"/>
+		<area cat="bolt2" fill="#ffffff" mesh="true"/>
+	</m>
+	<m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
+		<area cat="bolt2" fill="#55FF55"/>
+		<area cat="roam" src="patterns/light_green.png" />
+	</m>
+	<m e="way" k="leisure" v="park|nature_reserve">
+		<area cat="bolt2" fill="#55FF55"/>
+		<area cat="roam" src="patterns/light_green.png" />
+	</m>
+	<m e="way" k="landuse" v="building|commercial|industrial|residential|retail">
+		<area cat="bolt2" fill="#FFAAAA"/>
+		<area cat="roam" src="patterns/light_red.png" />
+	</m>
+	<m e="way" k="natural" v="wetland">
+		<area cat="bolt2" fill="#55FFFF"/>
+	</m>
+	<m e="way" k="natural" v="beach" zoom-min="12">
+		<area cat="bolt2" fill="#FFFF00"/>
+		<area cat="roam" src="patterns/light_yellow.png" />
+	</m>
+	<m e="way" k="natural" v="water">
+		<area cat="bolt" src="patterns/gray.png"/>
+		<area cat="roam" fill="#00FFFF"/>
+		<area cat="bolt2" fill="#00AAFF"/>
+	</m>
+	<m e="way" k="waterway" v="river|canal">
+		<line cat="bolt" fix="true" width="1" dasharray="2,2"/>
+		<line cat="roam" width="1" stroke="#00FFFF"/>
+		<line cat="bolt2" width="1" stroke="#00AAFF"/>
+		<m zoom-min="13">
+			<pathText cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="3" size="16" stroke="#ffffff" stroke-width="4.0" display="always"/>
+		</m>
+	</m>
+	<m e="way" k="waterway" v="stream" zoom-min="14">
+		<line cat="bolt" fix="true" width="1" dasharray="2,2"/>
+		<line cat="roam" width="1" stroke="#00FFFF"/>
+		<line cat="bolt2" width="1.2" stroke="#00AAFF"/>
+	</m>
+	<m e="way" k="waterway" v="stream" zoom-min="15">
+		<pathText cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="6" size="14" stroke="#ffffff" stroke-width="3.0"/>
+		<pathText cat="roam" fill="#0000FF" k="name" font-family="sans_serif" font-style="bold" priority="6" size="14" stroke="#ffffff" stroke-width="3.0"/>
+	</m>
+	<!-- endregion land/sea/waterways -->
+	<!-- region highways -->
+ <!-- region not a tunnel -->
+	<m e="way" k="tunnel" v="~|no|false" zoom-min="8">
+		<!-- highway outlines -->
+		<outline-layer cat="bolt" id="highway-bolt" stroke="#000000" width="0.5"/>
+		<outline-layer cat="roam" id="roam-highway" stroke="#550000" width="1"/>
+		<outline-layer cat="roam" id="roam-major-roads" stroke="#000000" width="0.6"/>
+		<outline-layer cat="roam" id="roam-minor-roads" stroke="#000000" width="0.4" zoom-min="12"/>
+		<outline-layer cat="roam" id="roam-bikepath" stroke="#000000" width="0.4" zoom-min="12"/>
+		<outline-layer cat="bolt2" id="bolt2-highway" stroke="#550000" width="1"/>
+		<outline-layer cat="bolt2" id="bolt2-major-roads" stroke="#000000" width="0.6"/>
+		<outline-layer cat="bolt2" id="bolt2-minor-roads" stroke="#000000" width="0.4" zoom-min="12"/>
+		<outline-layer cat="bolt2" id="bolt2-bikepath" stroke="#000000" width="0.4" zoom-min="12"/>
+		<!-- the outline of bridges -->
+		<outline-layer id="bridge" stroke="#000000" width="1"/>
+		<outline-layer id="bridge_small" stroke="#666666" width="0.6"/>
+				
+		<!-- area:highway=pedestrian -->
+		<m e="way" k="area" v="yes">
+			<m e="way" k="highway" v="pedestrian" zoom-min="13" stroke-linecap="butt">
+				<line stroke="#000000" width="0.8"/>
+				<area fill="#FFFFFF" />
+			</m>
+		</m>
+  <!-- endregion area:highway=pedestrian -->
+		
+  <!-- not an area -->
+		<m e="way" k="area" v="~|no|false">
+			<!-- region paths & tracks -->
+			<m k="access" v="private" zoom-min="16">
+				<m e="way" k="highway" v="path">
+					<line stroke="#000000" width="0.2" dasharray="12,6" cap="butt"/>
+				</m>
+				<m e="way" k="highway" v="footway|pedestrian" zoom-min="13">
+					<line stroke="#000000" width="0.2" dasharray="9,3" cap="butt"/>
+				</m>
+				<m e="way" k="highway" v="steps">
+					<line stroke="#000000" width="0.3" dasharray="9,9" cap="butt"/>
+				</m>
+				<m e="way" k="highway" v="track|byway">
+					<line stroke="#000000" width="1.0" dasharray="2,10" cap="butt"/>
+					<line stroke="#FFFFFF" width="0.5" cap="butt"/>
+				</m>
+			</m>
+			<!-- endregion paths & tracks-->
+			<!-- region not bridges -->
+			<m k="bridge" v="~|no|false">
+				<m e="way" k="highway" v="bridleway" zoom-min="14">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="1.2" dasharray="10,12" cap="round"/>
+					<line cat="roam"  stroke="#FFFFFF" width="1.2" dasharray="10,12" cap="round"/>
+					<line cat="bolt2" stroke="#FFFFFF" width="1.2" dasharray="10,12" cap="round"/>
+				</m>
+				<m e="way" k="highway" v="service" zoom-min="13">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="1.3"/>
+					<line cat="roam"  stroke="#BBBBBB" outline="roam-minor-roads" width="1.3"/>
+					<line cat="bolt2" stroke="#BBBBBB" outline="bolt2-minor-roads" width="1.3"/>
+				</m>
+				<m e="way" k="highway" v="construction" zoom-min="10">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="2" dasharray="15,5" cap="butt"/>
+					<line cat="roam"  stroke="#FF8800" width="2" dasharray="15,5" cap="butt"/>
+					<line cat="bolt2" stroke="#FF8800" width="2" dasharray="15,5" cap="butt"/>
+				</m>
+				<m e="way" k="highway" v="residential|living_street|road|unclassified" zoom-min="14">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="1.5"/>
+					<line cat="roam"  stroke="#BBBBBB" outline="roam-major-roads" width="1.5"/>
+					<line cat="bolt2" stroke="#BBBBBB" outline="bolt2-major-roads" width="1.5"/>
+				</m>
+				<m e="way" k="highway" v="residential|living_street|road" zoom-min="10" zoom-max="13">
+					<line cat="bolt" stroke="#000000" width="1.5"/>
+					<line cat="roam" stroke="#BBBBBB" outline="roam-major-roads" width="1.5"/>
+					<line cat="bolt2" stroke="#BBBBBB" outline="bolt2-major-roads" width="1.5"/>
+				</m>
+				<m e="way" k="highway" v="road|unclassified" zoom-min="10" zoom-max="13">
+					<line cat="bolt" stroke="#000000" width="2"/>
+					<line cat="roam"  stroke="#BBBBBB" outline="roam-major-roads" width="2"/>
+					<line cat="bolt2" stroke="#BBBBBB" outline="bolt2-major-roads" width="2"/>
+				</m>
+				<m e="way" k="highway" v="tertiary|tertiary_link|secondary_link|secondary" zoom-min="10">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="3.5"/>
+					<line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
+					<line cat="bolt2" outline="bolt2-major-roads" stroke="#FFFF00" width="2.5"/>
+				</m>
+				<m e="way" k="highway" v="primary_link|trunk_link|motorway_link|primary|trunk" zoom-min="9">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="3.5"/>
+					<line cat="roam" outline="roam-major-roads" stroke="#FFAA00" width="3.5"/>
+					<line cat="bolt2" outline="bolt2-major-roads" stroke="#FFAA00" width="2.5"/>
+				</m>
+				<m e="way" k="highway" v="motorway" zoom-min="12">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="4"/>
+					<line cat="roam" outline="roam-highway" stroke="#BB0000" width="4"/>
+					<line cat="bolt2" outline="bolt2-highway" stroke="#BB0000" width="3.5"/>
+				</m>
+				<m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
+					<line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="4"/>
+					<line cat="roam" outline="highway-roam" stroke="#BB0000" width="4"/>
+					<line cat="bolt2" outline="bolt2-highway" stroke="#BB0000" width="4"/>
+				</m>
+				<m e="way" k="highway" v="motorway|primary">
+					<pathText display="always" cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0"/>
+				</m>
+    <!-- Ferry-->
+    <m e="way" k="route" v="ferry">
+     <line stroke="#FF0000" stroke-width="0.3" stroke-dasharray="15,10" stroke-linecap="butt" />
+	   </m>
+			</m>
+			<!-- endregion not bridges -->
+
+			<!-- region tracks -->
+			<m cat="trails-osm" k="access" v="-|private">
+				<m e="way" k="highway" v="footway|pedestrian" zoom-min="14">
+					<line use="bolt-footpath"/>
+					<line use="roam-footpath"/>
+					<line use="bolt2-footpath"/>
+				</m>
+				<m e="way" k="highway" v="steps" zoom-min="14">
+					<line use="bolt-steps"/>
+					<line use="roam-steps"/>
+					<line use="bolt2-steps"/>
+				</m>
+				<m cat="trails-osm" e="way" k="highway" v="cycleway" zoom-min="12" select="first">
+					<!-- cycleways can be paved or raw -->
+					<m k="surface" v="bic_unpaved">
+						<line use="bolt-track-raw-cycle"/>
+						<line use="roam-track-raw-cycle"/>
+						<line use="bolt2-track-raw-cycle"/>
+					</m>
+					<m k="highway" v="cycleway">
+						<line use="bolt-cycle"/>
+						<line use="roam-cycle" outline="roam-bikepath"/>
+						<line use="bolt2-cycle" outline="bolt2-bikepath"/>
+					</m>
+				</m>
+				<m e="way" k="highway" v="path" zoom-min="12" select="first">
+					<m k="bicycle" v="bic_yes|bic_designated">
+						<!-- specifically for cycle -->
+						<m k="surface" v="bic_paved">
+							<line use="bolt-trail"/>
+							<line use="roam-trail"  outline="roam-bikepath"/>
+							<line use="bolt2-trail" outline="bolt2-bikepath"/>
+						</m>
+					</m>
+					<m k="surface" v="bic_paved">
+						<line use="roam-track-paved"/>
+						<line use="bolt2-track-paved"/>
+					</m>
+					<m k="foot" v="ft_yes|ft_designated" zoom-min="13">
+						<!-- specifically for foot -->
+						<line use="bolt-footpath"/>
+						<line use="roam-footpath"/>
+						<line use="bolt2-footpath"/>
+					</m>
+					<m k="highway" v="path" zoom-min="14">
+						<!-- remainder -->
+						<line use="bolt-footpath"/>
+						<line use="roam-footpath"/>
+						<line use="bolt2-footpath"/>
+					</m>
+				</m>
+				<m e="way" k="highway" v="track|byway|path" zoom-min="12" zoom-max="12">
+					<m k="tracktype" v="grade1">
+						<line cat="roam" stroke="#000000" width="2" cap="round"/>
+						<line cat="bolt2" stroke="#AAAAAA" width="2" cap="round"/>
+					</m>
+				</m>
+				<m e="way" k="highway" v="track|byway" zoom-min="13" select="first">
+					<m k="bicycle" v="bic_yes|bic_designated">
+						<!-- specifically for cycle -->
+						<m k="surface" v="bic_paved">
+							<line use="bolt-trail"/>
+							<line use="roam-trail" outline="roam-bikepath"/>
+							<line use="bolt2-trail" outline="bolt2-bikepath"/>
+						</m>
+					</m>
+					<m k="tracktype" v="grade1">
+						<!-- Solid. Usually a paved or sealed surface-->
+						<m k="bicycle" v="bic_yes|bic_designated">
+							<line use="bolt-track-paved-cycle"/>
+							<line use="roam-track-paved-cycle"/>
+							<line use="bolt2-track-paved-cycle"/>
+						</m>
+						<m k="bicycle" v="~">
+							<line use="bolt-track-paved"/>
+							<line use="roam-track-paved"/>
+							<line use="bolt2-track-paved"/>
+						</m>
+					</m>
+					<m k="tracktype" v="grade2|grade3" zoom-min="12" zoom-max="13">
+						<line cat="roam" stroke="#000000" width="1.2" dasharray="15,5" cap="round"/>
+						<line cat="bolt2" stroke="#AAAAAA" width="1.2" dasharray="15,5" cap="round"/>
+					</m>
+					<m zoom-min="14">
+						<m k="tracktype" v="grade2">
+							<!-- Solid but unpaved. Usually an unpaved track with surface of gravel. -->
+							<m k="bicycle" v="bic_yes|bic_designated">
+								<line use="bolt-track-raw-cycle" dasharray="50,3,5,3,5,3"/>
+								<line use="roam-track-raw-cycle" dasharray="50,3,5,3,5,3"/>
+								<line use="bolt2-track-raw-cycle" dasharray="50,3,5,3,5,3"/>
+							</m>
+							<m k="bicycle" v="~">
+								<line use="bolt-track-raw" dasharray="50,3,5,3,5,3"/>
+								<line use="roam-track-raw" dasharray="50,3,5,3,5,3"/>
+								<line use="bolt2-track-raw" dasharray="50,3,5,3,5,3"/>
+							</m>
+						</m>
+						<m k="tracktype" v="grade3">
+							<!-- Mostly solid. Even mixture of hard and soft materials. -->
+							<m k="bicycle" v="bic_yes|bic_designated">
+								<line use="bolt-track-raw-cycle" dasharray="45,3,5,3,5,3,5,3"/>
+								<line use="roam-track-raw-cycle" dasharray="45,3,5,3,5,3,5,3"/>
+								<line use="bolt2-track-raw-cycle" dasharray="45,3,5,3,5,3,5,3"/>
+							</m>
+							<m k="bicycle" v="~">
+								<line use="bolt-track-raw" dasharray="45,3,5,3,5,3,5,3"/>
+								<line use="roam-track-raw" dasharray="45,3,5,3,5,3,5,3"/>
+								<line use="bolt2-track-raw" dasharray="45,3,5,3,5,3,5,3"/>
+							</m>
+						</m>
+						<m k="tracktype" v="grade4">
+							<!-- Mostly soft. Almost always an unpaved track prominently with soil/sand/grass,
+						but with some hard or compacted materials mixed in. -->
+							<m k="bicycle" v="bic_yes|bic_designated">
+								<line use="bolt-track-raw-cycle" dasharray="40,3,5,3,5,3,5,3,5,3"/>
+								<line use="roam-track-raw-cycle" dasharray="40,3,5,3,5,3,5,3,5,3"/>
+								<line use="bolt2-track-raw-cycle" dasharray="40,3,5,3,5,3,5,3,5,3"/>
+							</m>
+							<m k="bicycle" v="~">
+								<line use="bolt-track-raw" dasharray="40,3,5,3,5,3,5,3,5,3"/>
+								<line use="roam-track-raw" dasharray="40,3,5,3,5,3,5,3,5,3"/>
+								<line use="bolt2-track-raw" dasharray="40,3,5,3,5,3,5,3,5,3"/>
+							</m>
+						</m>
+						<m k="tracktype" v="grade5">
+							<!-- Soft. Almost always an unimproved track lacking hard materials,
+						same as surrounding soil.
+						eg. -27.611406,153.165486 -->
+							<m k="bicycle" v="bic_yes|bic_designated">
+								<line use="bolt-track-raw-cycle" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
+								<line use="roam-track-raw-cycle" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
+								<line use="bolt2-track-raw-cycle" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
+							</m>
+							<m k="bicycle" v="~">
+								<line use="bolt-track-raw" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
+								<line use="roam-track-raw" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
+								<line cat="bolt2" stroke="#AAAAAA" width="0.9" dasharray="13,5"/>
+							</m>
+						</m>
+						<m e="way" k="tracktype" v="~" select="first">
+							<!--  other tracks that haven't already matched -->
+							<m k="bicycle" v="bic_yes|bic_designated">
+								<line use="bolt-track-other-cycle" cap="butt"/>
+								<line use="roam-track-other-cycle" cap="butt"/>
+								<line cat="bolt2" stroke="#FFFFFF" width="0.5" cap="butt"/>
+							</m>
+							<m k="bicycle" v="~">
+								<line use="bolt-track-other" cap="butt"/>
+								<line use="roam-track-other" cap="butt"/>
+								<line cat="bolt2" stroke="#FFFFFF" width="0.5" cap="butt"/>
+							</m>
+							<m k="foot" v="ft_yes|ft_designated">
+								<!-- specifically for foot -->
+								<line use="bolt-footpath"/>
+								<line use="roam-footpath"/>
+								<line use="bolt2-footpath"/>
+							</m>
+						</m>
+					</m>
+				</m>
+			</m>
+			<!-- endregion tf-->
+			<!-- region bridges -->
+			<m k="bridge" v="yes|true">
+				<m e="way" k="highway" v="bridleway" zoom-min="12">
+					<line outline="bridge_small" cap="butt" stroke="#FFFFFF" width="1.2"/>
+				</m>
+				<m e="way" k="highway" v="service" zoom-min="12">
+					<line outline="bridge_small" cap="butt" stroke="#FFFFFF" width="1.3"/>
+				</m>
+				<m e="way" k="highway" v="construction" zoom-min="12">
+					<line outline="bridge" cap="butt" stroke="#FF0000" width="1.3" dasharray="15,2"/>
+				</m>
+				<m e="way" k="highway" v="unclassified|residential|living_street|road" zoom-min="12">
+					<line outline="bridge" cap="butt" stroke="#FFFFFF" width="2"/>
+				</m>
+				<m e="way" k="highway" v="tertiary|tertiary_link|secondary_link|secondary" zoom-min="12">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
+				</m>
+				<m e="way" k="highway" v="primary_link|trunk_link|primary|trunk" zoom-min="12">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+				</m>
+				<m e="way" k="highway" v="trunk" zoom-max="12" zoom-min="11">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="3"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="3"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFAA00" width="3"/>
+				</m>
+				<m e="way" k="highway" v="motorway_link" zoom-min="12">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+				</m>
+				<m e="way" k="highway" v="motorway" zoom-min="12">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="3.5"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="3.5"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#BB0000" width="3.5"/>
+				</m>
+				<m e="way" k="highway" v="motorway_link" zoom-min="8" zoom-max="11">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#AA5500" width="2.5"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#AA5500" width="2.5"/>
+				</m>
+				<m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
+					<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="4"/>
+					<line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="4"/>
+					<line cat="bolt2" outline="bridge" cap="butt" stroke="#BB0000" width="4"/>
+				</m>
+			</m>
+			<!-- endregion bridges-->
+		</m>
+  <!-- endregion not an area-->
+	</m>
+ <!-- endregion not a tunnel -->
+	<!-- endregion highway -->
+	<!-- region tunnels -->
+	<m k="tunnel" v="yes|true">
+		<m e="way" k="highway" v="bridleway" zoom-min="12">
+			<line outline="bridge_small" cap="butt" stroke="#FFFFFF" width="1.2"/>
+		</m>
+		<m e="way" k="highway" v="service" zoom-min="12">
+			<line outline="bridge_small" cap="butt" stroke="#FFFFFF" width="1.3"/>
+		</m>
+		<m e="way" k="highway" v="construction" zoom-min="12">
+			<line outline="bridge" cap="butt" stroke="#FF0000" width="1.3" dasharray="15,2"/>
+		</m>
+		<m e="way" k="highway" v="unclassified|residential|living_street|road" zoom-min="12">
+			<line outline="bridge" cap="butt" stroke="#FFFFFF" width="2"/>
+		</m>
+		<m e="way" k="highway" v="tertiary|tertiary_link|secondary_link|secondary" zoom-min="12">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
+		</m>
+		<m e="way" k="highway" v="primary_link|trunk_link|primary|trunk" zoom-min="12">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+		</m>
+		<m e="way" k="highway" v="trunk" zoom-max="12" zoom-min="11">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="3"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="3"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFAA00" width="3"/>
+		</m>
+		<m e="way" k="highway" v="motorway_link" zoom-min="12">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+		</m>
+		<m e="way" k="highway" v="motorway" zoom-min="12">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="3.5"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="3.5"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#BB0000" width="3.5"/>
+		</m>
+		<m e="way" k="highway" v="motorway_link" zoom-min="8" zoom-max="11">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="2.5"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#AA5500" width="2.5"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#AA5500" width="2.5"/>
+		</m>
+		<m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
+			<line cat="bolt" outline="bridge" cap="butt" stroke="#FFFFFF" width="4"/>
+			<line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="4"/>
+			<line cat="bolt2" outline="bridge" cap="butt" stroke="#BB0000" width="4"/>
+		</m>
+  <m k="highway" v="cycleway">
+			<line use="bolt-cycle" stroke-dasharray="15,10" stroke-linecap="butt"/>
+			<line use="roam-cycle" stroke-dasharray="15,10" stroke-linecap="butt"/>
+			<line use="bolt2-cycle" outline="bolt2-bikepath" stroke-dasharray="15,10" stroke-linecap="butt"/>
+		</m>
+	</m>
+	<!-- endregion tunnels-->
+
+	<!-- railway (no tunnel) -->
+	<m k="railway">
+		<m k="tunnel" v="~|false|no">
+			<m v="rail" zoom-min="10">
+				<line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#000000" width="3"/>
+			</m>
+			<m v="tram|light_rail" zoom-min="15">
+				<line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#555555" width="3"/>
+			</m>
+		</m>
+	</m>
+	<!-- endregion railway -->
+	<!-- region place captions -->
+	<m k="place">
+		<m v="locality" zoom-min="15">
+			<caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+		</m>
+		<m v="suburb" zoom-max="13">
+			<caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#ffffff" stroke-width="3.0"/>
+		</m>
+		<m v="village" zoom-max="13">
+			<caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#ffffff" stroke-width="4.0"/>
+		</m>
+		<m v="island" zoom-min="10">
+			<caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#ffffff" stroke-width="4.0"/>
+		</m>
+		<m v="town" zoom-max="13">
+			<caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff" stroke-width="4.0"/>
+		</m>
+		<m v="city">
+			<m zoom-min="7">
+				<caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+			</m>
+			<m zoom-max="6">
+				<caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+			</m>
+		</m>
+		<m v="country">
+			<caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#ffffff" stroke-width="4.0"/>
+		</m>
+	</m>
+	<!-- endregion place -->
+	<m zoom-min="14">
+		<m k="amenity">
+   <m v="atm">
+    <symbol src="icons/symbols/money/atm2.svg" symbol-percent="150"/>
+   </m>
+   <m v="bank">
+    <symbol src="icons/symbols/money/bank.svg" symbol-percent="150"/>
+   </m>
+   <m v="bar">
+    <symbol src="icons/symbols/food/bar.svg" symbol-percent="150"/>
+   </m>
+   <m v="bench">
+    <symbol src="icons/symbols/amenity/bench.svg" symbol-percent="150"/>
+   </m>
+   <m v="bicycle_rental">
+    <symbol src="icons/symbols/transport/rental_bicycle.svg" symbol-percent="150"/>
+   </m>
+   <m v="bus_station">
+    <symbol src="icons/symbols/transport/bus_station.svg" symbol-percent="150"/>
+   </m>
+   <m v="cafe">
+    <symbol src="icons/symbols/food/cafe.svg" symbol-percent="150"/>
+   </m>
+   <m v="drinking_water">
+    <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
+   </m>
+   <m v="fast_food">
+    <symbol src="icons/symbols/food/fastfood.svg" symbol-percent="150"/>
+   </m>
+   <m v="fuel">
+    <symbol src="icons/symbols/transport/fuel.svg" symbol-percent="150"/>
+   </m>
+   <m v="hospital">
+    <symbol src="icons/symbols/health/hospital.svg" symbol-percent="150"/>
+   </m>
+   <m v="pharmacy">
+    <symbol src="icons/symbols/health/pharmacy.svg" symbol-percent="150"/>
+   </m>
+   <m v="police">
+    <symbol src="icons/symbols/amenity/police.svg" symbol-percent="150"/>
+   </m>
+   <m v="pub">
+    <symbol src="icons/symbols/food/pub.svg" symbol-percent="150"/>
+   </m>
+   <m v="restaurant">
+    <symbol src="icons/symbols/food/restaurant.svg" symbol-percent="150"/>
+   </m>
+   <m v="shelter">
+    <symbol src="icons/symbols/accommodation/shelter.svg" symbol-percent="150"/>
+   </m>
+   <m v="telephone">
+    <symbol src="icons/symbols/amenity/telephone.svg" symbol-percent="150"/>
+   </m>
+   <m v="toilets">
+    <symbol src="icons/symbols/amenity/toilets.svg" symbol-percent="150"/>
+   </m>
+  </m>
+  <m k="emercency">
+   <m v="phone">
+    <symbol src="icons/symbols/transport/emergency_phone.svg" symbol-percent="150"/>
+   </m>
+  </m>
+  <m k="shop">
+   <m v="bakery">
+    <symbol src="icons/symbols/shopping/bakery.svg" symbol-percent="150"/>
+   </m>
+   <m v="bicycle">
+    <symbol src="icons/symbols/shopping/bicycle.svg" symbol-percent="150"/>
+   </m>
+   <m v="laundry">
+    <symbol src="icons/symbols/shopping/laundrette.svg" symbol-percent="150"/>
+   </m>
+   <m v="mall">
+    <symbol src="icons/symbols/shopping/supermarket.svg" symbol-percent="150"/>
+   </m>
+   <m v="supermarket">
+    <symbol src="icons/symbols/shopping/supermarket.svg" symbol-percent="150"/>
+   </m>
+  </m>
+  <m k="tourism">
+   <m v="alpine_hut">
+    <symbol src="icons/symbols/accommodation/alpinehut.svg" symbol-percent="150"/>
+   </m>
+   <m v="attraction">
+    <symbol src="icons/symbols/tourist/attraction.svg" symbol-percent="150"/>
+   </m>
+   <m v="hostel">
+    <symbol src="icons/symbols/accommodation/hostel.svg" symbol-percent="150"/>
+   </m>
+   <m v="hotel">
+    <symbol src="icons/symbols/accommodation/hotel2.svg" symbol-percent="150"/>
+   </m>
+   <m v="information">
+    <symbol src="icons/symbols/tourist/information.svg" symbol-percent="150"/>
+   </m>
+   <m v="museum">
+    <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
+   </m>
+   <m v="viewpoint">
+    <symbol src="icons/symbols/tourist/view_point.svg" symbol-percent="150"/>
+   </m>
+   <m v="zoo">
+    <symbol src="icons/symbols/tourist/zoo.svg" symbol-percent="150"/>
+   </m>
+  </m>
+  <m k="route">
+   <m v="ferry">
+    <symbol src="icons/symbols/transport/port.svg" symbol-percent="150"/>
+   </m>
+  </m>
+  <m k="historic">
+   <m v="ruins">
+    <symbol src="icons/symbols/tourist/ruin.svg" symbol-percent="150"/>
+   </m>
+   <m v="castle">
+    <symbol src="icons/symbols/tourist/castle2.svg" symbol-percent="150"/>
+   </m>
+   <m v="memorial">
+    <symbol src="icons/symbols/tourist/memorial.svg" symbol-percent="150"/>
+   </m>
+   <m v="monument">
+    <symbol src="icons/symbols/tourist/monument.svg" symbol-percent="150"/>
+   </m>
+  </m>
+  <m k="natural">
+   <m v="peak">
+    <symbol src="icons/symbols/poi/peak.svg" symbol-percent="150"/>
+   </m>
+   <m v="spring">
+    <symbol src="icons/symbols/amenity/fountain2.svg" symbol-percent="150"/>
+   </m>
+   <!--
+   <m v="vulcano">
+    <symbol src="icons/vulcano.svg" symbol-percent="150"/>
+   </m> -->
+  </m>
+  <m k="aeroway">
+   <m v="aerodrome">
+    <symbol src="icons/symbols/transport/aerodrome.svg" symbol-percent="150"/>
+   </m>
+   <m v="airport">
+    <symbol src="icons/symbols/transport/airport.svg" symbol-percent="150"/>
+   </m>
+   <m v="gate">
+    <symbol src="icons/symbols/transport/airport_gate.svg" symbol-percent="150"/>
+   </m>
+   <m v="helipad">
+    <symbol src="icons/symbols/transport/helicopter_pad.svg" symbol-percent="150"/>
+   </m>
+  </m>
+ </m>
+ <m k="railway" v="station|halt|stop" zoom-min="13">
+  <symbol src="icons/symbols/transport/train_station.svg" symbol-percent="130"/>
+ </m>
+ <m k="station" v="light_rail" zoom-min="13">
+  <symbol src="icons/symbols/transport/train_station2.svg" symbol-percent="130"/>
+ </m>
+ <m k="station" v="subway" zoom-min="13">
+  <symbol src="icons/symbols/transport/subway.svg" symbol-percent="130"/>
+ </m>
+</rendertheme>

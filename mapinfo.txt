@@ -1,0 +1,1 @@
+java -jar MapInfo.jar <your-map.map> lat lon zoom

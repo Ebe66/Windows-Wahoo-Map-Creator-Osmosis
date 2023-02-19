@@ -1,0 +1,28 @@
+filtered_tags = 'access=private \
+    aeroway=aerodrome =airport =gate =helipad \
+    amenity=atm =bar =bicycle_rental =bus_station =cafe =drinking_water =fast_food =fuel =hospital =pharmacy =police =pub =restaurant =shelter =telephone =toilets \
+    area=yes \
+    bicycle= \
+    bridge= \
+    emergency=phone \
+    foot=ft_yes =foot_designated \
+    highway=abandoned =bus_guideway =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
+    historic=memorial =monument =ruins =castle \
+    leisure=park =nature_reserve \
+    shop=bakery =bicycle =laundry =mall =supermarket \
+    railway=abandoned =bus_guideway =disused =funicular =halt =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =station =stop =subway =tram \
+    route=ferry \
+    station=light_rail =subway =halt =stop\
+    surface= \
+    tourism=alpine_hut =attraction =hostel =hotel =information =museum =viewpoint =zoo \
+    tracktype= \
+    tunnel= \
+    waterway=canal =stream =river =riverbank \
+    wood=deciduous'
+
+#    natural= \    
+filtered_tags_with_name = 'admin_level=2 \
+    area=yes \
+    mountain_pass= \
+    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =peak =spring =volcano \
+    place=city =hamlet =island =isolated_dwelling =islet =locality =suburb =town =village =country'

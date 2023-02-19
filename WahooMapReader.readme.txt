@@ -1,0 +1,1 @@
+`Usage: java -jar WahooMapReader.jar [info|header|pois|ways|subfiles|appear] <.map>`
