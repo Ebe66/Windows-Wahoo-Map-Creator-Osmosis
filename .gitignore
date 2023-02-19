@@ -26,6 +26,5 @@ openandromaps.zip
 *.o5m
 *.pbf
 *.osm
-
 account.json
 geofabrik.json
