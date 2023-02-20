@@ -630,7 +630,7 @@
     <m k="natural" v="peak|volcano" zoom-min="15">
         <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000"/>
     </m>
-    <m k="natural" v="peak|volcano" zoom-min="17">
+    <m k="natural" v="peak|volcano" zoom-min="15">
         <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
     </m>
     <m zoom-min="14">

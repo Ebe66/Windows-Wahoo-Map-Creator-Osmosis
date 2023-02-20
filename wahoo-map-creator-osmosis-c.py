@@ -287,6 +287,7 @@ filtered_tags = 'access=private \
 
 #    natural= \    
 #    area=yes \
+#    
 filtered_tags_with_name = 'admin_level=2 \
     ele= \
     mountain_pass= \

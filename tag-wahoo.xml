@@ -90,7 +90,7 @@
 	<!-- PLACES TAGS -->
 	<pois>
 		<osm-tag key="place" value="city" zoom-appear="6"/>
-		<osm-tag key="place" value="country" zoom-appear="3"/>
+		<osm-tag key="place" value="country" zoom-appear="10"/>
 		<osm-tag key="place" value="hamlet" zoom-appear="13"/>
 		<osm-tag key="place" value="island" zoom-appear="12"/>
 		<osm-tag key="place" value="locality" zoom-appear="15"/>
@@ -264,9 +264,10 @@
 		<osm-tag key="historic" label-position="true" value="castle" zoom-appear="15"/>
 	</ways>
 	<!-- PLACES TAGS -->
+    <!--
 	<ways>
 		<osm-tag key="place" label-position="true" value="city" zoom-appear="6"/>
-		<osm-tag key="place" label-position="true" value="country" zoom-appear="3"/>
+		<osm-tag key="place" value="country" zoom-appear="3"/>
 		<osm-tag key="place" label-position="true" value="hamlet" zoom-appear="13"/>
 		<osm-tag key="place" label-position="true" value="island" zoom-appear="12"/>
 		<osm-tag key="place" label-position="true" value="locality" zoom-appear="15"/>
@@ -275,6 +276,7 @@
 		<osm-tag key="place" label-position="true" value="village" zoom-appear="12"/>
 		<osm-tag key="place" label-position="true" value="neighbourhood" equivalent-values="neighborhood" zoom-appear="12"/>
 	</ways>
+    -->
 	<!-- Elevation TAGS -->
 	<ways>
 		<osm-tag key="contour_ext" value="elevation_minor" zoom-appear="13" force-polygon-line="true"/>
