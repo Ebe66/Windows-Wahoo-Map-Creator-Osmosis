@@ -76,6 +76,7 @@
     <m e="way" k="leisure" v="park">
         <area cat="bolt2" fill="#55FF55"/>
         <area cat="roam2" fill="#55FF55"/>
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
     </m>
     <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
         <area cat="bolt2" fill="#00FF00"/>
@@ -84,6 +85,7 @@
     <m e="way" k="leisure" v="nature_reserve">
         <area cat="bolt2" fill="#55FF55"/>
         <area cat="roam2" fill="#55FF55"/>
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
     </m>
     <m e="way" k="landuse" v="building|commercial|industrial|residential|retail">
         <area cat="bolt2" fill="#FFAAAA"/>
@@ -108,6 +110,7 @@
     <m e="way" k="waterway" v="river|canal">
         <line cat="bolt2" width="1" stroke="#00AAFF"/>
         <line cat="roam2" width="1" stroke="#00AAFF"/>
+        <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#ffffff" stroke-width="3.0" zoom-min="14" />
     </m>
     <m e="way" k="waterway" v="drain" zoom-min="14">
         <line cat="bolt2" width="1" stroke="#00AAFF"/>
@@ -339,10 +342,18 @@
                     <line cat="bolt2" outline="bolt2-highway" stroke="#BB0000" width="4"/>
                     <line cat="roam2" outline="roam2-highway" stroke="#BB0000" width="4"/>
                 </m>
-                <!-- Ferry-->
-                <m e="way" k="route" v="ferry">
-                    <line stroke="#FF0000" stroke-width="0.3" stroke-dasharray="15,10" stroke-linecap="butt"/>
+                <!-- ferry -->
+                <m k="route">
+                    <m v="ferry">
+      	                <m zoom-min="11">
+         	                <line stroke="#0000AA" width="0.5" dasharray="15,10" cap="butt" />
+                        </m>
+                        <m zoom-min="15">
+         	                <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#ffffff" stroke-width="2.0" zoom-min="15" />
+                        </m>
+                    </m>
                 </m>
+   <!-- endregion ferry -->
             </m>
             <!-- endregion not bridges -->
             <!-- region tracks -->
@@ -633,6 +644,12 @@
     <m k="natural" v="peak|volcano" zoom-min="15">
         <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
     </m>
+    <m k="mountain_pass" v="yes" zoom-min="14">
+		<symbol src="icons/poi_mountain_pass_black.svg" symbol-percent="100"/>
+	</m>
+	<m k="mountain_pass" v="yes" zoom-min="15">
+        <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000" />
+	</m>
     <m zoom-min="14">
         <m k="amenity">
             <m v="atm">
@@ -758,6 +775,7 @@
             </m>
             <m v="museum">
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
             </m>
             <m v="picnic_site">
                 <symbol src="icons/symbols/tourist/picnic.svg" symbol-percent="100"/>
@@ -767,6 +785,7 @@
             </m>
             <m v="zoo">
                 <symbol src="icons/symbols/tourist/zoo.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
             </m>
         </m>
         <m k="route">
@@ -777,9 +796,11 @@
         <m k="historic">
             <m v="ruins">
                 <symbol src="icons/symbols/tourist/ruin.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
             </m>
             <m v="castle">
                 <symbol src="icons/symbols/tourist/castle3.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
             </m>
             <m v="memorial">
                 <symbol src="icons/symbols/tourist/memorial.svg" symbol-percent="150"/>
@@ -795,10 +816,6 @@
             <m v="spring">
                 <symbol src="icons/symbols/amenity/fountain2.svg" symbol-percent="150"/>
             </m>
-            <!--
-            <m v="vulcano">
-                <symbol src="icons/vulcano.svg" symbol-percent="150"/>
-            </m> -->
         </m>
         <m k="aeroway">
             <m v="aerodrome">

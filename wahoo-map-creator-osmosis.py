@@ -295,6 +295,8 @@ Map_File_Deleted = 0
 #    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood \
 #    landuse=forest =building =commercial =industrial =residential =retail \
 filtered_tags = 'access=private \
+    admin_level=2 \
+    aeroway=aerodrome =airport =gate =helipad \
     amenity=atm =bar =bench =bicycle_rental =bus_station =cafe =drinking_water =fast_food =fuel =hospital =pharmacy =police =pub =restaurant =shelter =telephone =toilets \
     area=yes \
     bicycle= \
@@ -304,6 +306,7 @@ filtered_tags = 'access=private \
     highway=abandoned =bus_guideway =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
     historic=memorial =monument \
     landuse=forest =building =commercial =industrial =residential =retail \
+    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =spring \
     shop=bakery =bicycle =laundry =mall =supermarket \
     railway=abandoned =bus_guideway =disused =funicular =halt =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =station =stop =subway =tram \
     station=light_rail =subway =halt =stop\
@@ -311,20 +314,19 @@ filtered_tags = 'access=private \
     tourism=alpine_hut =attraction =hostel =hotel =information =viewpoint \
     tracktype= \
     tunnel= \
+    waterway=stream =riverbank \
     wood=deciduous'
 
 #    natural= \    
 #    area=yes \
-filtered_tags_with_name = 'admin_level=2 \
-    aeroway=aerodrome =airport =gate =helipad \
-    historic=ruins =castle \
+filtered_tags_with_name = 'historic=ruins =castle \
     leisure=park =nature_reserve \
     mountain_pass= \
-    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =peak =spring =volcano \
+    natural=peak =volcano \
     place=city =hamlet =island =islet =locality =suburb =town =village =country \
     route=ferry \
     tourism=museum =zoo \
-    waterway=canal =stream =river =riverbank'
+    waterway=canal =river'
 
 if len(sys.argv) != 2:
     print(f'Usage: {sys.argv[0]} Geofabrik Country or Region name.')
