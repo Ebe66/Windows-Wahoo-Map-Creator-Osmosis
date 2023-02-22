@@ -42,6 +42,7 @@ workers = '4'
 # Keep (1) or delete (0) the country/region map folders after compression
 #keep_folders = 0
 keep_folders = 1
+generate_elevation = 1
 
 ########### End of Configurable Parameters
 
@@ -205,35 +206,9 @@ def find_needed_countries(bbox_tiles, wanted_map, wanted_region_polygon):
             if regionname == wanted_map:
                 # Check if it is part of the tile we are processing
                 if rshape.intersects(poly): # if so 
-                    # catch special_regions like (former) colonies where the map of the region is not fysically in the map of the parent country.
-                    # example Guadeloupe, it's parent country is France but Guadeloupe is not located within the region covered by the map of France
-                    if wanted_map not in special_regions:
-                        # If we are processing a sub-region add the parent of this sub-region to the must download list.
-                        # This to prevent downloading several small regions AND it's containing region
-                        if parent not in geofabrik_regions and regionname not in geofabrik_regions: # we are processing a sub-regiongo find the parent region
-                            x=0
-                            while parent not in geofabrik_regions: # handle sub-sub-regions like unterfranken->bayern->germany
-                                parent,child = find_geofbrik_parent (parent, geofabrik_json_data)
-                                if parent in geofabrik_regions:
-                                    parent = child
-                                    break
-                                if x > 10: # prevent endless loop
-                                    print (f'Can not find parent map of region: {regionname}')
-                                    sys.exit()
-                                x += 1
-                            if parent not in must_download_maps:
-                                must_download_maps.append (parent)
-                                must_download_urls.append (find_geofbrik_url(parent, geofabrik_json_data))
-                                #parent_added = 1
-                        else:
-                            if regionname not in must_download_maps:
-                                must_download_maps.append (regionname)
-                                must_download_urls.append (rurl)
-                    else: 
-                        # wanted_map is a special region like Guadeloupe, France
-                        if regionname not in must_download_maps:
-                            must_download_maps.append (regionname)
-                            must_download_urls.append (rurl)
+                    if regionname not in must_download_maps and regionname not in geofabrik_regions:
+                        must_download_maps.append (regionname)
+                        must_download_urls.append (rurl)
                     # if there is an intersect, force the tile to be put in the output        
                     force_added = 1
                 else: # currently processing tile does not contain, a part of, the desired region
@@ -242,19 +217,7 @@ def find_needed_countries(bbox_tiles, wanted_map, wanted_region_polygon):
             # currently processing country/region is NOT the desired country/region but might be in the tile (neighbouring country)
             if regionname != wanted_map:
                 # check if we are processing a country or a sub-region. For countries only process other countries. also block special geofabrik sub regions
-                if parent in geofabrik_regions and regionname not in block_download: # processing a country and no special sub-region
-                    # check if rshape is subset of desired region. If so discard it
-                    if wanted_region_polygon.contains(rshape):
-                        #print (f'\t{regionname} is a subset of {wanted_map}, discard it')
-                        continue
-                    # check if rshape is a superset of desired region. if so discard it
-                    if rshape.contains(wanted_region_polygon):
-                        #print (f'\t{regionname} is a superset of {wanted_map}, discard it')
-                        #if regionname not in must_download_maps:
-                        #    must_download_maps.append (regionname)
-                        #    must_download_urls.append (rurl)
-                        #    parent_added = 1
-                        continue
+                if parent in geofabrik_regions and regionname not in block_download and regionname not in geofabrik_regions: # processing a country and no special sub-region
                     # Check if rshape is a part of the tile
                     if rshape.intersects(poly):
                         #print(f'\tintersecting tile: {regionname} tile={tile}')
@@ -278,10 +241,10 @@ MAP_PATH = os.path.join (CurDir, 'Maps')
 OUT_PATH = os.path.join (CurDir, 'Output')
 land_polygons_file = os.path.join (CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join (CurDir, 'geofabrik.json')
-geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'central-america', 'europe', 'north-america', 'south-america', 'russia']
+geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 'bayern', 'brazil', 'california', 'canada', 'central-america', 'europe', 'france', 'germany', 'great-britain', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'us']
 
 # List of regions to block. these regions are "collections" of other countries/regions/states 
-block_download = ['dach', 'alps', 'britain-and-ireland', 'south-africa-and-lesotho', 'us-midwest', 'us-northeast', 'us-pacific', 'us-south', 'us-west', 'kaliningrad']
+block_download = ['dach', 'alps', 'britain-and-ireland', 'south-africa', 'us-midwest', 'us-northeast', 'us-pacific', 'us-south', 'us-west']
 
 # Special_regions like (former) colonies where the map of the wanted region is not present in the map of the parent country.
 # example Guadeloupe, it's Geofabrik parent country is France but Guadeloupe is not located within the region covered by the map of France.
@@ -338,6 +301,25 @@ wanted_map = sys.argv[1]
 # replace spaces in wanted_map with geofabrik minuses 
 wanted_map = wanted_map.replace(" ","-")
 wanted_map=wanted_map.lower()
+
+if generate_elevation == 1:
+    try:
+        with open('account.json', encoding='utf8') as f:
+            accounts = geojson.load(f)
+        f.close()
+        #print (accounts)
+        earthexplorer_user = accounts['earthexplorer-user']
+        earthexplorer_password = accounts['earthexplorer-password']
+    except:
+        print ("Could not read account.json file. Edit the account.json file.")
+        accounts = {
+            "earthexplorer-user": "Username",
+            "earthexplorer-password": "Password"
+            }
+        f = open('account2.json','w', encoding='utf8')
+        f.write(geojson.dumps(accounts, indent=4))
+        f.close()
+        sys.exit()
 
 # is geofabrik json file present and not older then Max_Days_Old?
 now = time.time()
@@ -441,6 +423,7 @@ for x in range(top_x, bot_x + 1):
 print (f'\nSearching for needed maps, this can take a while.\n')
 country = find_needed_countries (bbox_tiles, wanted_map, wanted_region)
 #print (f'Country= {country}')
+#sys.exit()
 
 # Check for expired land polygons file and delete it
 print('\n\n# check land_polygons.shp file')
@@ -521,7 +504,8 @@ for tile in country:
     if not os.path.isdir(outdir):
         os.makedirs(outdir)
 
-# search for and download missing map files from Geofabrik 
+    print (f'Tile = {tile}')
+    # search for and download missing map files from Geofabrik 
     i = 0
     for c in tile['countries']: # we want this osm.pbf
         if c not in border_countries: # and it is not yet in our list of files
@@ -660,8 +644,6 @@ for tile in country:
         subprocess.run(cmd)
     TileCount += 1
 
-#sys.exit()
-
 print('\n\n# Generate sea')
 TileCount = 1
 for tile in country:
@@ -688,7 +670,45 @@ for tile in country:
                 of.write(sea_data)
                 of.close()
     TileCount += 1
-
+    
+if (generate_elevation == 1):    
+    print('\n\n# Generate elevation data PBF')
+    TileCount = 1
+    for tile in country:
+        outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation')
+        elevation_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
+        if not elevation_files or Force_Processing == 1:
+            print(f'# Generate elevation {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
+            cmd = ['phyghtmap']
+            cmd.append('-a '+f'{tile["left"]}' + ':' + f'{tile["bottom"]}' + ':' + f'{tile["right"]}' + ':' + f'{tile["top"]}')
+            cmd.extend(['-o', f'{outFile}','-s 10', '-c 100,50','--source=view1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000','--max-nodes-per-tile=0','--start-way-id=2000000000','--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}','--earthexplorer-password='+f'{earthexplorer_password}'])
+            #print(cmd)
+            #sys.exit()
+            result = subprocess.run(cmd)
+            if result.returncode != 0:
+                print(f'Error in phyghtmap with country: {c}')
+                sys.exit()      
+        TileCount += 1    
+    #sys.exit()
+    #print('\n\n# Generate elevation data OSM')
+    #TileCount = 1
+    #for tile in country:
+    #    outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation')
+    #    elevation_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.osm'))
+    #    if not elevation_files or Force_Processing == 1:
+    #        print(f'# Generate elevation {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
+    #        cmd = ['phyghtmap']
+    #        cmd.append('-a '+f'{tile["left"]}' + ':' + f'{tile["bottom"]}' + ':' + f'{tile["right"]}' + ':' + f'{tile["top"]}')
+    #        cmd.extend(['-o', f'{outFile}','-s 10', '-c 100,50','--source=view1,view3,srtm3', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000','--max-nodes-per-tile=0','--start-way-id=2000000000','--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}','--earthexplorer-password='+f'{earthexplorer_password}'])
+    #        #print(cmd)
+    #        #sys.exit()
+    #        result = subprocess.run(cmd)
+    #        if result.returncode != 0:
+    #            print(f'Error in phyghtmap with country: {c}')
+    #            sys.exit()      
+    #    TileCount += 1    
+    ##sys.exit()
+    
 print('\n\n# Split filtered country files to tiles')
 TileCount = 1
 for tile in country:
@@ -733,7 +753,7 @@ for tile in country:
             # print(border_countries[c]['filtered_file'])
     TileCount += 1
 
-print('\n\n# Merge splitted tiles with land an sea')
+print('\n\n# Merge splitted tiles with land, sea and elevation')
 TileCount = 1
 for tile in country:
     print(f'\n\n# Merging tiles for tile {TileCount} of {len(country)} for Coordinates: {tile["x"]},{tile["y"]}')
@@ -752,6 +772,13 @@ for tile in country:
             cmd.append('workers='+workers)
             cmd.append('--merge')
             loop+=1
+        if (generate_elevation == 1):
+            elevation_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
+            for elevation in elevation_files:
+                cmd.append('--rbf')
+                cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{elevation}'))
+                cmd.append('workers='+workers)
+                cmd.append('--merge')
         land_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land*.osm'))
         for land in land_files:
             cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{land}'), '--s', '--m'])
