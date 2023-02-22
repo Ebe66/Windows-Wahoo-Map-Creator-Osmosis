@@ -291,38 +291,44 @@ Map_File_Deleted = 0
 
 # Tags to keep
 
-# my version based on wahoo app render theme
-#    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood \
-#    landuse=forest =building =commercial =industrial =residential =retail \
-filtered_tags = 'access=private \
+# Objects (node/way/relation) to keep with just this tags, discard (almost) all other tags
+objects_to_keep_without_name = 'access=private \
+    admin_level=2 \
     aeroway=aerodrome =airport =gate =helipad \
-    amenity=atm =bar =bench =bicycle_rental =bus_station =cafe =drinking_water =fast_food =fuel =hospital =pharmacy =police =pub =restaurant =shelter =telephone =toilets \
+    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =drinking_water =fast_food =fuel =hospital =ice_cream =pharmacy =police =pub =restaurant =shelter =telephone =toilets \
     area=yes \
     bicycle= \
     bridge= \
+    building=church =cathedral \
     emergency=phone \
     foot=ft_yes =foot_designated \
     highway=abandoned =bus_guideway =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
-    historic=memorial =monument =ruins =castle \
-    landuse=forest =building =commercial =industrial =residential =retail \
-    leisure=park =nature_reserve \
-    shop=bakery =bicycle =laundry =mall =supermarket \
+    historic=memorial =monument \
+    landuse=forest =building =commercial =industrial =military =residential =reservoir =retail \
+    leisure=picnic_table \
+    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =spring \
+    man_made=cutline =pier \
+    place=isolated_dwelling =islet =square \
     railway=abandoned =bus_guideway =disused =funicular =halt =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =station =stop =subway =tram \
-    route=ferry \
+    shop=bakery =bicycle =laundry =mall =supermarket \
+    shelter_type=picnic_shelter \
     station=light_rail =subway =halt =stop\
     surface= \
-    tourism=alpine_hut =attraction =hostel =hotel =information =museum =viewpoint =zoo \
+    tourism=alpine_hut =attraction =hostel =hotel =information =viewpoint \
     tracktype= \
     tunnel= \
-    waterway=canal =stream =river =riverbank \
+    waterway=drain =stream =riverbank \
     wood=deciduous'
 
-#    natural= \    
-#    area=yes \
-filtered_tags_with_name = 'admin_level=2 \
+# Objects (node/way/relation) to keep with just this tags AND the name and ele(vation) tag if present , discard (almost) all other tags
+objects_to_keep_with_name = 'historic=ruins =castle \
+    leisure=park =nature_reserve \
     mountain_pass= \
-    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =peak =spring =volcano \
-    place=city =hamlet =island =isolated_dwelling =islet =locality =suburb =town =village =country'
+    natural=peak =volcano \
+    place=city =hamlet =island =locality =suburb =town =village =country \
+    route=ferry \
+    tourism=museum =zoo \
+    waterway=canal =river'
 
 if len(sys.argv) != 2:
     print(f'Usage: {sys.argv[0]} Geofabrik Country or Region name.')
@@ -574,9 +580,9 @@ for key, val  in border_countries.items():
         cmd = ['osmfilter']
         cmd.append(outFileo5m)
         cmd.append('--verbose')
-        cmd.append('--keep='+filtered_tags)
-        #cmd.append('--keep-tags=all name= type= '+filtered_tags)
-        cmd.append('--keep-tags=all type= layer= '+filtered_tags)
+        cmd.append('--keep='+objects_to_keep_without_name)
+        #cmd.append('--keep-tags=all name= type= '+objects_to_keep_without_name)
+        cmd.append('--keep-tags=all type= layer= '+objects_to_keep_without_name)
         #cmd.append('--drop-relations')
         cmd.append('-o='+outFileo5mFiltered)
         # print(cmd)
@@ -589,9 +595,9 @@ for key, val  in border_countries.items():
         cmd = ['osmfilter']
         cmd.append(outFileo5m)
         cmd.append('--verbose')
-        cmd.append('--keep='+filtered_tags_with_name)
-        #cmd.append('--keep-tags=all name= type= '+filtered_tags)
-        cmd.append('--keep-tags=all type= name= layer= '+filtered_tags_with_name)
+        cmd.append('--keep='+objects_to_keep_with_name)
+        #cmd.append('--keep-tags=all name= type= '+objects_to_keep_without_name)
+        cmd.append('--keep-tags=all type= name= layer= ele= '+objects_to_keep_with_name)
         cmd.append('-o='+outFileo5mFilteredNames)
         # print(cmd)
         result = subprocess.run(cmd)
@@ -737,12 +743,12 @@ for tile in country:
         loop=0
         for c in tile['countries']:
             cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
+            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
             cmd.append('workers='+workers)
             if loop > 0:
                 cmd.append('--merge')
             cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
+            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
             cmd.append('workers='+workers)
             cmd.append('--merge')
             loop+=1
@@ -834,6 +840,7 @@ for tile in country:
 
 # Process routing tiles if present
 IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')
+rtile = None
 if os.path.isdir(IN_R_PATH):
     # Calculate which routing tiles are needed
     routing_tiles = tiles_for_bounding_box(bbox_left,bbox_bottom,bbox_right,bbox_top)
