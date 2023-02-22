@@ -743,12 +743,12 @@ for tile in country:
         loop=0
         for c in tile['countries']:
             cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
+            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
             cmd.append('workers='+workers)
             if loop > 0:
                 cmd.append('--merge')
             cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
+            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
             cmd.append('workers='+workers)
             cmd.append('--merge')
             loop+=1
@@ -840,6 +840,7 @@ for tile in country:
 
 # Process routing tiles if present
 IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')
+rtile = None
 if os.path.isdir(IN_R_PATH):
     # Calculate which routing tiles are needed
     routing_tiles = tiles_for_bounding_box(bbox_left,bbox_bottom,bbox_right,bbox_top)

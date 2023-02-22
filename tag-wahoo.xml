@@ -176,7 +176,7 @@
 	<ways>
 		<osm-tag key="leisure" label-position="true" value="nature_reserve" zoom-appear="8"/>
 		<osm-tag key="leisure" label-position="true" value="park" zoom-appear="8"/>
-        <osm-tag key="leisure" oom-appear="16" />
+        <osm-tag key="leisure" value="picnic_table" zoom-appear="16" />
 	</ways>
 	<!-- PUBLIC AMENITIES -->
 	<ways>
