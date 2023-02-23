@@ -43,6 +43,7 @@ workers = '4'
 #keep_folders = 0
 keep_folders = 1
 generate_elevation = 1
+integrate_Wandrer = 1
 
 ########### End of Configurable Parameters
 
@@ -316,7 +317,7 @@ if generate_elevation == 1:
             "earthexplorer-user": "Username",
             "earthexplorer-password": "Password"
             }
-        f = open('account2.json','w', encoding='utf8')
+        f = open('account.json','w', encoding='utf8')
         f.write(geojson.dumps(accounts, indent=4))
         f.close()
         sys.exit()
@@ -565,7 +566,6 @@ for key, val  in border_countries.items():
         cmd.append(outFileo5m)
         cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_without_name)
-        #cmd.append('--keep-tags=all name= type= '+objects_to_keep_without_name)
         cmd.append('--keep-tags=all type= layer= '+objects_to_keep_without_name)
         #cmd.append('--drop-relations')
         cmd.append('-o='+outFileo5mFiltered)
@@ -588,23 +588,6 @@ for key, val  in border_countries.items():
         if result.returncode != 0:
             print(f'Error in OSMFilter with country: {c}')
             sys.exit()
-								
-#        print(f'\n\n# Converting map of {key} back to osm.pbf format')
-#        cmd = ['osmconvert', '-v', '--hash-memory=2500', outFileo5mFiltered]
-#        cmd.append('-o='+outFile)
-#        # print(cmd)
-#        result = subprocess.run(cmd)
-#        if result.returncode != 0:
-#            print(f'Error in OSMConvert with country: {c}')
-#            sys.exit()      
-#            
-#        cmd = ['osmconvert', '-v', '--hash-memory=2500', outFileo5mFilteredNames]
-#        cmd.append('-o='+outFileNames)
-#        # print(cmd)
-#        result = subprocess.run(cmd)
-#        if result.returncode != 0:
-#            print(f'Error in OSMConvert with country: {c}')
-#            sys.exit() 
 
         os.remove(outFileo5m)
 #        os.remove(outFileo5mFiltered)
@@ -710,12 +693,21 @@ if (generate_elevation == 1):
     ##sys.exit()
     
 print('\n\n# Split filtered country files to tiles')
+
+# Check if there is a wandrer map
+if integrate_Wandrer:
+    inWandrer = os.path.join(MAP_PATH,'wandrer.osm.pbf')
+    if os.path.isfile(inWandrer) and integrate_Wandrer:
+        doWandrer=True
+    else:
+        doWandrer=False
 TileCount = 1
 for tile in country:
     for c in tile['countries']:
         print(f'\n\n# Splitting tile {TileCount} of {len(country)} for Coordinates: {tile["x"]},{tile["y"]} from map of {c}')
         outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf')
         outMerged = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'merged.osm.pbf')
+        outWandrer = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer.osm.pbf')
         if not os.path.isfile(outMerged) or Force_Processing == 1:
             #cmd = ['.\\osmosis\\bin\\osmosis.bat', '--rbf',border_countries[c]['filtered_file'],'workers='+workers, '--buffer', 'bufferCapacity=12000', '--bounding-box', 'completeWays=yes', 'completeRelations=yes']
             #cmd.extend(['left='+f'{tile["left"]}', 'bottom='+f'{tile["bottom"]}', 'right='+f'{tile["right"]}', 'top='+f'{tile["top"]}', '--buffer', 'bufferCapacity=12000', '--wb'])
@@ -751,6 +743,19 @@ for tile in country:
                 print(f'Error in Osmconvert with country: {c}')
                 sys.exit()            
             # print(border_countries[c]['filtered_file'])
+
+        if doWandrer:
+            if not os.path.isfile(outMerged) or Force_Processing == 1:
+                cmd = ['osmconvert', '-v', '--hash-memory=2500']
+                cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' + ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
+                cmd.extend(['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
+                cmd.append(inWandrer)
+                cmd.append('-o='+outWandrer)
+                # print(cmd)
+                result = subprocess.run(cmd)
+                if result.returncode != 0:
+                    print(f'Error in Osmconvert while processing Wandrer file')
+                    sys.exit()            
     TileCount += 1
 
 print('\n\n# Merge splitted tiles with land, sea and elevation')
@@ -779,6 +784,11 @@ for tile in country:
                 cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{elevation}'))
                 cmd.append('workers='+workers)
                 cmd.append('--merge')
+        if (doWandrer):
+            cmd.append('--rbf')
+            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer.osm.pbf'))
+            cmd.append('workers='+workers)
+            cmd.append('--merge')
         land_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land*.osm'))
         for land in land_files:
             cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{land}'), '--s', '--m'])
