@@ -314,7 +314,7 @@
 		<osm-tag key="ele" value="4800" zoom-appear="14"/>
 		<osm-tag key="ele" value="4900" zoom-appear="14"/>
 		<osm-tag key="ele" value="5000" zoom-appear="14"/>
-		<osm-tag key="wandrer" value="todo" zoom-appear="12"/>
+		<osm-tag key="wandrer" value="untraveled" zoom-appear="12"/>
 	</ways>
 	<!-- OTHER TAGS -->
 	<ways>

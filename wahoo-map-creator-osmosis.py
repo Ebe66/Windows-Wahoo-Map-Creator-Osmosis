@@ -281,6 +281,7 @@ objects_to_keep_without_name = 'access=private \
     tourism=alpine_hut =attraction =hostel =hotel =information =viewpoint \
     tracktype= \
     tunnel= \
+    wandrer= \
     waterway=drain =stream =riverbank \
     wood=deciduous'
 
@@ -469,9 +470,9 @@ for tile in country:
         if c not in border_countries:
             border_countries[c] = {'map_file':c}
 
-#print (f'{border_countries}')
+print (f'{border_countries}')
 #sys.exit()
-#time.sleep(60)
+time.sleep(60)
 
 # Check for expired maps and delete them
 print(f'# Checking for old maps and remove them')

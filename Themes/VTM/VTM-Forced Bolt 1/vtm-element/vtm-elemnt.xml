@@ -48,12 +48,17 @@
     <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
     </m>
     <m e="way" k="leisure" v="park|nature_reserve">
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
     </m>
     <m e="way" k="natural" v="water">
         <area cat="bolt" src="patterns/gray.png"/>
     </m>
     <m e="way" k="waterway" v="river|canal">
         <line cat="bolt" fix="true" width="1" dasharray="2,2"/>
+        <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#ffffff" stroke-width="3.0" zoom-min="14" />
+   </m>
+   <m e="way" k="waterway" v="river|riverbank|canal" closed="yes">
+        <area cat="bolt" src="patterns/gray.png"/>
     </m>
     <m e="way" k="waterway" v="stream" zoom-min="14">
         <line cat="bolt" fix="true" width="1" dasharray="2,2"/>
@@ -186,6 +191,9 @@
                 </m>
                 <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
                     <line cat="bolt" outline="highway-bolt" stroke="#FFFFFF" width="4"/>
+                </m>
+                <m e="way" k="wandrer" v="untraveled" zoom-min="14">
+                    <line cat="bolt" outline="highway-bolt" stroke="#000000" width="1.5" dasharray="10,12"/>
                 </m>
                 <!-- Ferry-->
                 <m e="way" k="route" v="ferry">
@@ -520,12 +528,14 @@
             </m>
             <m v="museum">
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
             </m>
             <m v="viewpoint">
                 <symbol src="icons/symbols/tourist/view_point.svg" symbol-percent="150"/>
             </m>
             <m v="zoo">
                 <symbol src="icons/symbols/tourist/zoo.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
             </m>
         </m>
         <m k="route">
@@ -548,16 +558,14 @@
             </m>
         </m>
         <m k="natural">
-            <m v="peak">
+            <m v="peak|volcano">
                 <symbol src="icons/symbols/poi/peak.svg" symbol-percent="150"/>
+                <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000"/>
+                <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
             </m>
             <m v="spring">
                 <symbol src="icons/symbols/amenity/fountain2.svg" symbol-percent="150"/>
             </m>
-            <!--
-            <m v="vulcano">
-                <symbol src="icons/vulcano.svg" symbol-percent="150"/>
-            </m> -->
         </m>
         <m k="aeroway">
             <m v="aerodrome">
