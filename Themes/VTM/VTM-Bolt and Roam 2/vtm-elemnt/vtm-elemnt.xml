@@ -342,6 +342,10 @@
                     <line cat="bolt2" outline="bolt2-highway" stroke="#BB0000" width="4"/>
                     <line cat="roam2" outline="roam2-highway" stroke="#BB0000" width="4"/>
                 </m>
+                <m e="way" k="wandrer" v="untraveled" zoom-min="14">
+                    <line cat="bolt2" stroke="#FF0000" outline="bolt2-major-roads" width="1.5" dasharray="10,12"/>
+                    <line cat="roam2" stroke="#FF0000" outline="roam2-major-roads" width="1.5" dasharray="10,12"/>
+                </m>
                 <!-- ferry -->
                 <m k="route">
                     <m v="ferry">
