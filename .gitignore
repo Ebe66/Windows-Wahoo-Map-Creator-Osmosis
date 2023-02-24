@@ -16,6 +16,7 @@ osm2pgsql/
 Osmosis/
 Output/**
 platform-tools/
+ride-dashboard/**
 wahoofitness/
 WaoStats/
 Valhalla_Tiles/**
@@ -28,3 +29,4 @@ openandromaps.zip
 *.osm
 account.json
 geofabrik.json
+.vscode/settings.json
