@@ -254,6 +254,12 @@ url = ''
 Map_File_Deleted = 0
 
 # Tags to keep
+# Too keep in mind!!! The merging step merges objects (node/way/relation) NOT tags of multiple identical objects
+# So for a ferry route with OSM id=123 tag bicycle=yes, route=ferry and name=test Merging the split map files in the order of objects_to_keep_without_name and than 
+# objects_to_keep_with_name the resulting merged file will for node 123 have just bicycle=yes
+# Merging first objects_to_keep_with_name and than objects_to_keep_without_name results in a merged file with route=ferry and name=test in the merged output file
+# 
+# If somebody knows of a way to do a tag merge, so the resulting id 123 having all 3 tags, please, pretty please, let me know! 
 
 # Objects (node/way/relation) to keep with just this tags, discard (almost) all other tags
 objects_to_keep_without_name = 'access=private \
@@ -472,7 +478,7 @@ for tile in country:
 
 print (f'{border_countries}')
 #sys.exit()
-time.sleep(60)
+#time.sleep(60)
 
 # Check for expired maps and delete them
 print(f'# Checking for old maps and remove them')
@@ -697,8 +703,8 @@ print('\n\n# Split filtered country files to tiles')
 
 # Check if there is a wandrer map
 if integrate_Wandrer:
-    inWandrer = os.path.join(MAP_PATH,'wandrer.osm.pbf')
-    if os.path.isfile(inWandrer) and integrate_Wandrer:
+    inWandrer_files = glob.glob(os.path.join(MAP_PATH, f'wandrer*.osm.pbf'))
+    if inWandrer_files and integrate_Wandrer:
         doWandrer=True
     else:
         doWandrer=False
@@ -708,7 +714,6 @@ for tile in country:
         print(f'\n\n# Splitting tile {TileCount} of {len(country)} for Coordinates: {tile["x"]},{tile["y"]} from map of {c}')
         outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf')
         outMerged = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'merged.osm.pbf')
-        outWandrer = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer.osm.pbf')
         if not os.path.isfile(outMerged) or Force_Processing == 1:
             #cmd = ['.\\osmosis\\bin\\osmosis.bat', '--rbf',border_countries[c]['filtered_file'],'workers='+workers, '--buffer', 'bufferCapacity=12000', '--bounding-box', 'completeWays=yes', 'completeRelations=yes']
             #cmd.extend(['left='+f'{tile["left"]}', 'bottom='+f'{tile["bottom"]}', 'right='+f'{tile["right"]}', 'top='+f'{tile["top"]}', '--buffer', 'bufferCapacity=12000', '--wb'])
@@ -746,17 +751,19 @@ for tile in country:
             # print(border_countries[c]['filtered_file'])
 
         if doWandrer:
-            if not os.path.isfile(outMerged) or Force_Processing == 1:
-                cmd = ['osmconvert', '-v', '--hash-memory=2500']
-                cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' + ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
-                cmd.extend(['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
-                cmd.append(inWandrer)
-                cmd.append('-o='+outWandrer)
-                # print(cmd)
-                result = subprocess.run(cmd)
-                if result.returncode != 0:
-                    print(f'Error in Osmconvert while processing Wandrer file')
-                    sys.exit()            
+            for wandrer_map in inWandrer_files:
+                outWandrer = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{os.path.basename(wandrer_map)}')
+                if not os.path.isfile(outWandrer) or Force_Processing == 1:
+                    cmd = ['osmconvert', '-v', '--hash-memory=2500']
+                    cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' + ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
+                    cmd.extend(['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
+                    cmd.append(wandrer_map)
+                    cmd.append('-o='+outWandrer)
+                    # print(cmd)
+                    result = subprocess.run(cmd)
+                    if result.returncode != 0:
+                        print(f'Error in Osmconvert while processing Wandrer file')
+                        sys.exit()            
     TileCount += 1
 
 print('\n\n# Merge splitted tiles with land, sea and elevation')
@@ -786,16 +793,18 @@ for tile in country:
                 cmd.append('workers='+workers)
                 cmd.append('--merge')
         if (doWandrer):
-            cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer.osm.pbf'))
-            cmd.append('workers='+workers)
-            cmd.append('--merge')
+            wandrer_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer*.osm.pbf'))
+            for wandrer in wandrer_files:
+                cmd.append('--rbf')
+                cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{wandrer}'))
+                cmd.append('workers='+workers)
+                cmd.append('--merge')
         land_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land*.osm'))
         for land in land_files:
             cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{land}'), '--s', '--m'])
         cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'sea.osm'), '--s', '--m'])
         cmd.extend(['--tag-transform', 'file=' + os.path.join (CurDir, 'tunnel-transform.xml'), '--buffer', '--wb', outFile, 'omitmetadata=true'])
-        # print(cmd)
+        #print(cmd)
         result = subprocess.run(cmd)
         if result.returncode != 0:
             print(f'Error in Osmosis with country: {c}')
