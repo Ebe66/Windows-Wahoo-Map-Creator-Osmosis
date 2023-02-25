@@ -66,8 +66,8 @@
     <!-- end region -->
     <!-- region land/sea/waterways -->
     <m e="way" k="natural" v="sea">
-        <area cat="bolt2" fill="#00FFFF"/>
-        <area cat="roam2" fill="#00FFFF"/>
+        <area cat="bolt2" fill="#00FFFF" mesh="true"/>
+        <area cat="roam2" fill="#00FFFF" mesh="true"/>
     </m>
     <m e="way" k="natural" v="nosea">
         <area cat="bolt2" fill="#ffffff" mesh="true"/>

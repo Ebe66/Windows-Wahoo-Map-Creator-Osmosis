@@ -225,6 +225,9 @@
                             <line use="bolt-trail"/>
                         </m>
                     </m>
+                    <m k="surface" v="bic_paved">
+                        <line use="bolt-track-paved"/>
+                    </m>
                     <m k="foot" v="ft_yes|ft_designated" zoom-min="13">
                         <!-- specifically for foot -->
                         <line use="bolt-footpath"/>

@@ -40,7 +40,7 @@
     <!-- end region -->
     <!-- region land/sea/waterways -->
     <m e="way" k="natural" v="sea">
-        <area cat="roam" fill="#00FFFF"/>
+        <area cat="roam" fill="#00FFFF" mesh="true"/>
     </m>
     <m e="way" k="natural" v="nosea">
         <area cat="roam" fill="#ffffff" mesh="true"/>

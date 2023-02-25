@@ -271,7 +271,7 @@ objects_to_keep_without_name = 'access=private \
     bridge= \
     building=church =cathedral \
     emergency=phone \
-    foot=ft_yes =foot_designated \
+    foot=yes =designated \
     highway=abandoned =bus_guideway =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
     historic=memorial =monument \
     landuse=forest =building =commercial =industrial =military =residential =reservoir =retail \
@@ -771,44 +771,47 @@ TileCount = 1
 for tile in country:
     print(f'\n\n# Merging tiles for tile {TileCount} of {len(country)} for Coordinates: {tile["x"]},{tile["y"]}')
     outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'merged.osm.pbf')
-    if not os.path.isfile(outFile) or Force_Processing == 1:
-        cmd = [os.path.join (CurDir, 'Osmosis', 'bin', 'osmosis.bat')]
-        loop=0
-        for c in tile['countries']:
-            cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
-            cmd.append('workers='+workers)
-            if loop > 0:
-                cmd.append('--merge')
-            cmd.append('--rbf')
-            cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
-            cmd.append('workers='+workers)
-            cmd.append('--merge')
-            loop+=1
-        if (generate_elevation == 1):
-            elevation_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
-            for elevation in elevation_files:
+    # Check if there are "split*.osm.pbf" files to merge. If not, skip tile
+    files_to_merge = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-*.osm.pbf'))
+    if files_to_merge:
+        if not os.path.isfile(outFile) or Force_Processing == 1:
+            cmd = [os.path.join (CurDir, 'Osmosis', 'bin', 'osmosis.bat')]
+            loop=0
+            for c in tile['countries']:
                 cmd.append('--rbf')
-                cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{elevation}'))
+                cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
+                cmd.append('workers='+workers)
+                if loop > 0:
+                    cmd.append('--merge')
+                cmd.append('--rbf')
+                cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
                 cmd.append('workers='+workers)
                 cmd.append('--merge')
-        if (doWandrer):
-            wandrer_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer*.osm.pbf'))
-            for wandrer in wandrer_files:
-                cmd.append('--rbf')
-                cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{wandrer}'))
-                cmd.append('workers='+workers)
-                cmd.append('--merge')
-        land_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land*.osm'))
-        for land in land_files:
-            cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{land}'), '--s', '--m'])
-        cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'sea.osm'), '--s', '--m'])
-        cmd.extend(['--tag-transform', 'file=' + os.path.join (CurDir, 'tunnel-transform.xml'), '--buffer', '--wb', outFile, 'omitmetadata=true'])
-        #print(cmd)
-        result = subprocess.run(cmd)
-        if result.returncode != 0:
-            print(f'Error in Osmosis with country: {c}')
-            sys.exit()   
+                loop+=1
+            if (generate_elevation == 1):
+                elevation_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
+                for elevation in elevation_files:
+                    cmd.append('--rbf')
+                    cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{elevation}'))
+                    cmd.append('workers='+workers)
+                    cmd.append('--merge')
+            if (doWandrer):
+                wandrer_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer*.osm.pbf'))
+                for wandrer in wandrer_files:
+                    cmd.append('--rbf')
+                    cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{wandrer}'))
+                    cmd.append('workers='+workers)
+                    cmd.append('--merge')
+            land_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land*.osm'))
+            for land in land_files:
+                cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{land}'), '--s', '--m'])
+            cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'sea.osm'), '--s', '--m'])
+            cmd.extend(['--tag-transform', 'file=' + os.path.join (CurDir, 'tunnel-transform.xml'), '--buffer', '--wb', outFile, 'omitmetadata=true'])
+            #print(cmd)
+            result = subprocess.run(cmd)
+            if result.returncode != 0:
+                print(f'Error in Osmosis with country: {c}')
+                sys.exit()   
     TileCount += 1
 
 print('\n\n# Creating .map files')
@@ -816,28 +819,30 @@ TileCount = 1
 for tile in country:
     print(f'\n\nCreating map file for tile {TileCount} of {len(country)} for Coordinates: {tile["x"]}, {tile["y"]}')
     outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}.map')
-    if not os.path.isfile(outFile+'.lzma') or Force_Processing == 1:
-        mergedFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'merged.osm.pbf')
-        cmd = [os.path.join (CurDir, 'Osmosis', 'bin', 'osmosis.bat'), '--rbf', mergedFile, 'workers='+workers, '--buffer', '--mw', 'file='+outFile]
-        cmd.append(f'bbox={tile["bottom"]:.6f},{tile["left"]:.6f},{tile["top"]:.6f},{tile["right"]:.6f}')
-        cmd.append('zoom-interval-conf=10,0,17')
-        # cmd.append('way-clipping=false')
-        cmd.append('threads='+threads)
-        cmd.append('tag-conf-file=' + os.path.join (CurDir, 'tag-wahoo.xml'))
-        # print(cmd)
-        result = subprocess.run(cmd)
-        if result.returncode != 0:
-            print(f'Error in Osmosis with country: {c}')
-            sys.exit()        
+    mergedFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'merged.osm.pbf')
+    # Check if there is a merged.osm.pbf file to generate a map of
+    if os.path.isfile(mergedFile):
+        if not os.path.isfile(outFile+'.lzma') or Force_Processing == 1:
+            cmd = [os.path.join (CurDir, 'Osmosis', 'bin', 'osmosis.bat'), '--rbf', mergedFile, 'workers='+workers, '--buffer', '--mw', 'file='+outFile]
+            cmd.append(f'bbox={tile["bottom"]:.6f},{tile["left"]:.6f},{tile["top"]:.6f},{tile["right"]:.6f}')
+            cmd.append('zoom-interval-conf=10,0,17')
+            # cmd.append('way-clipping=false')
+            cmd.append('threads='+threads)
+            cmd.append('tag-conf-file=' + os.path.join (CurDir, 'tag-wahoo.xml'))
+            # print(cmd)
+            result = subprocess.run(cmd)
+            if result.returncode != 0:
+                print(f'Error in Osmosis with country: {c}')
+                sys.exit()        
 
-        print('\n# compress .map file')
-        cmd = ['lzma', 'e', outFile, outFile+'.lzma', f'-mt{threads}', '-d27', '-fb273', '-eos']
-        # print(cmd)
-        subprocess.run(cmd)
-        
-    # Create "tile present" file
-    f = open(outFile + '.lzma.17', 'wb')
-    f.close()
+            print('\n# compress .map file')
+            cmd = ['lzma', 'e', outFile, outFile+'.lzma', f'-mt{threads}', '-d27', '-fb273', '-eos']
+            # print(cmd)
+            subprocess.run(cmd)
+
+            # Create "tile present" file
+            f = open(outFile + '.lzma.17', 'wb')
+            f.close()
         
     TileCount += 1
 
@@ -853,37 +858,43 @@ except:
 print (f'Copying Wahoo and map tiles to output folders')
 for tile in country:
     src = os.path.join(f'{OUT_PATH}', f'{tile["x"]}', f'{tile["y"]}.map.lzma')
-    dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}', f'{tile["y"]}.map.lzma')
-    outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}')
-    if not os.path.isdir(outdir):
-        os.makedirs(outdir)
-    try:
-        shutil.copy2(src, dst)
-    except:
-        print (f'Error copying tiles of country {wanted_map}')
-        sys.exit()
+    # Check if source map.lzma file is available to copy
+    if os.path.isfile(src):
+        dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}', f'{tile["y"]}.map.lzma')
+        outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}')
+        if not os.path.isdir(outdir):
+            os.makedirs(outdir)
+        try:
+            shutil.copy2(src, dst)
+        except:
+            print (f'Error copying tiles of country {wanted_map}')
+            sys.exit()
         
     src = os.path.join(f'{OUT_PATH}', f'{tile["x"]}', f'{tile["y"]}.map.lzma.17')
-    dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}', f'{tile["y"]}.map.lzma.17')
-    outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}')
-    if not os.path.isdir(outdir):
-        os.makedirs(outdir)
-    try:
-        shutil.copy2(src, dst)
-    except:
-        print (f'Error copying precense files of country {wanted_map}')
-        sys.exit()
+    # Check if source map.lzma.17 file is available to copy
+    if os.path.isfile(src):
+        dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}', f'{tile["y"]}.map.lzma.17')
+        outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}')
+        if not os.path.isdir(outdir):
+            os.makedirs(outdir)
+        try:
+            shutil.copy2(src, dst)
+        except:
+            print (f'Error copying precense files of country {wanted_map}')
+            sys.exit()
         
     src = os.path.join(f'{OUT_PATH}', f'{tile["x"]}', f'{tile["y"]}.map')
-    dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps', f'{tile["x"]}', f'{tile["y"]}.map')
-    outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps', f'{tile["x"]}')
-    if not os.path.isdir(outdir):
-        os.makedirs(outdir)
-    try:
-        shutil.copy2(src, dst)
-    except:
-        print (f'Error copying map tiles of country {wanted_map}')
-        sys.exit()
+    # Check if source map file is available to copy
+    if os.path.isfile(src):
+        dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps', f'{tile["x"]}', f'{tile["y"]}.map')
+        outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps', f'{tile["x"]}')
+        if not os.path.isdir(outdir):
+            os.makedirs(outdir)
+        try:
+            shutil.copy2(src, dst)
+        except:
+            print (f'Error copying map tiles of country {wanted_map}')
+            sys.exit()
 
 # Process routing tiles if present
 IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')

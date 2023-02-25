@@ -5,7 +5,7 @@
   <area src="patterns/halftone2.webp"/>
  </rule>
  <rule e="way" k="natural" v="nosea">
-  <area fill="#FFFFFF"/>
+  <area fill="#FFFFFF" mesh="true"/>
  </rule>
  <rule e="way" k="natural" v="nosea" zoom-max="9">
   <line stroke-width="1" stroke="#000000"/>

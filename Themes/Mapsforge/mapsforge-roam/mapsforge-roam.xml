@@ -11,10 +11,10 @@
         <area fill="#00FFFF"/>
     </rule>
     <rule e="way" k="natural" v="sea">
-        <area fill="#00FFFF"/>
+        <area fill="#00FFFF" mesh="true"/>
     </rule>
     <rule e="way" k="natural" v="nosea">
-        <area fill="#FFFFFF"/>
+        <area fill="#FFFFFF" mesh="true"/>
     </rule>
     <!-- contour lines level 13 -->
     <rule e="way" k="contour_ext" v="*" zoom-min="13" zoom-max="13">
