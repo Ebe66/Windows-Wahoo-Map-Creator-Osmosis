@@ -13,7 +13,7 @@
     <!-- Steps -->
     <style-line id="roam-steps" cat="roam" stroke="#000000" width="0.5" dasharray="9,9" cap="butt"/>
     <!-- Cycle Trails (like MTB) -->
-    <style-line id="roam-trail" cat="roam" stroke="#00AA00" width="1.0"/>
+    <style-line id="roam-trail" cat="roam" stroke="#0000FF" width="1.0"/>
     <!-- Paved Tracks -->
     <style-line id="roam-track-paved" cat="roam" stroke="#000000" width="1.0"/>
     <style-line id="roam-track-paved-cycle" use="roam-track-paved" stroke="#0000FF"/>
@@ -43,10 +43,11 @@
         <area cat="roam" fill="#00FFFF" mesh="true"/>
     </m>
     <m e="way" k="natural" v="nosea">
-        <area cat="roam" fill="#ffffff" mesh="true"/>
+        <area cat="roam" fill="#FFFFFF" mesh="true"/>
     </m>
     <m e="way" k="leisure" v="park|nature_reserve">
         <area cat="roam" src="patterns/light_green.png"/>
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
     </m>
     <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
         <area cat="roam" fill="#00FF00"/>
@@ -57,14 +58,44 @@
     <m e="way" k="natural" v="beach" zoom-min="12">
         <area cat="roam" src="patterns/light_yellow.png"/>
     </m>
+    <m e="way" k="man_made" v="cutline" zoom-min="15">
+        <line cat="roam" width="1" stroke="#FFFF00" dasharray="5,5"/>
+    </m>
     <m e="way" k="natural" v="water">
         <area cat="roam" fill="#00FFFF"/>
     </m>
     <m e="way" k="waterway" v="river|canal">
         <line cat="roam" width="1" stroke="#00FFFF"/>
+        <pathText display="always" cat="roam" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
     </m>
     <m e="way" k="waterway" v="stream" zoom-min="14">
         <line cat="roam" width="1" stroke="#00FFFF"/>
+    </m>
+    <m e="way" k="waterway" v="river|riverbank|canal" closed="yes">
+        <area cat="roam" fill="#00FFFF"/>
+    </m>
+    <m e="way" k="landuse" v="reservoir">
+        <area cat="roam" fill="#00FFFF"/>
+    </m>
+    <!-- region military -->
+    <m e="way" k="landuse" v="military" zoom-min="10">
+        <line cat="roam" width="1" stroke="#FF0000"/>
+        <area cat="roam" src="icons/symbols/landuse/stripesDown.svg" symbol-height="32"/>
+    </m>
+    <m e="way" k="area" v="yes" zoom-min="10">
+        <m e="way" k="landuse" v="military" zoom-min="10">
+            <line cat="roam" width="1" stroke="#FF0000"/>
+            <area cat="roam" src="icons/symbols/landuse/stripesDown.svg" symbol-height="32"/>
+        </m>
+    </m>
+    <!-- endregion military -->
+    <m e="way" k="man_made" v="pier" zoom-min="12">
+        <line cat="roam" width="1" stroke="#FFFF00"/>
+    </m>
+    <m e="way" k="area" v="yes" zoom-min="12">
+        <m e="way" k="man_made" v="pier" zoom-min="12">
+            <area cat="roam" fill="#FFFF00"/>
+        </m>
     </m>
     <!-- endregion land/sea/waterways -->
     <!-- contour lines optimized for low-res displays interval = 10,(50/100)-->
@@ -100,7 +131,7 @@
         <m e="way" k="contour_ext" v="elevation_medium|elevation_major">
             <line use="roam-elevation-med-maj-z15"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="10" fill="#000000" stroke="#ffffff" stroke-width="1.0"/>
+                <pathText k="ele" font-style="bold" font-size="10" fill="#000000" stroke="#FFFFFF" stroke-width="1.0"/>
             </m>
         </m>
     </m>
@@ -112,7 +143,7 @@
         <m e="way" k="contour_ext" v="elevation_medium|elevation_major">
             <line use="roam-elevation-med-maj-z16"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#ffffff" stroke-width="1.5"/>
+                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#FFFFFF" stroke-width="1.5"/>
             </m>
         </m>
     </m>
@@ -124,7 +155,7 @@
         <m e="way" k="contour_ext" v="elevation_medium|elevation_major">
             <line use="roam-elevation-med-maj-z17"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#ffffff" stroke-width="1.5"/>
+                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#FFFFFF" stroke-width="1.5"/>
             </m>
         </m>
     </m>
@@ -132,7 +163,7 @@
     <!-- region not a tunnel -->
     <m e="way" k="tunnel" v="~|no|false" zoom-min="8">
         <!-- highway outlines -->
-        <outline-layer cat="roam" id="roam-highway" stroke="#550000" width="1"/>
+        <outline-layer cat="roam" id="roam-highway" stroke="#000000" width="1"/>
         <outline-layer cat="roam" id="roam-major-roads" stroke="#000000" width="0.6"/>
         <outline-layer cat="roam" id="roam-minor-roads" stroke="#000000" width="0.4" zoom-min="12"/>
         <outline-layer cat="roam" id="roam-bikepath" stroke="#000000" width="0.4" zoom-min="12"/>
@@ -172,36 +203,47 @@
                     <line cat="roam" stroke="#FFFFFF" width="1.2" dasharray="10,12" cap="round"/>
                 </m>
                 <m e="way" k="highway" v="service" zoom-min="13">
-                    <line cat="roam" stroke="#BBBBBB" outline="roam-minor-roads" width="1.3"/>
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-minor-roads" width="1.3"/>
                 </m>
                 <m e="way" k="highway" v="construction" zoom-min="10">
-                    <line cat="roam" stroke="#FF8800" width="2" dasharray="15,5" cap="butt"/>
+                    <line cat="roam" stroke="#FF0000" width="2" dasharray="15,5" cap="butt"/>
                 </m>
                 <m e="way" k="highway" v="residential|living_street|road|unclassified" zoom-min="14">
-                    <line cat="roam" stroke="#BBBBBB" outline="roam-major-roads" width="1.5"/>
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="1.5"/>
                 </m>
                 <m e="way" k="highway" v="residential|living_street|road" zoom-min="10" zoom-max="13">
-                    <line cat="roam" stroke="#BBBBBB" outline="roam-major-roads" width="1.5"/>
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="1.5"/>
                 </m>
                 <m e="way" k="highway" v="road|unclassified" zoom-min="10" zoom-max="13">
-                    <line cat="roam" stroke="#BBBBBB" outline="roam-major-roads" width="2"/>
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="2"/>
                 </m>
                 <m e="way" k="highway" v="tertiary|tertiary_link|secondary_link|secondary" zoom-min="10">
                     <line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
                 </m>
                 <m e="way" k="highway" v="primary_link|trunk_link|motorway_link|primary|trunk" zoom-min="9">
-                    <line cat="roam" outline="roam-major-roads" stroke="#FFAA00" width="3.5"/>
+                    <line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
                 </m>
                 <m e="way" k="highway" v="motorway" zoom-min="12">
-                    <line cat="roam" outline="roam-highway" stroke="#BB0000" width="4"/>
+                    <line cat="roam" outline="roam-highway" stroke="#FF0000" width="4"/>
                 </m>
                 <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
-                    <line cat="roam" outline="highway-roam" stroke="#BB0000" width="4"/>
+                    <line cat="roam" outline="highway-roam" stroke="#FF0000" width="4"/>
                 </m>
-                <!-- Ferry-->
-                <m e="way" k="route" v="ferry">
-                    <line stroke="#FF0000" stroke-width="0.3" stroke-dasharray="15,10" stroke-linecap="butt"/>
+                <m e="way" k="wandrer" v="untraveled" zoom-min="14">
+                    <line cat="roam" stroke="#FF0000" outline="roam-major-roads" width="1.5" dasharray="10,12"/>
                 </m>
+                <!-- ferry -->
+                <m k="route">
+                    <m v="ferry">
+      	                <m zoom-min="11">
+         	                <line stroke="#FF0000" width="0.6" dasharray="15,5" cap="butt" />
+                        </m>
+                        <m zoom-min="15">
+         	                <pathText display="always" cat="roam" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#FFFFFF" stroke-width="2.0" zoom-min="15" />
+                        </m>
+                    </m>
+                </m>
+                <!-- endregion ferry -->
             </m>
             <!-- endregion not bridges -->
             <!-- region tracks -->
@@ -339,22 +381,22 @@
                     <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
                 </m>
                 <m e="way" k="highway" v="primary_link|trunk_link|primary|trunk" zoom-min="12">
-                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
                 </m>
                 <m e="way" k="highway" v="trunk" zoom-max="12" zoom-min="11">
-                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="3"/>
+                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="3"/>
                 </m>
                 <m e="way" k="highway" v="motorway_link" zoom-min="12">
-                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
                 </m>
                 <m e="way" k="highway" v="motorway" zoom-min="12">
-                    <line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="3.5"/>
+                    <line cat="roam" outline="bridge" cap="butt" stroke="#FF0000" width="3.5"/>
                 </m>
                 <m e="way" k="highway" v="motorway_link" zoom-min="8" zoom-max="11">
-                    <line cat="roam" outline="bridge" cap="butt" stroke="#AA5500" width="2.5"/>
+                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
                 </m>
                 <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
-                    <line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="4"/>
+                    <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="4"/>
                 </m>
             </m>
             <!-- endregion bridges-->
@@ -381,22 +423,22 @@
             <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
         </m>
         <m e="way" k="highway" v="primary_link|trunk_link|primary|trunk" zoom-min="12">
-            <line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+            <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
         </m>
         <m e="way" k="highway" v="trunk" zoom-max="12" zoom-min="11">
-            <line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="3"/>
+            <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="3"/>
         </m>
         <m e="way" k="highway" v="motorway_link" zoom-min="12">
-            <line cat="roam" outline="bridge" cap="butt" stroke="#FFAA00" width="2.5"/>
+            <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
         </m>
         <m e="way" k="highway" v="motorway" zoom-min="12">
-            <line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="3.5"/>
+            <line cat="roam" outline="bridge" cap="butt" stroke="#FF0000" width="3.5"/>
         </m>
         <m e="way" k="highway" v="motorway_link" zoom-min="8" zoom-max="11">
-            <line cat="roam" outline="bridge" cap="butt" stroke="#AA5500" width="2.5"/>
+            <line cat="roam" outline="bridge" cap="butt" stroke="#FFFF00" width="2.5"/>
         </m>
         <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
-            <line cat="roam" outline="bridge" cap="butt" stroke="#BB0000" width="4"/>
+            <line cat="roam" outline="bridge" cap="butt" stroke="#FF0000" width="4"/>
         </m>
         <m k="highway" v="cycleway">
             <line use="roam-cycle" stroke-dasharray="15,10" stroke-linecap="butt"/>
@@ -407,10 +449,10 @@
     <m k="railway">
         <m k="tunnel" v="~|false|no">
             <m v="rail" zoom-min="10">
-                <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#000000" width="3"/>
+                <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#000000" width="3"/>
             </m>
             <m v="tram|light_rail" zoom-min="15">
-                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#555555" width="3"/>
+                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#000000" width="3"/>
             </m>
         </m>
     </m>
@@ -418,30 +460,30 @@
     <!-- region place captions -->
     <m k="place">
         <m v="locality" zoom-min="15">
-            <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+            <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
         </m>
         <m v="suburb" zoom-max="13">
-            <caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#ffffff" stroke-width="3.0"/>
+            <caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#FFFFFF" stroke-width="3.0"/>
         </m>
         <m v="village" zoom-max="13">
-            <caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="island" zoom-min="10">
-            <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="town" zoom-max="13">
-            <caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="city">
             <m zoom-min="7">
-                <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+                <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
             </m>
             <m zoom-max="6">
-                <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+                <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
             </m>
         </m>
         <m v="country">
-            <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
     </m>
     <!-- endregion place -->
@@ -502,6 +544,16 @@
                 <symbol src="icons/symbols/amenity/toilets.svg" symbol-percent="150"/>
             </m>
         </m>
+        <m k="building">
+            <m v="cathedral">
+                <symbol src="icons/symbols/place_of_worship/christian-cross.svg" symbol-percent="70"/>
+                <area cat="roam" fill="#FF00FF"/>
+            </m>
+            <m v="church">
+                <symbol src="icons/symbols/place_of_worship/christian-cross.svg" symbol-percent="70"/>
+                <area cat="roam" fill="#FF00FF"/>
+            </m>
+        </m>
         <m k="emercency">
             <m v="phone">
                 <symbol src="icons/symbols/transport/emergency_phone.svg" symbol-percent="150"/>
@@ -542,12 +594,14 @@
             </m>
             <m v="museum">
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="viewpoint">
                 <symbol src="icons/symbols/tourist/view_point.svg" symbol-percent="150"/>
             </m>
             <m v="zoo">
                 <symbol src="icons/symbols/tourist/zoo.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
         </m>
         <m k="route">
@@ -558,9 +612,11 @@
         <m k="historic">
             <m v="ruins">
                 <symbol src="icons/symbols/tourist/ruin.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="castle">
                 <symbol src="icons/symbols/tourist/castle2.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="memorial">
                 <symbol src="icons/symbols/tourist/memorial.svg" symbol-percent="150"/>

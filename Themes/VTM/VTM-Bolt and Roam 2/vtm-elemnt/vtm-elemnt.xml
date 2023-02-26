@@ -70,13 +70,13 @@
         <area cat="roam2" fill="#00FFFF" mesh="true"/>
     </m>
     <m e="way" k="natural" v="nosea">
-        <area cat="bolt2" fill="#ffffff" mesh="true"/>
-        <area cat="roam2" fill="#ffffff" mesh="true"/>
+        <area cat="bolt2" fill="#FFFFFF" mesh="true"/>
+        <area cat="roam2" fill="#FFFFFF" mesh="true"/>
     </m>
     <m e="way" k="leisure" v="park">
         <area cat="bolt2" fill="#55FF55"/>
         <area cat="roam2" fill="#55FF55"/>
-        <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
     </m>
     <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
         <area cat="bolt2" fill="#00FF00"/>
@@ -85,7 +85,7 @@
     <m e="way" k="leisure" v="nature_reserve">
         <area cat="bolt2" fill="#55FF55"/>
         <area cat="roam2" fill="#55FF55"/>
-        <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
     </m>
     <m e="way" k="landuse" v="building|commercial|industrial|residential|retail">
         <area cat="bolt2" fill="#FFAAAA"/>
@@ -110,7 +110,7 @@
     <m e="way" k="waterway" v="river|canal">
         <line cat="bolt2" width="1" stroke="#00AAFF"/>
         <line cat="roam2" width="1" stroke="#00AAFF"/>
-        <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#ffffff" stroke-width="3.0" zoom-min="14" />
+        <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
     </m>
     <m e="way" k="waterway" v="drain" zoom-min="14">
         <line cat="bolt2" width="1" stroke="#00AAFF"/>
@@ -226,7 +226,7 @@
             <line use="roam2-elevation-med-maj-z15"/>
             <line use="bolt2-elevation-med-maj-z15"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="10" fill="#000000" stroke="#ffffff" stroke-width="1.0"/>
+                <pathText k="ele" font-style="bold" font-size="10" fill="#000000" stroke="#FFFFFF" stroke-width="1.0"/>
             </m>
         </m>
     </m>
@@ -240,7 +240,7 @@
             <line use="roam2-elevation-med-maj-z16"/>
             <line use="bolt2-elevation-med-maj-z16"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#ffffff" stroke-width="1.5"/>
+                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#FFFFFF" stroke-width="1.5"/>
             </m>
         </m>
     </m>
@@ -254,7 +254,7 @@
             <line use="roam2-elevation-med-maj-z17"/>
             <line use="bolt2-elevation-med-maj-z17"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#ffffff" stroke-width="1.5"/>
+                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#FFFFFF" stroke-width="1.5"/>
             </m>
         </m>
     </m>
@@ -350,11 +350,11 @@
                 <m k="route">
                     <m v="ferry">
       	                <m zoom-min="11">
-         	                <line stroke="#0000AA" width="0.5" dasharray="15,10" cap="butt" />
+         	                <line stroke="#0000AA" width="0.6" dasharray="15,5" cap="butt" />
                         </m>
                         <m zoom-min="15">
-         	                <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#ffffff" stroke-width="2.0" zoom-min="15" />
-         	                <pathText display="always" cat="roam2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#ffffff" stroke-width="2.0" zoom-min="15" />
+         	                <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#FFFFFF" stroke-width="2.0" zoom-min="15" />
+         	                <pathText display="always" cat="roam2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#FFFFFF" stroke-width="2.0" zoom-min="15" />
                         </m>
                     </m>
                 </m>
@@ -603,11 +603,11 @@
     <m k="railway">
         <m k="tunnel" v="~|false|no">
             <m v="rail" zoom-min="10">
-                <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#000000" width="3"/>
+                <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#000000" width="3"/>
             </m>
             <m v="tram|light_rail" zoom-min="15">
-                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#555555" width="3"/>
-                <line cat="roam2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#555555" width="3"/>
+                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#555555" width="3"/>
+                <line cat="roam2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#555555" width="3"/>
             </m>
         </m>
     </m>
@@ -615,30 +615,30 @@
     <!-- region place captions -->
     <m k="place">
         <m v="locality" zoom-min="15">
-            <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+            <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
         </m>
         <m v="suburb" zoom-max="13">
-            <caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#ffffff" stroke-width="3.0"/>
+            <caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#FFFFFF" stroke-width="3.0"/>
         </m>
         <m v="village" zoom-max="13">
-            <caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="island" zoom-min="10">
-            <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="town" zoom-max="13">
-            <caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="city">
             <m zoom-min="7">
-                <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+                <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
             </m>
             <m zoom-max="6">
-                <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+                <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
             </m>
         </m>
         <m v="country">
-            <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
     </m>
     <!-- endregion place -->
@@ -780,7 +780,7 @@
             </m>
             <m v="museum">
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
-                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="picnic_site">
                 <symbol src="icons/symbols/tourist/picnic.svg" symbol-percent="100"/>
@@ -790,7 +790,7 @@
             </m>
             <m v="zoo">
                 <symbol src="icons/symbols/tourist/zoo.svg" symbol-percent="150"/>
-                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
         </m>
         <m k="route">
@@ -801,11 +801,11 @@
         <m k="historic">
             <m v="ruins">
                 <symbol src="icons/symbols/tourist/ruin.svg" symbol-percent="150"/>
-                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="castle">
                 <symbol src="icons/symbols/tourist/castle3.svg" symbol-percent="150"/>
-                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="memorial">
                 <symbol src="icons/symbols/tourist/memorial.svg" symbol-percent="150"/>

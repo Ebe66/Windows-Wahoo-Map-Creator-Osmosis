@@ -83,10 +83,10 @@
         <osm-tag key="tourism" value="picnic_site" zoom-appear="16" />
 		<osm-tag key="tourism" value="viewpoint" zoom-appear="15"/>
 		<osm-tag key="tourism" value="zoo" zoom-appear="16"/>	
+		<osm-tag key="historic" value="castle" zoom-appear="15"/>
 		<osm-tag key="historic" value="memorial" zoom-appear="16"/>
 		<osm-tag key="historic" value="monument" zoom-appear="16"/>
 		<osm-tag key="historic" value="ruins" zoom-appear="16"/>
-		<osm-tag key="historic" value="castle" zoom-appear="15"/>
 	</pois>
 	<!-- PLACES TAGS -->
 	<pois>
@@ -129,7 +129,6 @@
 	<!-- HIGHWAY TAGS -->
 	<ways>
 		<osm-tag key="highway" value="bridleway" zoom-appear="14"/>
-		<osm-tag key="highway" value="bus_stop" zoom-appear="16"/>
 		<osm-tag key="highway" value="construction" zoom-appear="10"/>
 		<osm-tag key="highway" value="cycleway" zoom-appear="12"/>
 		<osm-tag key="highway" value="footway" zoom-appear="13"/>
@@ -258,10 +257,10 @@
         <osm-tag key="tourism" value="picnic_site" zoom-appear="16" />
 		<osm-tag key="tourism" value="viewpoint" zoom-appear="15"/>
 		<osm-tag key="tourism" value="zoo" label-position="true" zoom-appear="13"/>			
+		<osm-tag key="historic" value="castle" label-position="true" zoom-appear="15"/>
 		<osm-tag key="historic" value="memorial" zoom-appear="16"/>
 		<osm-tag key="historic" value="monument" zoom-appear="16"/>
 		<osm-tag key="historic" value="ruins" label-position="true" zoom-appear="16"/>
-		<osm-tag key="historic" value="castle" label-position="true" zoom-appear="15"/>
 	</ways>
 	<!-- Elevation TAGS -->
 	<ways>
@@ -332,7 +331,7 @@
 	</ways>
 	<!-- NOT TO RENDER -->
 	<ways>
-		<osm-tag key="id" value="%f" renderable="false"/>
+		<!--<osm-tag key="id" value="%f" renderable="false"/>-->
 		<osm-tag key="access" value="destination" renderable="false"/>
 		<osm-tag key="access" value="private" renderable="false"/>
 		<osm-tag key="bicycle" value="bic_yes" equivalent-values="yes,public,allowed" renderable="false"/>

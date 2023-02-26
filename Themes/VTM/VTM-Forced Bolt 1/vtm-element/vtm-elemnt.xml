@@ -43,25 +43,48 @@
         <area cat="bolt" src="patterns/gray.png"/>
     </m>
     <m e="way" k="natural" v="nosea">
-        <area cat="bolt" fill="#ffffff" mesh="true"/>
+        <area cat="bolt" fill="#FFFFFF" mesh="true"/>
     </m>
     <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
     </m>
     <m e="way" k="leisure" v="park|nature_reserve">
-        <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+        <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
     </m>
     <m e="way" k="natural" v="water">
         <area cat="bolt" src="patterns/gray.png"/>
     </m>
     <m e="way" k="waterway" v="river|canal">
         <line cat="bolt" fix="true" width="1" dasharray="2,2"/>
-        <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#ffffff" stroke-width="3.0" zoom-min="14" />
+        <pathText display="always" cat="bolt2" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
    </m>
    <m e="way" k="waterway" v="river|riverbank|canal" closed="yes">
         <area cat="bolt" src="patterns/gray.png"/>
     </m>
     <m e="way" k="waterway" v="stream" zoom-min="14">
         <line cat="bolt" fix="true" width="1" dasharray="2,2"/>
+    </m>
+    <m e="way" k="landuse" v="reservoir">
+        <area cat="bolt" src="patterns/gray.png"/>
+    </m>
+    <!-- region military -->
+    <m e="way" k="landuse" v="military" zoom-min="10">
+        <line cat="bolt" width="1" stroke="#000000"/>
+        <area cat="bolt" src="icons/symbols/landuse/stripesDownBW.svg" symbol-height="32"/>
+    </m>
+    <m e="way" k="area" v="yes" zoom-min="10">
+        <m e="way" k="landuse" v="military" zoom-min="10">
+            <line cat="bolt" width="1" stroke="#000000"/>
+            <area cat="bolt" src="icons/symbols/landuse/stripesDownBW.svg" symbol-height="32"/>
+        </m>
+    </m>
+    <!-- endregion military -->
+    <m e="way" k="man_made" v="pier" zoom-min="12">
+        <line cat="bolt" width="1" stroke="#000000"/>
+    </m>
+    <m e="way" k="area" v="yes" zoom-min="12">
+        <m e="way" k="man_made" v="pier" zoom-min="12">
+            <area cat="bolt" fill="#000000"/>
+        </m>
     </m>
     <!-- endregion land/sea/waterways -->
     <!-- contour lines optimized for low-res displays interval = 10,(50/100)-->
@@ -97,7 +120,7 @@
         <m e="way" k="contour_ext" v="elevation_medium|elevation_major">
             <line use="bolt-elevation-med-maj-z15"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="10" fill="#000000" stroke="#ffffff" stroke-width="1.0"/>
+                <pathText k="ele" font-style="bold" font-size="10" fill="#000000" stroke="#FFFFFF" stroke-width="1.0"/>
             </m>
         </m>
     </m>
@@ -109,7 +132,7 @@
         <m e="way" k="contour_ext" v="elevation_medium|elevation_major">
             <line use="bolt-elevation-med-maj-z16"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#ffffff" stroke-width="1.5"/>
+                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#FFFFFF" stroke-width="1.5"/>
             </m>
         </m>
     </m>
@@ -121,7 +144,7 @@
         <m e="way" k="contour_ext" v="elevation_medium|elevation_major">
             <line use="bolt-elevation-med-maj-z17"/>
             <m e="way">
-                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#ffffff" stroke-width="1.5"/>
+                <pathText k="ele" font-style="bold" font-size="14" fill="#000000" stroke="#FFFFFF" stroke-width="1.5"/>
             </m>
         </m>
     </m>
@@ -195,10 +218,18 @@
                 <m e="way" k="wandrer" v="untraveled" zoom-min="14">
                     <line cat="bolt" outline="highway-bolt" stroke="#000000" width="1.5" dasharray="10,12"/>
                 </m>
-                <!-- Ferry-->
-                <m e="way" k="route" v="ferry">
-                    <line stroke="#FF0000" stroke-width="0.3" stroke-dasharray="15,10" stroke-linecap="butt"/>
+                <!-- ferry -->
+                <m k="route">
+                    <m v="ferry">
+      	                <m zoom-min="11">
+         	                <line stroke="#000000" width="0.6" dasharray="15,5" cap="butt" />
+                        </m>
+                        <m zoom-min="15">
+         	                <pathText display="always" cat="bolt" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#FFFFFF" stroke-width="2.0" zoom-min="15" />
+                        </m>
+                    </m>
                 </m>
+                <!-- endregion ferry -->
             </m>
             <!-- endregion not bridges -->
             <!-- region tracks -->
@@ -396,10 +427,10 @@
     <m k="railway">
         <m k="tunnel" v="~|false|no">
             <m v="rail" zoom-min="10">
-                <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#000000" width="3"/>
+                <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#000000" width="3"/>
             </m>
             <m v="tram|light_rail" zoom-min="15">
-                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#ffffff" stipple-width="0.7" stroke="#555555" width="3"/>
+                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#555555" width="3"/>
             </m>
         </m>
     </m>
@@ -407,30 +438,30 @@
     <!-- region place captions -->
     <m k="place">
         <m v="locality" zoom-min="15">
-            <caption fill="#000000" k="name" priority="5" size="14" stroke="#ffffff" stroke-width="3.0"/>
+            <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
         </m>
         <m v="suburb" zoom-max="13">
-            <caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#ffffff" stroke-width="3.0"/>
+            <caption style="bold_italic" fill="#000000" k="name" priority="4" size="15" stroke="#FFFFFF" stroke-width="3.0"/>
         </m>
         <m v="village" zoom-max="13">
-            <caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="3" size="17" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="island" zoom-min="10">
-            <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="1" size="20" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="town" zoom-max="13">
-            <caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="2" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
         <m v="city">
             <m zoom-min="7">
-                <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+                <caption style="bold" dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
             </m>
             <m zoom-max="6">
-                <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#ffffff" stroke-width="4.0"/>
+                <caption dy="14" fill="#000000" k="name" priority="1" size="19" stroke="#FFFFFF" stroke-width="4.0"/>
             </m>
         </m>
         <m v="country">
-            <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#ffffff" stroke-width="4.0"/>
+            <caption style="bold" fill="#000000" k="name" priority="0" size="20" stroke="#FFFFFF" stroke-width="4.0"/>
         </m>
     </m>
     <!-- endregion place -->
@@ -491,6 +522,16 @@
                 <symbol src="icons/symbols/amenity/toilets.svg" symbol-percent="150"/>
             </m>
         </m>
+        <m k="building">
+            <m v="cathedral">
+                <symbol src="icons/symbols/place_of_worship/christian-cross.svg" symbol-percent="70"/>
+                <area cat="bolt" src="patterns/gray.png"/>
+            </m>
+            <m v="church">
+                <symbol src="icons/symbols/place_of_worship/christian-cross.svg" symbol-percent="70"/>
+                <area cat="bolt" src="patterns/gray.png"/>
+            </m>
+        </m>
         <m k="emercency">
             <m v="phone">
                 <symbol src="icons/symbols/transport/emergency_phone.svg" symbol-percent="150"/>
@@ -531,14 +572,14 @@
             </m>
             <m v="museum">
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
-                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="viewpoint">
                 <symbol src="icons/symbols/tourist/view_point.svg" symbol-percent="150"/>
             </m>
             <m v="zoo">
                 <symbol src="icons/symbols/tourist/zoo.svg" symbol-percent="150"/>
-                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#ffffff" stroke-width="3.0"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
         </m>
         <m k="route">
@@ -549,9 +590,11 @@
         <m k="historic">
             <m v="ruins">
                 <symbol src="icons/symbols/tourist/ruin.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="castle">
                 <symbol src="icons/symbols/tourist/castle2.svg" symbol-percent="150"/>
+                <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
             <m v="memorial">
                 <symbol src="icons/symbols/tourist/memorial.svg" symbol-percent="150"/>
