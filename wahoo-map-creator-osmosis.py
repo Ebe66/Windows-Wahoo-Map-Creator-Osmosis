@@ -42,8 +42,11 @@ workers = '4'
 # Keep (1) or delete (0) the country/region map folders after compression
 #keep_folders = 0
 keep_folders = 1
-generate_elevation = 1
-integrate_Wandrer = 1
+generate_elevation = True
+integrate_Wandrer = True
+x_y_processing_mode = True
+Wanted_X = 131
+Wanted_Y = 84
 
 ########### End of Configurable Parameters
 
@@ -163,7 +166,7 @@ def find_geofbrik_parent (name, geofabrik_json):
 #   - list of tiles of the desired region bounding box
 #   - name of desired region as used in Geofabrik json file
 #   - polygon of desired region as present in the Geofabrik json file
-def find_needed_countries(bbox_tiles, wanted_map, wanted_region_polygon):
+def find_needed_countries(bbox_tiles, wanted_map, wanted_region_polygon, xy_mode=False):
     output = []
     
     with open('geofabrik.json', encoding='utf8') as f:
@@ -198,26 +201,36 @@ def find_needed_countries(bbox_tiles, wanted_map, wanted_region_polygon):
             rurl = rurls.get('pbf', '')
             rgeom = regions.geometry
             rshape = shape(rgeom)
-            
-            #print (f'Processing region: {regionname}')
-            
-            # check if the region we are processing is needed for the tile we are processing
-            
-            # If currently processing country/region IS the desired country/region 
-            if regionname == wanted_map:
-                # Check if it is part of the tile we are processing
-                if rshape.intersects(poly): # if so 
-                    if regionname not in must_download_maps and regionname not in geofabrik_regions:
-                        must_download_maps.append (regionname)
-                        must_download_urls.append (rurl)
-                    # if there is an intersect, force the tile to be put in the output        
-                    force_added = 1
-                else: # currently processing tile does not contain, a part of, the desired region
-                    continue
-            
-            # currently processing country/region is NOT the desired country/region but might be in the tile (neighbouring country)
-            if regionname != wanted_map:
-                # check if we are processing a country or a sub-region. For countries only process other countries. also block special geofabrik sub regions
+
+            if not xy_mode:
+                #print (f'Processing region: {regionname}')
+
+                # check if the region we are processing is needed for the tile we are processing
+
+                # If currently processing country/region IS the desired country/region 
+                if regionname == wanted_map:
+                    # Check if it is part of the tile we are processing
+                    if rshape.intersects(poly): # if so 
+                        if regionname not in must_download_maps and regionname not in geofabrik_regions:
+                            must_download_maps.append (regionname)
+                            must_download_urls.append (rurl)
+                        # if there is an intersect, force the tile to be put in the output        
+                        force_added = 1
+                    else: # currently processing tile does not contain, a part of, the desired region
+                        continue
+                    
+                # currently processing country/region is NOT the desired country/region but might be in the tile (neighbouring country)
+                if regionname != wanted_map:
+                    # check if we are processing a country or a sub-region. For countries only process other countries. also block special geofabrik sub regions
+                    if parent in geofabrik_regions and regionname not in block_download and regionname not in geofabrik_regions: # processing a country and no special sub-region
+                        # Check if rshape is a part of the tile
+                        if rshape.intersects(poly):
+                            #print(f'\tintersecting tile: {regionname} tile={tile}')
+                            if regionname not in must_download_maps:
+                                must_download_maps.append (regionname)
+                                must_download_urls.append (rurl)
+
+            else: #XY mode
                 if parent in geofabrik_regions and regionname not in block_download and regionname not in geofabrik_regions: # processing a country and no special sub-region
                     # Check if rshape is a part of the tile
                     if rshape.intersects(poly):
@@ -228,7 +241,7 @@ def find_needed_countries(bbox_tiles, wanted_map, wanted_region_polygon):
         
         # If this tile contains the desired region, add it to the output 
         #print (f'map= {wanted_map}\tmust_download= {must_download_maps}\tparent_added= {parent_added}\tforce_added= {force_added}')
-        if wanted_map in must_download_maps or parent_added == 1 or force_added == 1:
+        if wanted_map in must_download_maps or parent_added == 1 or force_added == 1 or xy_mode is True:
             # first replace any forward slashes with underscores (us/texas to us_texas)
             must_download_maps = [sub.replace('/', '_') for sub in must_download_maps]
             output.append ({'x':tile['x'], 'y':tile['y'], 'left':tile['tile_left'], 'top':tile['tile_top'], 'right':tile['tile_right'], 'bottom':tile['tile_bottom'], 'countries':must_download_maps, 'urls':must_download_urls})
@@ -240,7 +253,7 @@ CurDir = os.getcwd() # Get Current Directory
 
 MAP_PATH = os.path.join (CurDir, 'Maps')
 OUT_PATH = os.path.join (CurDir, 'Output')
-land_polygons_file = os.path.join (CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
+land_polygons_file = os.path.join (CurDir, 'land-polygons-complete-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join (CurDir, 'geofabrik.json')
 geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 'bayern', 'brazil', 'california', 'canada', 'central-america', 'europe', 'france', 'germany', 'great-britain', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'us']
 
@@ -355,83 +368,133 @@ if not os.path.exists(geofabrik_json_file) or not os.path.isfile(geofabrik_json_
         Download.write(chunk)
     Download.close()
 
-# Check if wanted_map is in the json file and if so get the polygon (shape)
-wanted_map_geom, wanted_url = geom(wanted_map)
-if not wanted_map_geom:
-    # try to prepend us\ to the wanted_map
-    wanted_map_geom, wanted_url = geom('us/'+wanted_map)
-    if wanted_map_geom:
-        wanted_map='us/'+wanted_map
-    else:
-        print(f'failed to find country or region {wanted_map} in Geofabrik json file')
-        sys.exit()
-#print(f'geom={wanted_map_geom}, url={wanted_url}')
-#sys.exit()
+if not x_y_processing_mode:
+    # Check if wanted_map is in the json file and if so get the polygon (shape)
+    wanted_map_geom, wanted_url = geom(wanted_map)
+    if not wanted_map_geom:
+        # try to prepend us\ to the wanted_map
+        wanted_map_geom, wanted_url = geom('us/'+wanted_map)
+        if wanted_map_geom:
+            wanted_map='us/'+wanted_map
+        else:
+            print(f'failed to find country or region {wanted_map} in Geofabrik json file')
+            sys.exit()
+    #print(f'geom={wanted_map_geom}, url={wanted_url}')
+    #sys.exit()
 
-# convert to shape (multipolygon) of the desired area
-wanted_region = shape(wanted_map_geom)
-#print (f'shape = {wanted_region}')
+    # convert to shape (multipolygon) of the desired area
+    wanted_region = shape(wanted_map_geom)
+    #print (f'shape = {wanted_region}')
 
-# get bounding box of the disired area
-(bbox_left, bbox_bottom, bbox_right, bbox_top) = wanted_region.bounds
-#print(f'bbox={bbox_left},{bbox_top},{bbox_right},{bbox_bottom}')
-#print(f'bbox=min_x:{bbox_left}, max_y{bbox_top}, max_x{bbox_right}, min_y{bbox_bottom}')
-#sys.exit()
+    # get bounding box of the disired area
+    (bbox_left, bbox_bottom, bbox_right, bbox_top) = wanted_region.bounds
+    #print(f'bbox={bbox_left},{bbox_top},{bbox_right},{bbox_bottom}')
+    #print(f'bbox=min_x:{bbox_left}, max_y{bbox_top}, max_x{bbox_right}, min_y{bbox_bottom}')
+    #sys.exit()
 
-# convert bounding box from coordinates to slippy tiles
-(top_x,top_y)=deg2num(bbox_top,bbox_left)
-(bot_x,bot_y)=deg2num(bbox_bottom,bbox_right)
-#print (f'voor tx {top_x}, ty {top_y} - bx {bot_x}, by {bot_y}')
+    # convert bounding box from coordinates to slippy tiles
+    (top_x,top_y)=deg2num(bbox_top,bbox_left)
+    (bot_x,bot_y)=deg2num(bbox_bottom,bbox_right)
+    #print (f'voor tx {top_x}, ty {top_y} - bx {bot_x}, by {bot_y}')
 
-# and stay within the allowed tilenumber range!
-if top_x < 0:
-    top_x = 0
-if top_x > 255:
-    top_x = 255
-if top_y < 0:
-    top_y = 0
-if top_y > 255:
-    top_y = 255
-if bot_x < 0:
-    bot_x = 0
-if bot_x > 255:
-    bot_x = 255
-if bot_y < 0:
-    bot_y = 0
-if bot_y > 255:
-    bot_y = 255
-#print (f'na tx {top_x}, ty {top_y} - bx {bot_x}, by {bot_y}')
-#sys.exit()
+    # and stay within the allowed tilenumber range!
+    if top_x < 0:
+        top_x = 0
+    if top_x > 255:
+        top_x = 255
+    if top_y < 0:
+        top_y = 0
+    if top_y > 255:
+        top_y = 255
+    if bot_x < 0:
+        bot_x = 0
+    if bot_x > 255:
+        bot_x = 255
+    if bot_y < 0:
+        bot_y = 0
+    if bot_y > 255:
+        bot_y = 255
+    #print (f'na tx {top_x}, ty {top_y} - bx {bot_x}, by {bot_y}')
+    #sys.exit()
 
-# Build list of tiles to process from the bounding box
-bbox_tiles=[]
-for x in range(top_x, bot_x + 1):
-    for y in range(top_y, bot_y + 1):
-        (tile_top,tile_left)=num2deg(x, y)
-        (tile_bottom,tile_right)=num2deg(x+1, y+1)
-        if tile_left < -180:
-            tile_left = -180
-        if tile_left > 180:
-            tile_left = 180
-        if tile_right < -180:
-            tile_right = -180
-        if tile_right > 180:
-            tile_right = 180
-        if tile_top < -90:
-            tile_top = -90
-        if tile_top > 90:
-            tile_top = 90
-        if tile_bottom < -90:
-            tile_bottom = -90
-        if tile_bottom > 90:
-            tile_bottom = 90
-        bbox_tiles.append ({'x':x, 'y':y, 'tile_left':tile_left, 'tile_top':tile_top, 'tile_right':tile_right, 'tile_bottom':tile_bottom})
+    # Build list of tiles to process from the bounding box
+    bbox_tiles=[]
+    for x in range(top_x, bot_x + 1):
+        for y in range(top_y, bot_y + 1):
+            (tile_top,tile_left)=num2deg(x, y)
+            (tile_bottom,tile_right)=num2deg(x+1, y+1)
+            if tile_left < -180:
+                tile_left = -180
+            if tile_left > 180:
+                tile_left = 180
+            if tile_right < -180:
+                tile_right = -180
+            if tile_right > 180:
+                tile_right = 180
+            if tile_top < -90:
+                tile_top = -90
+            if tile_top > 90:
+                tile_top = 90
+            if tile_bottom < -90:
+                tile_bottom = -90
+            if tile_bottom > 90:
+                tile_bottom = 90
+            bbox_tiles.append ({'x':x, 'y':y, 'tile_left':tile_left, 'tile_top':tile_top, 'tile_right':tile_right, 'tile_bottom':tile_bottom})
 
-# Get a list of the Geofabrik maps needed to process these tiles
-print (f'\nSearching for needed maps, this can take a while.\n')
-country = find_needed_countries (bbox_tiles, wanted_map, wanted_region)
-#print (f'Country= {country}')
-#sys.exit()
+    # Get a list of the Geofabrik maps needed to process these tiles
+    print (f'\nSearching for needed maps, this can take a while.\n')
+    country = find_needed_countries (bbox_tiles, wanted_map, wanted_region)
+    #print (f'Country= {country}')
+    #sys.exit()
+else:
+    top_x = Wanted_X
+    bot_x = Wanted_X
+    top_y = Wanted_Y
+    bot_y = Wanted_Y
+
+    # Build list of tiles from the bounding box
+    bbox_tiles = []
+    for x_value in range(top_x, bot_x + 1):
+        for y_value in range(top_y, bot_y + 1):
+            (tile_top, tile_left) = num2deg(x_value, y_value)
+            (tile_bottom, tile_right) = num2deg(x_value+1, y_value+1)
+            if tile_left < -180:
+                tile_left = -180
+            if tile_left > 180:
+                tile_left = 180
+            if tile_right < -180:
+                tile_right = -180
+            if tile_right > 180:
+                tile_right = 180
+            if tile_top < -90:
+                tile_top = -90
+            if tile_top > 90:
+                tile_top = 90
+            if tile_bottom < -90:
+                tile_bottom = -90
+            if tile_bottom > 90:
+                tile_bottom = 90
+            bbox_tiles.append({'x': x_value, 'y': y_value, 'tile_left': tile_left,
+                               'tile_top': tile_top, 'tile_right': tile_right,
+                               'tile_bottom': tile_bottom})
+    
+    coords = []
+    coords.append((tile_top, tile_left))
+    coords.append((tile_top, tile_right))
+    coords.append((tile_bottom, tile_right))
+    coords.append((tile_bottom, tile_left))
+    coords.append((tile_top, tile_left))
+    print(f'Coords= {coords}')
+    p = Polygon(coords)
+    print(f'p= {p}')
+    wanted_region = shape(p)
+    print(f'wanted_region= {wanted_region}')
+    (bbox_left, bbox_bottom, bbox_right, bbox_top) = wanted_region.bounds
+
+    # wanted_region = bbox_tiles
+    print (f'\nSearching for needed maps, this can take a while.\n')
+    country = find_needed_countries(bbox_tiles, wanted_map, wanted_region, xy_mode=True)
+    print (f'Country= {country}')
 
 # Check for expired land polygons file and delete it
 print('\n\n# check land_polygons.shp file')
@@ -441,7 +504,7 @@ try:
     FileCreation = os.path.getmtime(land_polygons_file)
     if FileCreation < To_Old:
         print (f'# Deleting old land polygons file')
-        os.remove(os.path.join (CurDir, 'land-polygons-split-4326', 'land_polygons.shp'))
+        os.remove(os.path.join (CurDir, 'land-polygons-complete-4326', 'land_polygons.shp'))
         #Force_Processing = 1
 except:
     pass
@@ -450,20 +513,21 @@ except:
 # If land polygons file does not exist or or Force_Processing active, (re)download it
 if not os.path.exists(land_polygons_file) or not os.path.isfile(land_polygons_file) or Force_Processing == 1:
     print('# Downloading land polygons file')
-    url = 'https://osmdata.openstreetmap.de/download/land-polygons-split-4326.zip'
+#    url = 'https://osmdata.openstreetmap.de/download/land-polygons-split-4326.zip'
+    url = 'https://osmdata.openstreetmap.de/download/land-polygons-complete-4326.zip'
     r = requests.get(url, allow_redirects=True, stream = True)
     if r.status_code != 200:
         print(f'failed to find or download land polygons file')
         sys.exit()
-    Download=open(os.path.join (CurDir, 'land-polygons-split-4326.zip'), 'wb')
+    Download=open(os.path.join (CurDir, 'land-polygons-complete-4326.zip'), 'wb')
     for chunk in r.iter_content(chunk_size=10240):
         Download.write(chunk)
     Download.close()
     # unpack it
-    cmd = ['7za', 'x', '-y', os.path.join (CurDir, 'land-polygons-split-4326.zip')]
+    cmd = ['7za', 'x', '-y', os.path.join (CurDir, 'land-polygons-complete-4326.zip')]
     #print(cmd)
     result = subprocess.run(cmd)
-    os.remove(os.path.join (CurDir, 'land-polygons-split-4326.zip'))
+    os.remove(os.path.join (CurDir, 'land-polygons-complete-4326.zip'))
     if result.returncode != 0:
         print(f'Error unpacking land polygons file')
         sys.exit()
