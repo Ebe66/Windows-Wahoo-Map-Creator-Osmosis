@@ -44,7 +44,7 @@ workers = '4'
 keep_folders = 1
 generate_elevation = True
 integrate_Wandrer = True
-x_y_processing_mode = True
+x_y_processing_mode = False
 Wanted_X = 131
 Wanted_Y = 84
 
@@ -484,17 +484,17 @@ else:
     coords.append((tile_bottom, tile_right))
     coords.append((tile_bottom, tile_left))
     coords.append((tile_top, tile_left))
-    print(f'Coords= {coords}')
+    #print(f'Coords= {coords}')
     p = Polygon(coords)
-    print(f'p= {p}')
+    #print(f'p= {p}')
     wanted_region = shape(p)
-    print(f'wanted_region= {wanted_region}')
+    #print(f'wanted_region= {wanted_region}')
     (bbox_left, bbox_bottom, bbox_right, bbox_top) = wanted_region.bounds
 
     # wanted_region = bbox_tiles
     print (f'\nSearching for needed maps, this can take a while.\n')
-    country = find_needed_countries(bbox_tiles, wanted_map, wanted_region, xy_mode=True)
-    print (f'Country= {country}')
+    country = find_needed_countries(bbox_tiles, None, wanted_region, xy_mode=True)
+    #print (f'Country= {country}')
 
 # Check for expired land polygons file and delete it
 print('\n\n# check land_polygons.shp file')
@@ -540,7 +540,7 @@ for tile in country:
         if c not in border_countries:
             border_countries[c] = {'map_file':c}
 
-print (f'{border_countries}')
+#print (f'{border_countries}')
 #sys.exit()
 #time.sleep(60)
 
@@ -619,7 +619,6 @@ for key, val  in border_countries.items():
     # Convert osm.pbf file to o5m for processing with osmfilter
     # print(outFile)
     if not os.path.isfile(outFileo5mFiltered) or Force_Processing == 1:
-        #print('! create filtered country file(s)')
         print(f'\n\n# Converting map of {key} to o5m format')
         cmd = ['osmconvert']
         cmd.extend(['-v', '--hash-memory=2500', '--complete-ways', '--complete-multipolygons', '--complete-boundaries', '--drop-author', '--drop-version'])
