@@ -1,5 +1,6 @@
 {
     "svn.delete.ignoredRulesForDeletedFiles": [
         "wahoo-map-creator-osmosis-c.py"
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "basic"
 }

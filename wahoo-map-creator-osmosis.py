@@ -323,6 +323,7 @@ wanted_map = sys.argv[1]
 wanted_map = wanted_map.replace(" ","-")
 wanted_map=wanted_map.lower()
 
+earthexplorer_user = earthexplorer_password = None
 if generate_elevation == 1:
     try:
         with open('account.json', encoding='utf8') as f:
@@ -454,6 +455,7 @@ else:
 
     # Build list of tiles from the bounding box
     bbox_tiles = []
+    tile_top = tile_bottom = tile_left = tile_right = None
     for x_value in range(top_x, bot_x + 1):
         for y_value in range(top_y, bot_y + 1):
             (tile_top, tile_left) = num2deg(x_value, y_value)
@@ -627,7 +629,7 @@ for key, val  in border_countries.items():
         # print(cmd)
         result = subprocess.run(cmd)
         if result.returncode != 0:
-            print(f'Error in OSMConvert with country: {c}')
+            print(f'Error in OSMConvert with country: {key}')
             sys.exit()
 		
 		# Keep keys/values we want to have without keeping the name key (saving space in the map file)
@@ -642,7 +644,7 @@ for key, val  in border_countries.items():
         # print(cmd)
         result = subprocess.run(cmd)
         if result.returncode != 0:
-            print(f'Error in OSMFilter with country: {c}')
+            print(f'Error in OSMFilter with country: {key}')
             sys.exit()
         
         # Keep keys/values we want with the name key (cities etc)
@@ -656,7 +658,7 @@ for key, val  in border_countries.items():
         # print(cmd)
         result = subprocess.run(cmd)
         if result.returncode != 0:
-            print(f'Error in OSMFilter with country: {c}')
+            print(f'Error in OSMFilter with country: {key}')
             sys.exit()
 
         os.remove(outFileo5m)
@@ -739,7 +741,7 @@ if (generate_elevation == 1):
             #sys.exit()
             result = subprocess.run(cmd)
             if result.returncode != 0:
-                print(f'Error in phyghtmap with country: {c}')
+                print(f'Error in phyghtmap with tile: {tile["x"]}, {tile["y"]}')
                 sys.exit()      
         TileCount += 1    
     #sys.exit()
@@ -765,6 +767,8 @@ if (generate_elevation == 1):
 print('\n\n# Split filtered country files to tiles')
 
 # Check if there is a wandrer map
+doWandrer = None
+inWandrer_files = None
 if integrate_Wandrer:
     inWandrer_files = glob.glob(os.path.join(MAP_PATH, f'wandrer*.osm.pbf'))
     if inWandrer_files and integrate_Wandrer:
@@ -840,6 +844,7 @@ for tile in country:
         if not os.path.isfile(outFile) or Force_Processing == 1:
             cmd = [os.path.join (CurDir, 'Osmosis', 'bin', 'osmosis.bat')]
             loop=0
+            c = None
             for c in tile['countries']:
                 cmd.append('--rbf')
                 cmd.append(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
@@ -895,7 +900,7 @@ for tile in country:
             # print(cmd)
             result = subprocess.run(cmd)
             if result.returncode != 0:
-                print(f'Error in Osmosis with country: {c}')
+                print(f'Error in Osmosis with tile: {tile["x"]}, {tile["y"]}')
                 sys.exit()        
 
             print('\n# compress .map file')
