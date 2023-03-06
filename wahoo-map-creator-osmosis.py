@@ -342,6 +342,16 @@ if generate_elevation == 1:
         f.close()
         sys.exit()
 
+    # Check for new Wandrer kmz files in the maps directory. Format must be wandrer*.kmz
+
+    # Unpack to kml
+
+    # Call gpsbabel to convert to osm
+
+    # Convert negative ID's to large positive numbers
+
+    # Convert tp osm.pbf
+
 # is geofabrik json file present and not older then Max_Days_Old?
 now = time.time()
 To_Old = now - 60 * 60 * 24 * Max_Days_Old
