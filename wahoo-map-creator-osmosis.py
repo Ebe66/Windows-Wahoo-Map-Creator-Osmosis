@@ -44,7 +44,7 @@ workers = '4'
 keep_folders = 1
 generate_elevation = True
 integrate_Wandrer = True
-x_y_processing_mode = False
+x_y_processing_mode = True
 Wanted_X = 131
 Wanted_Y = 84
 
@@ -342,15 +342,64 @@ if generate_elevation == 1:
         f.close()
         sys.exit()
 
+if integrate_Wandrer:
     # Check for new Wandrer kmz files in the maps directory. Format must be wandrer*.kmz
+    print()
+    wandrerkmz_files = glob.glob(f'{MAP_PATH}/wandrer*.kmz')
+    if len(wandrerkmz_files):
+        print(f'Unpacking Wandrer KMZ file(s) to KML')
+        for file in wandrerkmz_files:
+            # Unpack to kml
+            cmd = ['7za', 'e', '-y', file]
+            subprocess.run(cmd, check=True, cwd=MAP_PATH)
+   
+        # Find KML files (could be more then one in a KMZ?)
+        wandrerkml_files = glob.glob(f'{MAP_PATH}/wandrer*.kml')
+        if len(wandrerkml_files):
+            print(f'Converting Wandrer KML file(s) to OSM. (This can take a while!)')
+            for file in wandrerkml_files:
+                # Call gpsbabel to convert to osm example gpsbabel -w -r -t -i kml -f file-in -o osm,tag=wandrer:untraveled,tagnd=wandrer:untraveled -F file-out
+                cmd = ['gpsbabel','-w','-r','-t','-i','kml','-f',file,'-o','osm,tag=wandrer:untraveled,tagnd=wandrer:untraveled','-F',file.replace(".kml",".osm")]
+                subprocess.run(cmd, check=True, cwd=MAP_PATH)
+                
+        wandrerosm_files = glob.glob(f'{MAP_PATH}/wandrer*.osm')
+        if len(wandrerosm_files):
+            print(f'Replacing negative ID\'s with Large positive ones and converting to .osm.pbf.')
+            for file in wandrerosm_files:
+                # Convert negative ID's to large positive numbers
+                with open(file) as f:
+                    osm_data = f.read()
+                    f.close()
+                   
+                    osm_data = osm_data.replace("\'-","\'20000000000")
+                   
+                    with open(file, 'w') as of:
+                        of.write(osm_data)
+                        of.close()
+                
+                # Convert to osm.pbf
+                cmd = ['osmconvert']
+                cmd.extend(['-v', '--hash-memory=2500', '--complete-ways', '--complete-multipolygons', '--complete-boundaries', '--drop-author', '--drop-version'])
+                cmd.append(file)
+                cmd.append('-o='+file.replace(".osm",".osm.pbf"))
+                # print(cmd)
+                result = subprocess.run(cmd)
+                if result.returncode != 0:
+                    print(f'Error in OSMConvert with Wandrer file: {file}')
 
-    # Unpack to kml
+        try:
+            print(f'Removing intermediate files and renaming processed input files')
+            for file in wandrerkmz_files:
+                oldbasename = os.path.basename(file)
+                os.rename(file,file.replace(oldbasename,"Processed-"+oldbasename))
 
-    # Call gpsbabel to convert to osm
+            for file in wandrerkml_files:
+                os.remove(file)
 
-    # Convert negative ID's to large positive numbers
-
-    # Convert tp osm.pbf
+            for file in wandrerosm_files:
+                os.remove(file)
+        except:
+            pass
 
 # is geofabrik json file present and not older then Max_Days_Old?
 now = time.time()
