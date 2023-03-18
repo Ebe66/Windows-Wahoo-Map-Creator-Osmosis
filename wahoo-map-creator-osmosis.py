@@ -44,7 +44,7 @@ workers = '4'
 keep_folders = 1
 generate_elevation = True
 integrate_Wandrer = True
-x_y_processing_mode = True
+x_y_processing_mode = False
 Wanted_X = 131
 Wanted_Y = 84
 
@@ -565,7 +565,7 @@ try:
     FileCreation = os.path.getmtime(land_polygons_file)
     if FileCreation < To_Old:
         print (f'# Deleting old land polygons file')
-        os.remove(os.path.join (CurDir, 'land-polygons-complete-4326', 'land_polygons.shp'))
+# Keep pregenerated files for processing time        os.remove(os.path.join (CurDir, 'land-polygons-complete-4326', 'land_polygons.shp'))
         #Force_Processing = 1
 except:
     pass
