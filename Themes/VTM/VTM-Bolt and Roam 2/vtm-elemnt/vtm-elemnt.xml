@@ -41,28 +41,28 @@
     <style-line id="bolt2-cycle" cat="bolt2" stroke="#00AA00" width="1.5"/>
     <style-line id="roam2-cycle" cat="roam2" stroke="#00AA00" width="1.5"/>
     <!-- Elevation / contour lines-->
-    <style-line id="bolt2-elevation-med-maj-z12" cat="bolt2" stroke="#550000" width="0.8"/>
-    <style-line id="bolt2-elevation-med-maj-z13" cat="bolt2" stroke="#550000" width="0.64"/>
-    <style-line id="bolt2-elevation-med-maj-z14" cat="bolt2" stroke="#550000" width="0.48"/>
-    <style-line id="bolt2-elevation-med-maj-z15" cat="bolt2" stroke="#550000" width="0.365"/>
-    <style-line id="bolt2-elevation-med-maj-z16" cat="bolt2" stroke="#550000" width="0.30"/>
-    <style-line id="bolt2-elevation-med-maj-z17" cat="bolt2" stroke="#550000" width="0.24"/>
-    <style-line id="bolt2-elevation-min-z13" cat="bolt2" stroke="#AA5500" width="0.64"/>
-    <style-line id="bolt2-elevation-min-z14" cat="bolt2" stroke="#AA5500" width="0.48"/>
-    <style-line id="bolt2-elevation-min-z15" cat="bolt2" stroke="#AA5500" width="0.365"/>
-    <style-line id="bolt2-elevation-min-z16" cat="bolt2" stroke="#AA5500" width="0.30"/>
-    <style-line id="bolt2-elevation-min-z17" cat="bolt2" stroke="#AA5500" width="0.24"/>
-    <style-line id="roam2-elevation-med-maj-z12" cat="roam2" stroke="#550000" width="0.8"/>
-    <style-line id="roam2-elevation-med-maj-z13" cat="roam2" stroke="#550000" width="0.64"/>
-    <style-line id="roam2-elevation-med-maj-z14" cat="roam2" stroke="#550000" width="0.48"/>
-    <style-line id="roam2-elevation-med-maj-z15" cat="roam2" stroke="#550000" width="0.365"/>
-    <style-line id="roam2-elevation-med-maj-z16" cat="roam2" stroke="#550000" width="0.30"/>
-    <style-line id="roam2-elevation-med-maj-z17" cat="roam2" stroke="#550000" width="0.24"/>
-    <style-line id="roam2-elevation-min-z13" cat="roam2" stroke="#AA5500" width="0.64"/>
-    <style-line id="roam2-elevation-min-z14" cat="roam2" stroke="#AA5500" width="0.48"/>
-    <style-line id="roam2-elevation-min-z15" cat="roam2" stroke="#AA5500" width="0.365"/>
-    <style-line id="roam2-elevation-min-z16" cat="roam2" stroke="#AA5500" width="0.30"/>
-    <style-line id="roam2-elevation-min-z17" cat="roam2" stroke="#AA5500" width="0.24"/>
+    <style-line id="bolt2-elevation-med-maj-z12" cat="bolt2" stroke="#AA5500" width="1.1"/>
+    <style-line id="bolt2-elevation-med-maj-z13" cat="bolt2" stroke="#AA5500" width="0.9"/>
+    <style-line id="bolt2-elevation-med-maj-z14" cat="bolt2" stroke="#AA5500" width="0.8"/>
+    <style-line id="bolt2-elevation-med-maj-z15" cat="bolt2" stroke="#AA5500" width="0.64"/>
+    <style-line id="bolt2-elevation-med-maj-z16" cat="bolt2" stroke="#AA5500" width="0.48"/>
+    <style-line id="bolt2-elevation-med-maj-z17" cat="bolt2" stroke="#AA5500" width="0.36"/>
+    <style-line id="bolt2-elevation-min-z13" cat="bolt2" stroke="#AA5500" width="0.75"/>
+    <style-line id="bolt2-elevation-min-z14" cat="bolt2" stroke="#AA5500" width="0.64"/>
+    <style-line id="bolt2-elevation-min-z15" cat="bolt2" stroke="#AA5500" width="0.48"/>
+    <style-line id="bolt2-elevation-min-z16" cat="bolt2" stroke="#AA5500" width="0.36"/>
+    <style-line id="bolt2-elevation-min-z17" cat="bolt2" stroke="#AA5500" width="0.30"/>
+    <style-line id="roam2-elevation-med-maj-z12" cat="roam2" stroke="#550000" width="1.1"/>
+    <style-line id="roam2-elevation-med-maj-z13" cat="roam2" stroke="#550000" width="0.9"/>
+    <style-line id="roam2-elevation-med-maj-z14" cat="roam2" stroke="#550000" width="0.8"/>
+    <style-line id="roam2-elevation-med-maj-z15" cat="roam2" stroke="#550000" width="0.64"/>
+    <style-line id="roam2-elevation-med-maj-z16" cat="roam2" stroke="#550000" width="0.48"/>
+    <style-line id="roam2-elevation-med-maj-z17" cat="roam2" stroke="#550000" width="0.36"/>
+    <style-line id="roam2-elevation-min-z13" cat="roam2" stroke="#AA5500" width="0.75"/>
+    <style-line id="roam2-elevation-min-z14" cat="roam2" stroke="#AA5500" width="0.64"/>
+    <style-line id="roam2-elevation-min-z15" cat="roam2" stroke="#AA5500" width="0.48"/>
+    <style-line id="roam2-elevation-min-z16" cat="roam2" stroke="#AA5500" width="0.36"/>
+    <style-line id="roam2-elevation-min-z17" cat="roam2" stroke="#AA5500" width="0.30"/>
     <!-- end region -->
     <!-- region land/sea/waterways -->
     <m e="way" k="natural" v="sea">
@@ -760,6 +760,9 @@
             </m>
             <m v="supermarket">
                 <symbol src="icons/symbols/shopping/supermarket.svg" symbol-percent="150"/>
+            </m>
+            <m v="convenience">
+                <symbol src="icons/symbols/shopping/convenience.svg" symbol-percent="150"/>
             </m>
         </m>
         <m k="tourism">

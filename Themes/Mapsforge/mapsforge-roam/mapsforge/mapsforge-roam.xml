@@ -450,6 +450,9 @@
         <rule e="any" k="shop" v="supermarket" zoom-min="14">
             <symbol src="symbols/shopping/supermarket.svg" symbol-percent="150"/>
         </rule>
+        <rule e="any" k="shop" v="convenience" zoom-min="14">
+            <symbol src="symbols/shopping/convenience.svg" symbol-percent="150"/>
+        </rule>
     </rule>
     <rule e="any" k="tourism" v="*">
         <rule e="any" k="tourism" v="alpine_hut" zoom-min="14">

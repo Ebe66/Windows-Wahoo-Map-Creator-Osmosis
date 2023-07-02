@@ -2,8 +2,10 @@
 .svn/
 15323/
 15784/
+15943/
 cruiser/
 Elemntary/
+Elemntary-beta/
 Fit2GeoJson/
 Generated-maps/
 hgt/
@@ -19,7 +21,6 @@ Osmosis/
 Output/**
 platform-tools/
 ride-dashboard/**
-t/**
 wahoofitness/
 wahooligan-workouts/
 WaoStats/
@@ -34,3 +35,9 @@ openandromaps.zip
 account.json
 geofabrik.json
 .vscode/settings.json
+geofabrik.json.bak
+\#How_to_use_the_maps.txt
+\#I_Downloaded_This.txt
+custom1.html
+FitCSVTool.jar
+fitheaders.py

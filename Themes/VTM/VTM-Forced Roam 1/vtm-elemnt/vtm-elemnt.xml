@@ -575,6 +575,9 @@
             <m v="supermarket">
                 <symbol src="icons/symbols/shopping/supermarket.svg" symbol-percent="150"/>
             </m>
+            <m v="convenience">
+                <symbol src="icons/symbols/shopping/convenience.svg" symbol-percent="150"/>
+            </m>
         </m>
         <m k="tourism">
             <m v="alpine_hut">

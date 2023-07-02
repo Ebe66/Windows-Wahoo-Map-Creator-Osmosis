@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
 
-left_coordinate = 72.75
-bottom_coordinate = 17.0
-right_coordinate = 135.50
-top_coordinate = 54.11
+left_coordinate = 4.35862
+bottom_coordinate = 52.01413
+right_coordinate = 4.37568
+top_coordinate = 52.023
 
 #left_coordinate = 2.89
 #bottom_coordinate = 50.73
