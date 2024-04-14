@@ -1,0 +1,12 @@
+python wahoo-map-creator-osmosis-route.py Bahamas	
+python wahoo-map-creator-osmosis-route.py Belize	
+python wahoo-map-creator-osmosis-route.py Costa-Rica	
+python wahoo-map-creator-osmosis-route.py Cuba	
+python wahoo-map-creator-osmosis-route.py El-Salvador	
+python wahoo-map-creator-osmosis-route.py Guatemala	
+python wahoo-map-creator-osmosis-route.py Haiti-and-DomRep	
+python wahoo-map-creator-osmosis-route.py Honduras	
+python wahoo-map-creator-osmosis-route.py Jamaica	
+python wahoo-map-creator-osmosis-route.py Nicaragua	
+python wahoo-map-creator-osmosis-route.py Panama
+python wahoo-map-creator-osmosis-route.py central-america

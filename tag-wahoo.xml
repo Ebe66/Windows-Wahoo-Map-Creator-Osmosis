@@ -178,6 +178,46 @@
 		<osm-tag key="leisure" value="nature_reserve" label-position="true" zoom-appear="8"/>
 		<osm-tag key="leisure" value="park" label-position="true" zoom-appear="8"/>
         <osm-tag key="leisure" value="picnic_table" zoom-appear="16" />
+        <osm-tag key="mtb:scale" value="0-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="0" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="0+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="1-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="1" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="1+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="2-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="2" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="2+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="3-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="3" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="3+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="4-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="4" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="4+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="5-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="5" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="5+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="6-" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="6" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="6+" zoom-appear="14" />
+        <osm-tag key="mtb:scale" value="0" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="0-" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="0" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="0+" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="1-" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="1" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="1+" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="2-" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="2" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="2+" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="3-" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="3" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="3+" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="4-" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="4" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="4+" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="5-" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="5" zoom-appear="14" />
+        <osm-tag key="mtb:scale:uphill" value="5+" zoom-appear="14" />
 	</ways>
 	<!-- PUBLIC AMENITIES -->
 	<ways>

@@ -318,6 +318,8 @@ objects_to_keep_without_name = 'access=private \
     leisure=picnic_table \
     natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =spring \
     man_made=cutline =pier \
+    mtb:scale= \
+    mtb:scale:uphill= \
     place=isolated_dwelling =islet =square \
     railway=abandoned =bus_guideway =disused =funicular =halt =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =station =stop =subway =tram \
     shop=bakery =bicycle =laundry =mall =supermarket =convenience\
@@ -672,7 +674,7 @@ for tile in country:
     if not os.path.isdir(outdir):
         os.makedirs(outdir)
 
-    print(f'Tile = {tile}')
+    # print(f'Tile = {tile}')
     # search for and download missing map files from Geofabrik
     i = 0
     for c in tile['countries']:  # we want this osm.pbf
@@ -737,7 +739,7 @@ for key, val in border_countries.items():
         print(f'\n\n# Filtering unwanted map objects out of map of {key}')
         cmd = ['osmfilter']
         cmd.append(outFileo5m)
-        cmd.append('--verbose')
+        #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_without_name)
         cmd.append('--keep-tags=all type= layer= ' +
                    objects_to_keep_without_name)
@@ -751,7 +753,7 @@ for key, val in border_countries.items():
         # Keep keys/values we want with the name key (cities etc)
         cmd = ['osmfilter']
         cmd.append(outFileo5m)
-        cmd.append('--verbose')
+        #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_with_name)
         cmd.append('--keep-tags=all type= name= layer= ele= ' +
                    objects_to_keep_with_name)
@@ -1052,7 +1054,7 @@ for tile in country:
             subprocess.run(cmd)
 
             # Create "tile present" file
-            f = open(outFile + '.lzma.17', 'wb')
+            f = open(outFile + '.lzma.18', 'wb')
             f.close()
 
     TileCount += 1
@@ -1083,11 +1085,11 @@ for tile in country:
             sys.exit()
 
     src = os.path.join(
-        f'{OUT_PATH}', f'{tile["x"]}', f'{tile["y"]}.map.lzma.17')
-    # Check if source map.lzma.17 file is available to copy
+        f'{OUT_PATH}', f'{tile["x"]}', f'{tile["y"]}.map.lzma.18')
+    # Check if source map.lzma.18 file is available to copy
     if os.path.isfile(src):
         dst = os.path.join(f'{OUT_PATH}', f'{wanted_map}',
-                           f'{tile["x"]}', f'{tile["y"]}.map.lzma.17')
+                           f'{tile["x"]}', f'{tile["y"]}.map.lzma.18')
         outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'{tile["x"]}')
         if not os.path.isdir(outdir):
             os.makedirs(outdir)
@@ -1114,6 +1116,8 @@ for tile in country:
 
 # Process routing tiles if present
 IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')
+# If above line is commented out and below line uncommented, do not create routing files
+#IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'dummy')
 rtile = None
 if os.path.isdir(IN_R_PATH):
     # Calculate which routing tiles are needed
@@ -1150,7 +1154,7 @@ if os.path.isdir(IN_R_PATH):
             subprocess.run(cmd)
 
             # Create "tile present" file
-            f = open(outRFile + '.lzma.17', 'wb')
+            f = open(outRFile + '.lzma.18', 'wb')
             f.close()
 
             # Remove copied routing tile
