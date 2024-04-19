@@ -716,6 +716,7 @@ for key, val in border_countries.items():
     #    outFile = os.path.join(OUT_PATH, f'filtered-{key}.osm.pbf')
     #    outFileNames = os.path.join(OUT_PATH, f'filtered-{key}Names.osm.pbf')
     outFileo5m = os.path.join(OUT_PATH, f'outFile-{key}.o5m')
+    outFileo5mFilteredTemp = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
     outFileo5mFiltered = os.path.join(OUT_PATH, f'outFileFiltered-{key}.o5m')
     outFileo5mFilteredNames = os.path.join(
         OUT_PATH, f'outFileFiltered-{key}Names.o5m')
@@ -735,7 +736,7 @@ for key, val in border_countries.items():
             print(f'Error in OSMConvert with country: {key}')
             sys.exit()
 
-            # Keep keys/values we want to have without keeping the name key (saving space in the map file)
+        # Keep keys/values we want to have without keeping the name key (saving space in the map file)
         print(f'\n\n# Filtering unwanted map objects out of map of {key}')
         cmd = ['osmfilter']
         cmd.append(outFileo5m)
@@ -743,7 +744,7 @@ for key, val in border_countries.items():
         cmd.append('--keep='+objects_to_keep_without_name)
         cmd.append('--keep-tags=all type= layer= ' +
                    objects_to_keep_without_name)
-        cmd.append('-o='+outFileo5mFiltered)
+        cmd.append('-o='+outFileo5mFilteredTemp)
         # print(cmd)
         result = subprocess.run(cmd)
         if result.returncode != 0:
@@ -764,12 +765,24 @@ for key, val in border_countries.items():
             print(f'Error in OSMFilter with country: {key}')
             sys.exit()
 
+        print(f'\n\n# Merging filtered files of {key} in o5m format')
+        cmd = ['osmconvert']
+        cmd.extend(['-v', '--hash-memory=2500', '--complete-ways', '--complete-multipolygons',
+                   '--complete-boundaries', '--drop-author', '--drop-version'])
+        cmd.append(outFileo5mFilteredTemp + ' ' +outFileo5mFilteredNames)
+        cmd.append('-o='+outFileo5mFiltered)
+        # print(cmd)
+        result = subprocess.run(cmd)
+        if result.returncode != 0:
+            print(f'Error in OSMConvert merge with country: {key}')
+            sys.exit()
+
         os.remove(outFileo5m)
 #        os.remove(outFileo5mFiltered)
 #        os.remove(outFileo5mFilteredNames)
 
     border_countries[key]['filtered_file'] = outFileo5mFiltered
-    border_countries[key]['filtered_fileNames'] = outFileo5mFilteredNames
+#    border_countries[key]['filtered_fileNames'] = outFileo5mFilteredNames
 
 print('\n\n# Generate land')
 TileCount = 1
@@ -918,26 +931,26 @@ for tile in country:
                 sys.exit()
             # print(border_countries[c]['filtered_file'])
 
-        outFile = os.path.join(
-            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf')
+        #outFile = os.path.join(
+        #    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf')
 #        if not os.path.isfile(outFile) or Force_Processing == 1:
-        if not os.path.isfile(outMerged) or Force_Processing == 1:
+        #if not os.path.isfile(outMerged) or Force_Processing == 1:
             # cmd = ['.\\osmosis\\bin\\osmosis.bat', '--rbf',border_countries[c]['filtered_file'],'workers='+workers, '--buffer', 'bufferCapacity=12000', '--bounding-box', 'completeWays=yes', 'completeRelations=yes']
             # cmd.extend(['left='+f'{tile["left"]}', 'bottom='+f'{tile["bottom"]}', 'right='+f'{tile["right"]}', 'top='+f'{tile["top"]}', '--buffer', 'bufferCapacity=12000', '--wb'])
             # cmd.append('file='+outFile)
             # cmd.append('omitmetadata=true')
-            cmd = ['osmconvert', '-v', '--hash-memory=2500']
-            cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
-                       ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
-            cmd.extend(
-                ['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
-            cmd.append(border_countries[c]['filtered_fileNames'])
-            cmd.append('-o='+outFile)
+        #    cmd = ['osmconvert', '-v', '--hash-memory=2500']
+        #    cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
+        #               ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
+        #    cmd.extend(
+        #        ['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
+        #    cmd.append(border_countries[c]['filtered_fileNames'])
+        #    cmd.append('-o='+outFile)
             # print(cmd)
-            result = subprocess.run(cmd)
-            if result.returncode != 0:
-                print(f'Error in Osmconvert with country: {c}')
-                sys.exit()
+        #    result = subprocess.run(cmd)
+        #    if result.returncode != 0:
+        #        print(f'Error in Osmconvert with country: {c}')
+        #        sys.exit()
             # print(border_countries[c]['filtered_file'])
 
         if doWandrer:
@@ -975,18 +988,20 @@ for tile in country:
             loop = 0
             c = None
             for c in tile['countries']:
-                cmd.append('--rbf')
-                cmd.append(os.path.join(
-                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf'))
-                cmd.append('workers='+workers)
                 if loop > 0:
                     cmd.append('--merge')
                 cmd.append('--rbf')
                 cmd.append(os.path.join(
                     OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
                 cmd.append('workers='+workers)
-                cmd.append('--merge')
+                
+                #cmd.append('--rbf')
+                #cmd.append(os.path.join(
+                #    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
+                #cmd.append('workers='+workers)
+                #cmd.append('--merge')
                 loop += 1
+            cmd.append('--merge')
             if generate_elevation == 1:
                 elevation_files = glob.glob(os.path.join(
                     OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
