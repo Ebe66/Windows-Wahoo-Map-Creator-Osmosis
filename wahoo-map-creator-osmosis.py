@@ -726,8 +726,7 @@ for key, val in border_countries.items():
     if not os.path.isfile(outFileo5mFiltered) or Force_Processing == 1:
         print(f'\n\n# Converting map of {key} to o5m format')
         cmd = ['osmconvert']
-        cmd.extend(['-v', '--hash-memory=2500', '--complete-ways', '--complete-multipolygons',
-                   '--complete-boundaries', '--drop-author', '--drop-version'])
+        cmd.extend(['--hash-memory=2500', '--drop-author', '--drop-version'])
         cmd.append(val['map_file'])
         cmd.append('-o='+outFileo5m)
         # print(cmd)
@@ -767,9 +766,9 @@ for key, val in border_countries.items():
 
         print(f'\n\n# Merging filtered files of {key} in o5m format')
         cmd = ['osmconvert']
-        cmd.extend(['-v', '--hash-memory=2500', '--complete-ways', '--complete-multipolygons',
-                   '--complete-boundaries', '--drop-author', '--drop-version'])
-        cmd.append(outFileo5mFilteredTemp + ' ' +outFileo5mFilteredNames)
+        cmd.extend(['--hash-memory=2500'])
+        cmd.append(outFileo5mFilteredTemp)
+        cmd.append(outFileo5mFilteredNames)
         cmd.append('-o='+outFileo5mFiltered)
         # print(cmd)
         result = subprocess.run(cmd)
@@ -778,6 +777,7 @@ for key, val in border_countries.items():
             sys.exit()
 
         os.remove(outFileo5m)
+#        os.remove(outFileo5mFilteredTemp)
 #        os.remove(outFileo5mFiltered)
 #        os.remove(outFileo5mFilteredNames)
 
@@ -917,7 +917,7 @@ for tile in country:
             # cmd.extend(['left='+f'{tile["left"]}', 'bottom='+f'{tile["bottom"]}', 'right='+f'{tile["right"]}', 'top='+f'{tile["top"]}', '--buffer', 'bufferCapacity=12000', '--wb'])
             # cmd.append('file='+outFile)
             # cmd.append('omitmetadata=true')
-            cmd = ['osmconvert', '-v', '--hash-memory=2500']
+            cmd = ['osmconvert', '--hash-memory=2500']
             cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
                        ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
             cmd.extend(
@@ -958,7 +958,7 @@ for tile in country:
                 outWandrer = os.path.join(
                     OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{os.path.basename(wandrer_map)}')
                 if not os.path.isfile(outWandrer) or Force_Processing == 1:
-                    cmd = ['osmconvert', '-v', '--hash-memory=2500']
+                    cmd = ['osmconvert', '--hash-memory=2500']
                     cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
                                ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
                     cmd.extend(
@@ -988,20 +988,18 @@ for tile in country:
             loop = 0
             c = None
             for c in tile['countries']:
-                if loop > 0:
-                    cmd.append('--merge')
                 cmd.append('--rbf')
                 cmd.append(os.path.join(
                     OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
                 cmd.append('workers='+workers)
-                
+                if loop > 0:
+                    cmd.append('--merge')
                 #cmd.append('--rbf')
                 #cmd.append(os.path.join(
                 #    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
                 #cmd.append('workers='+workers)
                 #cmd.append('--merge')
                 loop += 1
-            cmd.append('--merge')
             if generate_elevation == 1:
                 elevation_files = glob.glob(os.path.join(
                     OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
@@ -1029,7 +1027,7 @@ for tile in country:
                        f'{tile["x"]}', f'{tile["y"]}', f'sea.osm'), '--s', '--m'])
             cmd.extend(['--tag-transform', 'file=' + os.path.join(CurDir,
                        'tunnel-transform.xml'), '--buffer', '--wb', outFile, 'omitmetadata=true'])
-            print(cmd)
+            # print(cmd)
             result = subprocess.run(cmd)
             if result.returncode != 0:
                 print(f'Error in Osmosis with country: {c}')
@@ -1056,7 +1054,7 @@ for tile in country:
             cmd.append('threads='+threads)
             cmd.append('tag-conf-file=' +
                        os.path.join(CurDir, 'tag-wahoo.xml'))
-            print(cmd)
+            # print(cmd)
             result = subprocess.run(cmd)
             if result.returncode != 0:
                 print(f'Error in Osmosis with tile: {tile["x"]}, {tile["y"]}')
@@ -1130,9 +1128,9 @@ for tile in country:
             sys.exit()
 
 # Process routing tiles if present
-IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')
+#IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')
 # If above line is commented out and below line uncommented, do not create routing files
-#IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'dummy')
+IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'dummy')
 rtile = None
 if os.path.isdir(IN_R_PATH):
     # Calculate which routing tiles are needed
