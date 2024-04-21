@@ -13,7 +13,7 @@
 
    <!-- region styles -->
    <!-- Footpath -->
-   <style-line id="bolt2-footpath" cat="bolt2" stroke="#AAAAAA" width="0.5" dasharray="9,3" cap="butt" />
+   <style-line id="bolt2-footpath" cat="bolt2" stroke="#555555" width="0.5" dasharray="9,3" cap="butt" />
    <!-- Steps -->
    <style-line id="bolt2-steps" cat="bolt2" stroke="#000000" width="0.5" dasharray="9,9" cap="butt" />
    <!-- Cycle Trails (like MTB) -->
@@ -32,17 +32,17 @@
    <!-- Paved Cycleways-->
    <style-line id="bolt2-cycle" cat="bolt2" stroke="#AAAAAA" width="1.1" />
    <!-- Elevation / contour lines-->
-    <style-line id="bolt2-elevation-med-maj-z12" cat="bolt2" stroke="#550000" width="0.8"/>
-	<style-line id="bolt2-elevation-med-maj-z13" cat="bolt2" stroke="#550000" width="0.64"/>
-	<style-line id="bolt2-elevation-med-maj-z14" cat="bolt2" stroke="#550000" width="0.48"/>
-	<style-line id="bolt2-elevation-med-maj-z15" cat="bolt2" stroke="#550000" width="0.365"/>
-	<style-line id="bolt2-elevation-med-maj-z16" cat="bolt2" stroke="#550000" width="0.30"/>
-	<style-line id="bolt2-elevation-med-maj-z17" cat="bolt2" stroke="#550000" width="0.24"/>
-	<style-line id="bolt2-elevation-min-z13" cat="bolt2" stroke="#AA5500" width="0.64"/>
-	<style-line id="bolt2-elevation-min-z14" cat="bolt2" stroke="#AA5500" width="0.48"/>
-	<style-line id="bolt2-elevation-min-z15" cat="bolt2" stroke="#AA5500" width="0.365"/>
-	<style-line id="bolt2-elevation-min-z16" cat="bolt2" stroke="#AA5500" width="0.30"/>
-	<style-line id="bolt2-elevation-min-z17" cat="bolt2" stroke="#AA5500" width="0.24"/>
+    <style-line id="bolt2-elevation-med-maj-z12" cat="bolt2" stroke="#AA5500" width="1.1"/>
+	<style-line id="bolt2-elevation-med-maj-z13" cat="bolt2" stroke="#AA5500" width="0.9"/>
+	<style-line id="bolt2-elevation-med-maj-z14" cat="bolt2" stroke="#AA5500" width="0.8"/>
+	<style-line id="bolt2-elevation-med-maj-z15" cat="bolt2" stroke="#AA5500" width="0.64"/>
+	<style-line id="bolt2-elevation-med-maj-z16" cat="bolt2" stroke="#AA5500" width="0.48"/>
+	<style-line id="bolt2-elevation-med-maj-z17" cat="bolt2" stroke="#AA5500" width="0.36"/>
+	<style-line id="bolt2-elevation-min-z13" cat="bolt2" stroke="#AA5500" width="0.75"/>
+	<style-line id="bolt2-elevation-min-z14" cat="bolt2" stroke="#AA5500" width="0.64"/>
+	<style-line id="bolt2-elevation-min-z15" cat="bolt2" stroke="#AA5500" width="0.48"/>
+	<style-line id="bolt2-elevation-min-z16" cat="bolt2" stroke="#AA5500" width="0.36"/>
+	<style-line id="bolt2-elevation-min-z17" cat="bolt2" stroke="#AA5500" width="0.30"/>
    <!-- end region -->
 
    <!-- region land/sea/waterways -->
@@ -52,15 +52,24 @@
    	<m e="way" k="natural" v="nosea">
       	<area cat="bolt2" fill="#ffffff" mesh="true" />
    	</m>
-   	<m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
-	  	<area cat="bolt2" fill="#55FF55" fade="8" blend="12" blend-fill="#AAFFAA"/>
-	  	<!--area cat="bolt2" src="icons/wood.svg" symbol-height="128" /-->
-   	</m>
    	<m e="way" k="landuse" v="building">
 	  	<area cat="bolt2" fill="#FFAAFF" />
    	</m>
    	<m k="amenity" v="hospital">
 	  	<area cat="bolt2" fill="#FFAAFF" />
+   	</m>
+   	<m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
+	  	<area cat="bolt2" fill="#55FF55" fade="8" blend="12" blend-fill="#AAFFAA"/>
+	  	<!--area cat="bolt2" src="icons/wood.svg" symbol-height="128" /-->
+   	</m>
+   	<m k="landuse" v="cemetery">
+	  	<area cat="bolt2" fill="#00FF00" />
+   	</m>
+   	<m k="cemetery" v="sector">
+	  	<area cat="bolt2" fill="#00FF00" />
+   	</m>
+   	<m k="amenity" v="grave_yard">
+	  	<area cat="bolt2" fill="#00FF00" />
    	</m>
    	<m e="way" k="place" v="square" zoom-min="10">
       	<area cat="bolt2" fill="#FFFFFF" />
@@ -78,15 +87,21 @@
 	      	<!--line cat="bolt2" width="0.5" stroke="#000000" /-->
 	    </m>
    	</m>
-   	<m e="way" k="leisure" v="park|nature_reserve">
+   	<m e="way" k="leisure" v="park">
       	<area cat="bolt2" fill="#AAFF55" />
-	  	<!--area cat="bolt2" src="icons/park.svg" symbol-height="128" /-->
    	</m>
    	<m e="way" k="natural" v="wetland">
       	<area cat="bolt2" fill="#00FFAA" />
    	</m>
    	<m e="way" k="natural" v="beach" zoom-min="12">
       	<area cat="bolt2" fill="#FFFF00" />
+   	</m>
+   	<m e="way" k="leisure" v="nature_reserve">
+      	<line cat="bolt2" width="1.2" stroke="#AAFF55" />
+      	<line cat="bolt2" width="1" stroke="#00AA00" />
+   	</m>
+	<m e="way" k="leisure" v="nature_reserve" zoom-max="13">
+	  	<area cat="bolt2" src="icons/stripesUp.svg" symbol-height="32" />
    	</m>
    	<m e="way" k="man_made" v="cutline" zoom-min="14">
       	<line cat="bolt2" width="1" stroke="#AAAA55" />
@@ -105,121 +120,7 @@
    	</m>
    	<!-- endregion aeroway -->
 
-	<!-- contour lines optimized for low-res displays interval = 10,(50/100)(Sony Xperia active)-->
-	<!-- Contour lines below level 12 do not make sense because of the optimization prozessof the map-creator -->
-	<!-- Level 12 + 13 do not render nice, there seems to be a bug in the renderer -->
-	<!-- contour lines level 12 -->
-	<m e="way" k="contour_ext" zoom-min="12" zoom-max="12">
-		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
-			<!--line use="bolt2-elevation-med-maj-z12"/-->
-		</m>
-	</m>
-	<!-- contour lines level 13 -->
-	<m e="way" k="contour_ext" zoom-min="13" zoom-max="13">
-		<m e="way" k="contour_ext" v="elevation_minor">
-			<line use="bolt2-elevation-min-z13"/>
-		</m>
-		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
-			<line use="bolt2-elevation-med-maj-z13"/>
-		</m>
-	</m>
-	<!-- contour lines level 14-->
-	<m e="way" k="contour_ext" zoom-min="14" zoom-max="14">
-		<m e="way" k="contour_ext" v="elevation_minor">
-			<line use="bolt2-elevation-min-z14"/>
-		</m>
-		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
-			<line use="bolt2-elevation-med-maj-z14"/>
-		</m>
-	</m>
-	<!-- contour lines level 15-->
-	<m e="way" k="contour_ext" zoom-min="15" zoom-max="15">
-		<m e="way" k="contour_ext" v="elevation_minor" zoom-max="15">
-			<line use="bolt2-elevation-min-z15"/>
-		</m>
-		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
-			<line use="bolt2-elevation-med-maj-z15"/>
-			<m e="way">
-				<!--pathText k="ele" font-style="bold" font-size="8" fill="#000000" stroke="#ffffff" stroke-width="1.0"/-->
-			</m>
-		</m>
-	</m>
-	<!-- contour lines level 16 -->
-	<m e="way" k="contour_ext" zoom-min="16" zoom-max="16">
-		<m e="way" k="contour_ext" v="elevation_minor">
-			<line use="bolt2-elevation-min-z16"/>
-		</m>
-		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
-			<line use="bolt2-elevation-med-maj-z16"/>
-			<m e="way">
-				<!--pathText k="ele" font-style="bold" font-size="8" fill="#000000" stroke="#ffffff" stroke-width="1.0"/-->
-			</m>
-		</m>
-	</m>
-	<!-- contour lines level 17 and above -->
-	<m e="way" k="contour_ext" zoom-min="17">
-		<m e="way" k="contour_ext" v="elevation_minor">
-			<line use="bolt2-elevation-min-z17"/>
-		</m>
-		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
-			<line use="bolt2-elevation-med-maj-z17"/>
-			<m e="way">
-				<!--pathText k="ele" font-style="bold" font-size="8" fill="#000000" stroke="#ffffff" stroke-width="1.0"/-->
-			</m>
-		</m>
-	</m>
-
-	<!-- region lakes/reservoirs/peers over contour lines -->
-	<m e="way" k="waterway" v="river|canal">
-      	<line cat="bolt2" width="1" stroke="#00AAFF" />
-      	<pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="3.0" zoom-min="14" />
-   	</m>
-   	<m e="way" k="waterway" v="stream" zoom-min="14">
-      	<line cat="bolt2" width="0.7" stroke="#00AAFF" />
-   	</m>
-   	<m e="way" k="waterway" v="river|riverbank|canal" closed="yes">
-		<area cat="bolt2" fill="#00AAFF"/>
-	</m>
-	<m e="way" k="landuse" v="reservoir">
-		<area cat="bolt2" fill="#00AAFF"/>
-	</m>
-	<m e="way" k="natural" v="water">
-		<area cat="bolt2" fill="#00AAFF"/>
-	</m>
-	<m e="way" k="man_made" v="pier" zoom-min="12">
-      	<line cat="bolt2" width="1" stroke="#FFFFAA" />
-   	</m>
-   	<m e="way" k="area" v="yes" zoom-min="12">
-   		<m e="way" k="man_made" v="pier" zoom-min="12">
-	      	<area cat="bolt2" fill="#FFFFAA" />
-	    </m>
-   	</m>
-   	<!-- end region lakes/reservoirs/peers over contour lines -->
-
-   	<!-- region military -->
-   	<m e="way" k="landuse" v="military" zoom-min="10">
-   		<line cat="bolt2" width="1" stroke="#FF5555" />
-		<area cat="bolt2" src="icons/stripesDown.svg" symbol-height="32" />
-	</m>
-	<m e="way" k="area" v="yes" zoom-min="10">
-		<m e="way" k="landuse" v="military" zoom-min="10">
-   			<line cat="bolt2" width="1" stroke="#FF5555" />
-			<area cat="bolt2" src="icons/stripesDown.svg" symbol-height="32" />
-		</m>
-	</m>
-   	<!-- endregion military -->
-
-   	<!-- boundary -->
-   <m k="admin_level">
-      <m v="2">
-      	 <m zoom-min="3">
-         	<line stroke="#AA00AA" width="2.5" cap="butt" />
-         </m>
-      </m>
-   </m>
-   <!-- endregion boundary -->
-
-   	<!-- region tunnels: todo: bring in foreground, before <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest"> -->
+	<!-- region tunnels: todo: bring in foreground, before <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest"> -->
    	<m e="way" k="tunnel" v="true|yes" zoom-min="8">
    		<m e="way" k="highway" v="service" zoom-min="13">
    		   <line cat="bolt2" stroke="#555555" width="1.0" dasharray="15,10" cap="butt" />
@@ -374,14 +275,126 @@
    </m>
    <!-- endregion railway (tunnel) -->
 
+	<!-- contour lines optimized for low-res displays interval = 10,(50/100)(Sony Xperia active)-->
+	<!-- Contour lines below level 12 do not make sense because of the optimization prozessof the map-creator -->
+	<!-- Level 12 + 13 do not render nice, there seems to be a bug in the renderer -->
+	<!-- contour lines level 12 -->
+	<m e="way" k="contour_ext" zoom-min="12" zoom-max="12">
+		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
+			<line use="bolt2-elevation-med-maj-z12"/>
+		</m>
+	</m>
+	<!-- contour lines level 13 -->
+	<m e="way" k="contour_ext" zoom-min="13" zoom-max="13">
+		<m e="way" k="contour_ext" v="elevation_minor">
+			<line use="bolt2-elevation-min-z13"/>
+		</m>
+		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
+			<line use="bolt2-elevation-med-maj-z13"/>
+		</m>
+	</m>
+	<!-- contour lines level 14-->
+	<m e="way" k="contour_ext" zoom-min="14" zoom-max="14">
+		<m e="way" k="contour_ext" v="elevation_minor">
+			<line use="bolt2-elevation-min-z14"/>
+		</m>
+		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
+			<line use="bolt2-elevation-med-maj-z14"/>
+		</m>
+	</m>
+	<!-- contour lines level 15-->
+	<m e="way" k="contour_ext" zoom-min="15" zoom-max="15">
+		<m e="way" k="contour_ext" v="elevation_minor" zoom-max="15">
+			<line use="bolt2-elevation-min-z15"/>
+		</m>
+		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
+			<line use="bolt2-elevation-med-maj-z15"/>
+			<m e="way">
+				<!--pathText k="ele" font-style="bold" font-size="8" fill="#550000" stroke="#ffffff" stroke-width="1.0"/-->
+			</m>
+		</m>
+	</m>
+	<!-- contour lines level 16 -->
+	<m e="way" k="contour_ext" zoom-min="16" zoom-max="16">
+		<m e="way" k="contour_ext" v="elevation_minor">
+			<line use="bolt2-elevation-min-z16"/>
+		</m>
+		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
+			<line use="bolt2-elevation-med-maj-z16"/>
+			<m e="way">
+				<!--pathText k="ele" font-style="bold" font-size="8" fill="#550000" stroke="#ffffff" stroke-width="1.0"/-->
+			</m>
+		</m>
+	</m>
+	<!-- contour lines level 17 and above -->
+	<m e="way" k="contour_ext" zoom-min="17">
+		<m e="way" k="contour_ext" v="elevation_minor">
+			<line use="bolt2-elevation-min-z17"/>
+		</m>
+		<m e="way" k="contour_ext" v="elevation_medium|elevation_major">
+			<line use="bolt2-elevation-med-maj-z17"/>
+			<m e="way">
+				<!--pathText k="ele" font-style="bold" font-size="8" fill="#550000" stroke="#ffffff" stroke-width="1.0"/-->
+			</m>
+		</m>
+	</m>
+
+	<!-- region lakes/reservoirs/peers over contour lines -->
+	<m e="way" k="waterway" v="river|canal">
+      	<line cat="bolt2" width="1" stroke="#00AAFF" />
+      	<pathText cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="3.0" />
+   	</m>
+   	<m e="way" k="waterway" v="stream" zoom-min="14">
+      	<line cat="bolt2" width="0.7" stroke="#00AAFF" />
+   	</m>
+   	<m e="way" k="waterway" v="river|riverbank|canal" closed="yes">
+		<area cat="bolt2" fill="#00AAFF"/>
+	</m>
+	<m e="way" k="landuse" v="reservoir">
+		<area cat="bolt2" fill="#00AAFF"/>
+	</m>
+	<m e="way" k="natural" v="water">
+		<area cat="bolt2" fill="#00AAFF"/>
+	</m>
+	<m e="way" k="man_made" v="pier" zoom-min="12">
+      	<line cat="bolt2" width="1" stroke="#FFFFAA" />
+   	</m>
+   	<m e="way" k="area" v="yes" zoom-min="12">
+   		<m e="way" k="man_made" v="pier" zoom-min="12">
+	      	<area cat="bolt2" fill="#FFFFAA" />
+	    </m>
+   	</m>
+   	<!-- end region lakes/reservoirs/peers over contour lines -->
+
+   	<!-- region military -->
+   	<m e="way" k="landuse" v="military" zoom-min="10">
+   		<line cat="bolt2" width="1" stroke="#FF5555" />
+		<area cat="bolt2" src="icons/stripesDown.svg" symbol-height="32" />
+	</m>
+	<m e="way" k="area" v="yes" zoom-min="10">
+		<m e="way" k="landuse" v="military" zoom-min="10">
+   			<line cat="bolt2" width="1" stroke="#FF5555" />
+			<area cat="bolt2" src="icons/stripesDown.svg" symbol-height="32" />
+		</m>
+	</m>
+   	<!-- endregion military -->
+
+   	<!-- boundary -->
+   <m k="admin_level" v="2">
+      	<m k="boundary" v="administrative" zoom-min="3">
+         	<line stroke="#AA00AA" width="2.5" cap="butt" />
+        </m>
+   </m>
+   <!-- endregion boundary -->
+
    	<!-- region highways -->
    	<m e="way" k="tunnel" v="~|no|false" zoom-min="8">
       	<!-- highway outlines -->
       	<outline-layer cat="bolt2" id="bolt2-highway" stroke="#550000" width="1" />
       	<outline-layer cat="bolt2" id="bolt2-major-roads" stroke="#000000" width="0.6" />
-      	<outline-layer cat="bolt2" id="bolt2-minor-roads" stroke="#000000" width="0.4" zoom-min="12" />
-      	<outline-layer cat="bolt2" id="bolt2-bikepath" stroke="#000000" width="0.3" zoom-min="12"/>
-      	<outline-layer cat="bolt2" id="bolt2-private" stroke="#555555" width="0.3" zoom-min="12"/>
+      	<outline-layer cat="bolt2" id="bolt2-minor-roads" stroke="#000000" width="0.4" />
+      	<outline-layer cat="bolt2" id="bolt2-bikepath" stroke="#000000" width="0.3" />
+      	<outline-layer cat="bolt2" id="bolt2-private" stroke="#555555" width="0.3" />
       	<outline-layer id="tf:tfd_2" stroke="#46b414" width="1.05" />
       	<!-- the outline of bridges -->
       	<outline-layer id="bridge" stroke="#000000" width="1" />
@@ -605,27 +618,27 @@
                <line cat="bolt2" stroke="#FFFFFF" outline="bolt2-major-roads" width="1.5" />
             </m>
             <m e="way" k="highway" v="tertiary_link|secondary_link" zoom-min="9">
-               <pathText display="always" cat="bolt2-disabled" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="2.0" zoom-min="14" />
+               <pathText cat="bolt2-disabled" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="2.0" />
                <line cat="bolt2" outline="bolt2-major-roads" stroke="#FFFF00" width="2.0" />
             </m>
             <m e="way" k="highway" v="primary_link|trunk_link|motorway_link" zoom-min="9">
-               <pathText display="always" cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
+               <pathText cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
                <line cat="bolt2" outline="bolt2-major-roads" stroke="#FFAA00" width="2.0" />
             </m>
             <m e="way" k="highway" v="tertiary|secondary" zoom-min="9">
-               <pathText display="always" cat="bolt2-disabled" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="2.0" zoom-min="14" />
+               <pathText cat="bolt2-disabled" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="2.0" />
                <line cat="bolt2" outline="bolt2-major-roads" stroke="#FFFF00" width="2.0" />
             </m>
             <m e="way" k="highway" v="primary|trunk" zoom-min="9">
-               <pathText display="always" cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
+               <pathText cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
                <line cat="bolt2" outline="bolt2-major-roads" stroke="#FFAA00" width="2.0" />
             </m>
             <m e="way" k="highway" v="motorway" zoom-min="12">
-               <pathText display="always" cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
+               <pathText cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
                <line cat="bolt2" outline="bolt2-highway" stroke="#AA5500" width="3.5"/>
             </m>
             <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
-               <pathText display="always" cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
+               <pathText cat="bolt2" fill="#000000" k="ref" font-family="sans_serif" font-style="bold" priority="2" size="16" stroke="#ffffff" stroke-width="4.0" />
                <line cat="bolt2" outline="bolt2-highway" stroke="#AA5500" width="4"/>
             </m>
          </m>
@@ -689,7 +702,7 @@
          	<line stroke="#0000AA" width="0.5" dasharray="15,10" cap="butt" />
          </m>
          <m zoom-min="15">
-         	<pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#ffffff" stroke-width="2.0" zoom-min="15" />
+         	<pathText cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#ffffff" stroke-width="2.0" />
          </m>
       </m>
    </m>
@@ -747,6 +760,9 @@
 		  	</m> -->
 		  	<m v="hospital">
 				<symbol src="icons/hospital.svg" symbol-percent="110"/>
+		  	</m>
+		  	<m v="bicycle_repair_station">
+				<symbol src="icons/tool_set.svg" symbol-percent="140"/>
 		  	</m>
 		</m>
 		<m k="shop" >
