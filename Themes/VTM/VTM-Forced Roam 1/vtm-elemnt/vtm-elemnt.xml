@@ -20,6 +20,8 @@
     <!-- Non-paved tracks -->
     <style-line id="roam-track-raw" cat="roam" width="1.0"/>
     <style-line id="roam-track-raw-cycle" use="roam-track-raw" stroke="#000000"/>
+    <!-- Tracks with mtb:scale -->
+    <style-line id="roam-track-mtb" cat="roam" stroke="#FFFFFF" width="1.0"/>
     <!-- Tracks that don't have other info -->
     <style-line id="roam-track-other" cat="roam" stroke="#000000" width="1.0" dasharray="10,10"/>
     <style-line id="roam-track-other-cycle" use="roam-track-other" stroke="#00FF00"/>
@@ -247,7 +249,44 @@
             </m>
             <!-- endregion not bridges -->
             <!-- region tracks -->
-            <m cat="trails-osm" k="access" v="-|private">
+            <m cat="trails-osm" k="access" v="-|private" select="first">  
+                <!-- two color-style for mtb:scale -->              
+                <m e="way" k="mtb:scale" v="0|1-|" zoom-min="12">
+                    <line cat="roam" stroke="#0000FF" width="3" cap="butt"/>
+                    <line use="roam-track-mtb"/>       
+                </m>
+                <m e="way" k="mtb:scale" v="1|1+|" zoom-min="12">
+                    <line cat="roam" stroke="#FF00FF" width="3"  cap="butt"/>
+                    <line use="roam-track-mtb"/>                
+                </m>
+                <m e="way" k="mtb:scale" v="2-|2|2+|" zoom-min="12">
+                    <line cat="roam" stroke="#FF0000" width="3"  cap="butt"/>
+                    <line use="roam-track-mtb"/>                
+                </m>
+                <m e="way" k="mtb:scale" v="3-|3|3+|" zoom-min="12">
+                    <line cat="roam" stroke="#555555" width="3"  cap="butt"/>
+                    <line use="roam-track-mtb"/>
+                </m>
+                <m e="way" k="mtb:scale" v="4-|4|4+|5-|5|5+|" zoom-min="12">
+                    <line cat="roam" stroke="#000000" width="3"  cap="butt"/>
+                    <line use="roam-track-mtb"/>
+                </m>
+
+                <!-- one color-with dashes style for mtb:scale,not really finished colors only checked for Roam v2 so far --> 
+                <!--
+                <m e="way" k="mtb:scale" v="0|1-|" zoom-min="12">
+                    <line cat="bolt2" stroke="#FF00AA" width="1.5" cap="round"/>
+                    <line cat="roam2" stroke="#FF00AA" width="1.5" cap="round"/>                
+                </m>
+                <m e="way" k="mtb:scale" v="1|1+|" zoom-min="12">
+                    <line cat="bolt2" stroke="#FF00AA" dasharray="50,3,5,3" width="1.5" cap="round"/>
+                    <line cat="roam2" stroke="#FF00AA" dasharray="50,3,5,3" width="1.5" cap="round"/>                
+                </m>
+                <m e="way" k="mtb:scale" v="2-|2|2+|3|" zoom-min="12">
+                    <line cat="bolt2" stroke="#FF00AA" dasharray="50,3,5,3,5,3" width="1.5" cap="round"/>
+                    <line cat="roam2" stroke="#FF00AA" dasharray="50,3,5,3,5,3" width="1.5" cap="round"/>                
+                </m>
+                -->
                 <m e="way" k="highway" v="footway|pedestrian" zoom-min="14">
                     <line use="roam-footpath"/>
                 </m>
