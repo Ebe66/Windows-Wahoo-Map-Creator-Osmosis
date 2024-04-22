@@ -264,7 +264,7 @@
                     <line use="roam-track-mtb"/>                
                 </m>
                 <m e="way" k="mtb:scale" v="3-|3|3+|" zoom-min="12">
-                    <line cat="roam" stroke="#555555" width="3"  cap="butt"/>
+                    <line cat="roam" stroke="#FFFF00" width="3"  cap="butt"/>
                     <line use="roam-track-mtb"/>
                 </m>
                 <m e="way" k="mtb:scale" v="4-|4|4+|5-|5|5+|" zoom-min="12">
