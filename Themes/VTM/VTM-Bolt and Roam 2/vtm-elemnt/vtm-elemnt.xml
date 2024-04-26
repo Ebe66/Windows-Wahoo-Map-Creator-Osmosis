@@ -34,7 +34,9 @@
     <style-line id="roam2-track-raw-cycle" cat="roam2" stroke="#555555" width="1.1" dasharray="3,3"/>
     <!-- Tracks with mtb:scale -->
     <style-line id="bolt2-track-mtb" cat="bolt2" stroke="#FFFFFF" width="1.0"/>
+    <style-line id="bolt2-track-mtb-adv" cat="bolt2" stroke="#FF0000" width="1.0"/>
     <style-line id="roam2-track-mtb" cat="roam2" stroke="#FFFFFF" width="1.0"/>
+    <style-line id="roam2-track-mtb-adv" cat="roam2" stroke="#FF0000" width="1.0"/>
     <!-- Tracks that don't have other info -->
     <style-line id="bolt2-track-other" cat="bolt2" stroke="#555555" width="1.1" dasharray="5,5"/>
     <style-line id="bolt2-track-other-cycle" use="bolt2-track-other" stroke="#00AA00"/>
@@ -367,13 +369,13 @@
             <!-- region tracks -->
             <m cat="trails-osm" k="access" v="-|private" select="first">  
                 <!-- two color-style for mtb:scale -->              
-                <m e="way" k="mtb:scale" v="0|1-|" zoom-min="12">
+                <m e="way" k="mtb:scale" v="0-|0|0+|" zoom-min="12">
                     <line cat="bolt2" stroke="#0000FF" width="3" cap="butt"/>
                     <line use="bolt2-track-mtb"/> 
                     <line cat="roam2" stroke="#0000FF" width="3" cap="butt"/>
                     <line use="roam2-track-mtb"/>       
                 </m>
-                <m e="way" k="mtb:scale" v="1|1+|" zoom-min="12">
+                <m e="way" k="mtb:scale" v="1-|1|1+|" zoom-min="12">
                     <line cat="bolt2" stroke="#FF00FF" width="3"  cap="butt"/>
                     <line use="bolt2-track-mtb"/>
                     <line cat="roam2" stroke="#FF00FF" width="3"  cap="butt"/>
@@ -391,13 +393,24 @@
                     <line cat="roam2" stroke="#555555" width="3"  cap="butt"/>
                     <line use="roam2-track-mtb"/>
                 </m>
-                <m e="way" k="mtb:scale" v="4-|4|4+|5-|5|5+|" zoom-min="12">
+                <m e="way" k="mtb:scale" v="4-|4|4+|" zoom-min="12">
                     <line cat="bolt2" stroke="#000000" width="3"  cap="butt"/>
                     <line use="bolt2-track-mtb"/>
                     <line cat="roam2" stroke="#000000" width="3"  cap="butt"/>
                     <line use="roam2-track-mtb"/>
                 </m>
-
+                <m e="way" k="mtb:scale" v="5-|5|5+|" zoom-min="12">
+                    <line cat="bolt2" stroke="#555555" width="3"  cap="butt"/>
+                    <line use="bolt2-track-mtb-adv"/>
+                    <line cat="roam2" stroke="#555555" width="3"  cap="butt"/>
+                    <line use="roam2-track-mtb-adv"/>
+                </m>
+                <m e="way" k="mtb:scale" v="6-|6|6+|" zoom-min="12">
+                    <line cat="bolt2" stroke="#000000" width="3"  cap="butt"/>
+                    <line use="bolt2-track-mtb-adv"/>
+                    <line cat="roam2" stroke="#000000" width="3"  cap="butt"/>
+                    <line use="roam2-track-mtb-adv"/>
+                </m>
                 <!-- one color-with dashes style for mtb:scale,not really finished colors only checked for Roam v2 so far --> 
                 <!--
                 <m e="way" k="mtb:scale" v="0|1-|" zoom-min="12">
