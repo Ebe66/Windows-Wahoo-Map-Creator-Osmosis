@@ -14,8 +14,8 @@
 		<!--<osm-tag key="amenity" value="cinema" zoom-appear="17" />-->
 		<osm-tag key="amenity" value="drinking_water" zoom-appear="16"/>
 		<osm-tag key="amenity" value="fast_food" zoom-appear="16"/>
-		<!--<osm-tag key="amenity" value="fountain" zoom-appear="17" />
-        <osm-tag key="amenity" value="fire_station" zoom-appear="17" />-->
+		<osm-tag key="amenity" value="fountain" zoom-appear="16" />
+        <!--<osm-tag key="amenity" value="fire_station" zoom-appear="17" />-->
 		<osm-tag key="amenity" value="fuel" zoom-appear="16"/>
 		<!--<osm-tag key="amenity" value="grave_yard" zoom-appear="15" />-->
 		<osm-tag key="amenity" value="hospital" zoom-appear="15"/>
@@ -37,6 +37,7 @@
 		<!--<osm-tag key="amenity" value="theatre" zoom-appear="17" />
         <osm-tag key="amenity" value="townhall" zoom-appear="17" />-->
 		<osm-tag key="amenity" value="toilets" zoom-appear="16"/>
+		<osm-tag key="amenity" value="water_point" zoom-appear="16"/>
 		<!--<osm-tag key="amenity" value="university" zoom-appear="17" />-->
         <osm-tag key="building" value="church" zoom-appear="14" />
         <osm-tag key="building" value="cathedral" zoom-appear="14" />
@@ -51,6 +52,8 @@
         <osm-tag key="religion" renderable="false" value="jewish" />
         <osm-tag key="religion" renderable="false" value="muslim" />
         <osm-tag key="religion" renderable="false" value="shinto" />-->
+		<osm-tag key="man_made" value="drinking_fountain" zoom-appear="16" />
+		<osm-tag key="man_made" value="water_tap" zoom-appear="16" />
         <osm-tag key="shelter_type" value="picnic_shelter" zoom-appear="15" />
 		<osm-tag key="shop" value="bakery" zoom-appear="16"/>
 		<osm-tag key="shop" value="bicycle" zoom-appear="16"/>
@@ -231,6 +234,7 @@
 		<osm-tag key="amenity" value="cafe" zoom-appear="16"/>
 		<osm-tag key="amenity" value="drinking_water" zoom-appear="16"/>
 		<osm-tag key="amenity" value="fast_food" zoom-appear="16"/>
+		<osm-tag key="amenity" value="fountain" zoom-appear="16"/>
 		<osm-tag key="amenity" value="fuel" zoom-appear="16"/>
 		<osm-tag key="amenity" value="hospital" label-position="true" zoom-appear="15"/>
         <osm-tag key="amenity" value="ice_cream" zoom-appear="16" />
@@ -241,10 +245,13 @@
 		<osm-tag key="amenity" value="shelter" zoom-appear="16"/>
 		<osm-tag key="amenity" value="telephone" zoom-appear="16"/>
 		<osm-tag key="amenity" value="toilets" zoom-appear="16"/>
+		<osm-tag key="amenity" value="water_point" zoom-appear="16"/>
         <osm-tag key="building" value="church" zoom-appear="14" />
         <osm-tag key="building" value="cathedral" zoom-appear="14" />
 		<osm-tag key="emergency" value="phone" zoom-appear="16"/>
+		<osm-tag key="man_made" value="drinking_fountain" zoom-appear="16" />
         <osm-tag key="man_made" value="pier" zoom-appear="13" />
+		<osm-tag key="man_made" value="water_tap" zoom-appear="16" />
         <osm-tag key="shelter_type" value="picnic_shelter" zoom-appear="15" />
 		<osm-tag key="shop" value="bakery" zoom-appear="16"/>
 		<osm-tag key="shop" value="bicycle" zoom-appear="16"/>

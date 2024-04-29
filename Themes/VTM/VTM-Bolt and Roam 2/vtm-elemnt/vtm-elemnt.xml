@@ -747,6 +747,12 @@
             <m v="drinking_water">
                 <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
             </m>
+            <m v="water_point">
+                <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
+            </m>
+            <m v="fountain">
+                <symbol src="icons/symbols/amenity/fountain2.svg" symbol-percent="150"/>
+            </m>
             <m v="fast_food">
                 <symbol src="icons/symbols/food/fastfood.svg" symbol-percent="150"/>
             </m>
@@ -801,6 +807,14 @@
         <m k="leisure">
             <m v="picnic_table">
                 <symbol src="icons/symbols/tourist/picnic.svg" symbol-percent="100"/>
+            </m>
+        </m>
+        <m k="man_made">
+            <m v="water_tap">
+                <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
+            </m>
+            <m v="drinking_fountain">
+                <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
             </m>
         </m>
         <m k="shelter_type">

@@ -305,7 +305,7 @@ Map_File_Deleted = 0
 objects_to_keep_without_name = 'access=private \
     admin_level=2 \
     aeroway=aerodrome =airport =gate =helipad \
-    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =drinking_water =fast_food =fuel =hospital =ice_cream =pharmacy =police =pub =restaurant =shelter =telephone =toilets \
+    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =drinking_water =fast_food =fountain =fuel =hospital =ice_cream =pharmacy =police =pub =restaurant =shelter =telephone =toilets =water_point \
     area=yes \
     bicycle= \
     bridge= \
@@ -317,7 +317,7 @@ objects_to_keep_without_name = 'access=private \
     landuse=forest =building =commercial =industrial =military =residential =reservoir =retail \
     leisure=picnic_table \
     natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =spring \
-    man_made=cutline =pier \
+    man_made=cutline =drinking_fountain =pier =water_tap\
     mtb:scale= \
     mtb:scale:uphill= \
     place=isolated_dwelling =islet =square \
