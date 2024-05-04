@@ -27,7 +27,7 @@
     <style-line id="roam-track-other" cat="roam" stroke="#000000" width="1.0" dasharray="10,10"/>
     <style-line id="roam-track-other-cycle" use="roam-track-other" stroke="#00FF00"/>
     <!-- Paved Cycleways-->
-    <style-line id="roam-cycle" cat="roam" stroke="#00FF00" width="1.0"/>
+    <style-line id="roam-cycle" cat="roam" stroke="#0000FF" width="1.0"/>
     <!-- Elevation / contour lines-->
     <style-line id="roam-elevation-med-maj-z12" cat="roam" stroke="#000000" width="1.1"/>
     <style-line id="roam-elevation-med-maj-z13" cat="roam" stroke="#000000" width="0.95"/>
@@ -71,6 +71,9 @@
         <line cat="roam" width="1" stroke="#00FFFF"/>
         <pathText display="always" cat="roam" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
     </m>
+    <m e="way" k="waterway" v="drain" zoom-min="14">
+        <line cat="roam" width="1" stroke="#00FFFF"/>
+    </m>
     <m e="way" k="waterway" v="stream" zoom-min="14">
         <line cat="roam" width="1" stroke="#00FFFF"/>
     </m>
@@ -92,6 +95,12 @@
         </m>
     </m>
     <!-- endregion military -->
+    <m k="amenity" v="hospital">
+        <area cat="roam" fill="#FF0000"/>
+    </m>
+    <m e="way" k="place" v="square" zoom-min="10">
+        <area cat="roam" fill="#FFFFFF"/>
+    </m>
     <m e="way" k="man_made" v="pier" zoom-min="12">
         <line cat="roam" width="1" stroke="#FFFF00"/>
     </m>
@@ -534,6 +543,19 @@
         </m>
     </m>
     <!-- endregion place -->
+    <!-- POI's / Symbols -->
+    <m k="natural" v="peak|volcano" zoom-min="15">
+        <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000"/>
+    </m>
+    <m k="natural" v="peak|volcano" zoom-min="15">
+        <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
+    </m>
+    <m k="mountain_pass" v="yes" zoom-min="14">
+		<symbol src="icons//symbols/poi/mountain_pass.svg" symbol-percent="100"/>
+	</m>
+	<m k="mountain_pass" v="yes" zoom-min="15">
+        <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000" />
+	</m>
     <m zoom-min="14">
         <m k="amenity">
             <m v="atm">
@@ -550,6 +572,9 @@
             </m>
             <m v="bicycle_rental">
                 <symbol src="icons/symbols/transport/rental_bicycle.svg" symbol-percent="150"/>
+            </m>
+            <m v="biergarten">
+                <symbol src="icons/symbols/amenity/drink.svg" symbol-percent="120"/>
             </m>
             <m v="bus_station">
                 <symbol src="icons/symbols/transport/bus_station.svg" symbol-percent="150"/>
@@ -574,6 +599,9 @@
             </m>
             <m v="hospital">
                 <symbol src="icons/symbols/health/hospital.svg" symbol-percent="150"/>
+            </m>
+            <m v="ice_cream">
+                <symbol src="icons/symbols/amenity/icecream.svg" symbol-percent="130"/>
             </m>
             <m v="pharmacy">
                 <symbol src="icons/symbols/health/pharmacy.svg" symbol-percent="150"/>
@@ -612,12 +640,22 @@
                 <symbol src="icons/symbols/transport/emergency_phone.svg" symbol-percent="150"/>
             </m>
         </m>
+        <m k="leisure">
+            <m v="picnic_table">
+                <symbol src="icons/symbols/tourist/picnic2.svg" symbol-percent="100"/>
+            </m>
+        </m>
         <m k="man_made">
             <m v="water_tap">
                 <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
             </m>
             <m v="drinking_fountain">
                 <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
+            </m>
+        </m>
+        <m k="shelter_type">
+            <m v="picnic_shelter">
+                <symbol src="icons/symbols/tourist/picnic2.svg" symbol-percent="100"/>
             </m>
         </m>
         <m k="shop">
@@ -660,6 +698,9 @@
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
                 <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
+            <m v="picnic_site">
+                <symbol src="icons/symbols/tourist/picnic2.svg" symbol-percent="100"/>
+            </m>
             <m v="viewpoint">
                 <symbol src="icons/symbols/tourist/view_point.svg" symbol-percent="150"/>
             </m>
@@ -690,16 +731,14 @@
             </m>
         </m>
         <m k="natural">
-            <m v="peak">
+            <m v="peak|volcano">
                 <symbol src="icons/symbols/poi/peak.svg" symbol-percent="150"/>
+                <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000"/>
+                <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
             </m>
             <m v="spring">
                 <symbol src="icons/symbols/amenity/fountain2.svg" symbol-percent="150"/>
             </m>
-            <!--
-            <m v="vulcano">
-                <symbol src="icons/vulcano.svg" symbol-percent="150"/>
-            </m> -->
         </m>
         <m k="aeroway">
             <m v="aerodrome">

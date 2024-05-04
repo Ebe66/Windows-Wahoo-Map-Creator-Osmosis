@@ -20,18 +20,18 @@
     <style-line id="bolt2-steps" cat="bolt2" stroke="#000000" width="0.5" dasharray="9,9" cap="butt"/>
     <style-line id="roam2-steps" cat="roam2" stroke="#000000" width="0.5" dasharray="9,9" cap="butt"/>
     <!-- Cycle Trails (like MTB) -->
-    <style-line id="bolt2-trail" cat="bolt2" stroke="#00AA00" width="1.5"/>
-    <style-line id="roam2-trail" cat="roam2" stroke="#00AA00" width="1.5"/>
+    <style-line id="bolt2-trail" cat="bolt2" stroke="#FF0000" width="1.5"/>
+    <style-line id="roam2-trail" cat="roam2" stroke="#FF0000" width="1.5"/>
     <!-- Paved Tracks -->
     <style-line id="bolt2-track-paved" cat="bolt2" stroke="#000000" width="1.3"/>
-    <style-line id="bolt2-track-paved-cycle" use="bolt2-track-paved"/>
+    <style-line id="bolt2-track-paved-cycle" use="bolt2-track-paved" stroke="#0000FF"/>
     <style-line id="roam2-track-paved" cat="roam2" stroke="#000000" width="1.3"/>
     <style-line id="roam2-track-paved-cycle" use="roam2-track-paved" stroke="#0000FF"/>
     <!-- Non-paved tracks -->
     <style-line id="bolt2-track-raw" cat="bolt2" stroke="#555555" width="1.1" dasharray="3,3"/>
-    <style-line id="bolt2-track-raw-cycle" cat="bolt2" stroke="#555555" width="1.1" dasharray="6,3"/>
+    <style-line id="bolt2-track-raw-cycle" cat="bolt2" stroke="#FF0000" width="1.1" dasharray="3,3"/>
     <style-line id="roam2-track-raw" cat="roam2" stroke="#555555" width="1.1" dasharray="3,3"/>
-    <style-line id="roam2-track-raw-cycle" cat="roam2" stroke="#555555" width="1.1" dasharray="3,3"/>
+    <style-line id="roam2-track-raw-cycle" cat="roam2" stroke="#FF0000" width="1.1" dasharray="3,3"/>
     <!-- Tracks with mtb:scale -->
     <style-line id="bolt2-track-mtb" cat="bolt2" stroke="#FFFFFF" width="1.0"/>
     <style-line id="bolt2-track-mtb-adv" cat="bolt2" stroke="#FF0000" width="1.0"/>
@@ -39,12 +39,14 @@
     <style-line id="roam2-track-mtb-adv" cat="roam2" stroke="#FF0000" width="1.0"/>
     <!-- Tracks that don't have other info -->
     <style-line id="bolt2-track-other" cat="bolt2" stroke="#555555" width="1.1" dasharray="5,5"/>
-    <style-line id="bolt2-track-other-cycle" use="bolt2-track-other" stroke="#00AA00"/>
+    <style-line id="bolt2-track-other-c" cat="bolt2" stroke="#FF0000" width="1.1" dasharray="5,5"/>
+    <style-line id="bolt2-track-other-cycle" use="bolt2-track-other-c" stroke="#FF0000"/>
     <style-line id="roam2-track-other" cat="roam2" stroke="#555555" width="1.1" dasharray="5,5"/>
-    <style-line id="roam2-track-other-cycle" use="roam2-track-other" stroke="#00AA00"/>
+    <style-line id="roam2-track-other-c" cat="roam2" stroke="#FF0000" width="1.1" dasharray="5,5"/>
+    <style-line id="roam2-track-other-cycle" use="roam2-track-other-c" stroke="#FF0000"/>
     <!-- Paved Cycleways-->
-    <style-line id="bolt2-cycle" cat="bolt2" stroke="#00AA00" width="1.5"/>
-    <style-line id="roam2-cycle" cat="roam2" stroke="#00AA00" width="1.5"/>
+    <style-line id="bolt2-cycle" cat="bolt2" stroke="#0000FF" width="1.5"/>
+    <style-line id="roam2-cycle" cat="roam2" stroke="#0000FF" width="1.5"/>
     <!-- Elevation / contour lines-->
     <style-line id="bolt2-elevation-med-maj-z12" cat="bolt2" stroke="#AA5500" width="1.1"/>
     <style-line id="bolt2-elevation-med-maj-z13" cat="bolt2" stroke="#AA5500" width="0.9"/>
@@ -57,12 +59,12 @@
     <style-line id="bolt2-elevation-min-z15" cat="bolt2" stroke="#AA5500" width="0.48"/>
     <style-line id="bolt2-elevation-min-z16" cat="bolt2" stroke="#AA5500" width="0.36"/>
     <style-line id="bolt2-elevation-min-z17" cat="bolt2" stroke="#AA5500" width="0.30"/>
-    <style-line id="roam2-elevation-med-maj-z12" cat="roam2" stroke="#550000" width="1.1"/>
-    <style-line id="roam2-elevation-med-maj-z13" cat="roam2" stroke="#550000" width="0.9"/>
-    <style-line id="roam2-elevation-med-maj-z14" cat="roam2" stroke="#550000" width="0.8"/>
-    <style-line id="roam2-elevation-med-maj-z15" cat="roam2" stroke="#550000" width="0.64"/>
-    <style-line id="roam2-elevation-med-maj-z16" cat="roam2" stroke="#550000" width="0.48"/>
-    <style-line id="roam2-elevation-med-maj-z17" cat="roam2" stroke="#550000" width="0.36"/>
+    <style-line id="roam2-elevation-med-maj-z12" cat="roam2" stroke="#AA5500" width="1.1"/>
+    <style-line id="roam2-elevation-med-maj-z13" cat="roam2" stroke="#AA5500" width="0.9"/>
+    <style-line id="roam2-elevation-med-maj-z14" cat="roam2" stroke="#AA5500" width="0.8"/>
+    <style-line id="roam2-elevation-med-maj-z15" cat="roam2" stroke="#AA5500" width="0.64"/>
+    <style-line id="roam2-elevation-med-maj-z16" cat="roam2" stroke="#AA5500" width="0.48"/>
+    <style-line id="roam2-elevation-med-maj-z17" cat="roam2" stroke="#AA5500" width="0.36"/>
     <style-line id="roam2-elevation-min-z13" cat="roam2" stroke="#AA5500" width="0.75"/>
     <style-line id="roam2-elevation-min-z14" cat="roam2" stroke="#AA5500" width="0.64"/>
     <style-line id="roam2-elevation-min-z15" cat="roam2" stroke="#AA5500" width="0.48"/>
@@ -78,7 +80,7 @@
         <area cat="bolt2" fill="#FFFFFF" mesh="true"/>
         <area cat="roam2" fill="#FFFFFF" mesh="true"/>
     </m>
-    <m e="way" k="leisure" v="park">
+    <m e="way" k="leisure" v="park|nature_reserve">
         <area cat="bolt2" fill="#55FF55"/>
         <area cat="roam2" fill="#55FF55"/>
         <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
@@ -86,11 +88,6 @@
     <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
         <area cat="bolt2" fill="#00FF00"/>
         <area cat="roam2" fill="#00FF00"/>
-    </m>
-    <m e="way" k="leisure" v="nature_reserve">
-        <area cat="bolt2" fill="#55FF55"/>
-        <area cat="roam2" fill="#55FF55"/>
-        <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
     </m>
     <m e="way" k="landuse" v="building|commercial|industrial|residential|retail">
         <area cat="bolt2" fill="#FFAAAA"/>
@@ -115,7 +112,7 @@
     <m e="way" k="waterway" v="river|canal">
         <line cat="bolt2" width="1" stroke="#00AAFF"/>
         <line cat="roam2" width="1" stroke="#00AAFF"/>
-        <pathText display="always" cat="bolt2" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
+        <pathText display="always" fill="#0000AA" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
     </m>
     <m e="way" k="waterway" v="drain" zoom-min="14">
         <line cat="bolt2" width="1" stroke="#00AAFF"/>
@@ -453,6 +450,10 @@
                             <line use="roam2-trail" outline="roam2-bikepath"/>
                         </m>
                     </m>
+                    <m k="bicycle" v="bic_yes|bic_designated">
+                        <!-- specifically for cycle -->
+                        <line stroke="#FF0000" width="1.0" dasharray="12,6" cap="butt"/>
+                    </m>
                     <m k="surface" v="bic_paved">
                         <line use="bolt2-track-paved"/>
                         <line use="roam2-track-paved"/>
@@ -541,8 +542,8 @@
                                 <line use="roam2-track-raw-cycle" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
                             </m>
                             <m k="bicycle" v="~">
-                                <line cat="bolt2" stroke="#AAAAAA" width="0.9" dasharray="13,5"/>
-                                <line cat="roam2" stroke="#AAAAAA" width="0.9" dasharray="13,5"/>
+                                <line use="bolt2-track-raw" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
+                                <line use="roam2-track-raw" dasharray="35,3,5,3,5,3,5,3,5,3,5,3"/>
                             </m>
                         </m>
                         <m e="way" k="tracktype" v="~" select="first">
@@ -895,8 +896,10 @@
             </m>
         </m>
         <m k="natural">
-            <m v="peak|vulcano">
+            <m v="peak|volcano">
                 <symbol src="icons/symbols/poi/peak.svg" symbol-percent="150"/>
+                <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000"/>
+                <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
             </m>
             <m v="spring">
                 <symbol src="icons/symbols/amenity/fountain2.svg" symbol-percent="150"/>

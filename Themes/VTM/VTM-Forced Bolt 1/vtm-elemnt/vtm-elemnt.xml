@@ -45,8 +45,6 @@
     <m e="way" k="natural" v="nosea">
         <area cat="bolt" fill="#FFFFFF" mesh="true"/>
     </m>
-    <m e="way" k="natural|landcover|landuse" v="wood|trees|scrub|forest">
-    </m>
     <m e="way" k="leisure" v="park|nature_reserve">
         <caption fill="#000000" k="name" priority="5" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
     </m>
@@ -55,7 +53,7 @@
     </m>
     <m e="way" k="waterway" v="river|canal">
         <line cat="bolt" fix="true" width="1" dasharray="2,2"/>
-        <pathText display="always" cat="bolt2" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
+        <pathText display="always" cat="bolt" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="4" size="16" stroke="#FFFFFF" stroke-width="3.0" zoom-min="14" />
    </m>
    <m e="way" k="waterway" v="river|riverbank|canal" closed="yes">
         <area cat="bolt" src="patterns/gray.png"/>
@@ -78,6 +76,9 @@
         </m>
     </m>
     <!-- endregion military -->
+    <m e="way" k="place" v="square" zoom-min="10">
+        <area cat="bolt" fill="#FFFFFF" mesh="true"/>
+    </m>
     <m e="way" k="man_made" v="pier" zoom-min="12">
         <line cat="bolt" width="1" stroke="#000000"/>
     </m>
@@ -430,7 +431,7 @@
                 <line cap="butt" fade="12" fix="true" stipple="15" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#000000" width="3"/>
             </m>
             <m v="tram|light_rail" zoom-min="15">
-                <line cat="bolt2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#555555" width="3"/>
+                <line cat="bolt" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#000000" width="3"/>
             </m>
         </m>
     </m>
@@ -465,6 +466,19 @@
         </m>
     </m>
     <!-- endregion place -->
+    <!-- POI's / Symbols -->
+    <m k="natural" v="peak|volcano" zoom-min="15">
+        <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000"/>
+    </m>
+    <m k="natural" v="peak|volcano" zoom-min="15">
+        <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
+    </m>
+    <m k="mountain_pass" v="yes" zoom-min="14">
+		<symbol src="icons//symbols/poi/mountain_pass.svg" symbol-percent="100"/>
+	</m>
+	<m k="mountain_pass" v="yes" zoom-min="15">
+        <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000" />
+	</m>
     <m zoom-min="14">
         <m k="amenity">
             <m v="atm">
@@ -481,6 +495,9 @@
             </m>
             <m v="bicycle_rental">
                 <symbol src="icons/symbols/transport/rental_bicycle.svg" symbol-percent="150"/>
+            </m>
+            <m v="biergarten">
+                <symbol src="icons/symbols/amenity/drink.svg" symbol-percent="120"/>
             </m>
             <m v="bus_station">
                 <symbol src="icons/symbols/transport/bus_station.svg" symbol-percent="150"/>
@@ -505,6 +522,9 @@
             </m>
             <m v="hospital">
                 <symbol src="icons/symbols/health/hospital.svg" symbol-percent="150"/>
+            </m>
+            <m v="ice_cream">
+                <symbol src="icons/symbols/amenity/icecream.svg" symbol-percent="130"/>
             </m>
             <m v="pharmacy">
                 <symbol src="icons/symbols/health/pharmacy.svg" symbol-percent="150"/>
@@ -543,6 +563,11 @@
                 <symbol src="icons/symbols/transport/emergency_phone.svg" symbol-percent="150"/>
             </m>
         </m>
+        <!--<m k="leisure">
+            <m v="picnic_table">
+                <symbol src="icons/symbols/tourist/picnic.svg" symbol-percent="100"/>
+            </m>
+        </m> -->
         <m k="man_made">
             <m v="water_tap">
                 <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
@@ -551,12 +576,17 @@
                 <symbol src="icons/symbols/food/drinkingtap.svg" symbol-percent="150"/>
             </m>
         </m>
+        <!-- <m k="shelter_type">
+            <m v="picnic_shelter">
+                <symbol src="icons/symbols/tourist/picnic.svg" symbol-percent="100"/>
+            </m>
+        </m> -->
         <m k="shop">
             <m v="bakery">
                 <symbol src="icons/symbols/shopping/bakery.svg" symbol-percent="150"/>
             </m>
             <m v="bicycle">
-                <symbol src="icons/symbols/shopping/bicycle.svg" symbol-percent="150"/>
+                <symbol src="icons/symbols/shopping/bike.svg" symbol-percent="150"/>
             </m>
             <m v="laundry">
                 <symbol src="icons/symbols/shopping/laundrette.svg" symbol-percent="150"/>
@@ -591,6 +621,9 @@
                 <symbol src="icons/symbols/tourist/museum.svg" symbol-percent="150"/>
                 <caption fill="#000000" k="name" priority="5" position="below" size="14" stroke="#FFFFFF" stroke-width="3.0"/>
             </m>
+            <!-- <m v="picnic_site">
+                <symbol src="icons/symbols/tourist/picnic.svg" symbol-percent="100"/>
+            </m> -->
             <m v="viewpoint">
                 <symbol src="icons/symbols/tourist/view_point.svg" symbol-percent="150"/>
             </m>
@@ -654,4 +687,5 @@
     <m k="station" v="subway" zoom-min="13">
         <symbol src="icons/symbols/transport/subway.svg" symbol-percent="130"/>
     </m>
+    <!-- Endregion POI's / Symbols -->
 </rendertheme>
