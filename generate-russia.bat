@@ -1,0 +1,10 @@
+python wahoo-map-creator-osmosis.py central-fed-district
+python wahoo-map-creator-osmosis.py crimean-fed-district
+python wahoo-map-creator-osmosis.py far-eastern-fed-district
+python wahoo-map-creator-osmosis.py kaliningrad
+python wahoo-map-creator-osmosis.py north-caucasus-fed-district
+python wahoo-map-creator-osmosis.py northwestern-fed-district
+python wahoo-map-creator-osmosis.py siberian-fed-district
+python wahoo-map-creator-osmosis.py south-fed-district
+python wahoo-map-creator-osmosis.py ural-fed-district
+python wahoo-map-creator-osmosis.py volga-fed-district

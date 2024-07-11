@@ -186,12 +186,15 @@ OUT_PATH = os.path.join(CurDir, 'Output')
 land_polygons_file = os.path.join(
     CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join(CurDir, 'geofabrik.json')
-geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 'bayern', 'brazil', 'california', 'canada', 'central-america', 'europe', 'france',
-                     'germany', 'great-britain', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'us']
+geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
+                     'bayern', 'brazil', 'california', 'canada', 'europe', 'france',
+                     'germany', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 
+                     'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'united-kingdom' , 'us']
 
 # List of regions to block. these regions are "collections" of other countries/regions/states
-block_download = ['dach', 'alps', 'britain-and-ireland', 'south-africa', 'us-midwest',
-                  'us-northeast', 'us-pacific', 'us-south', 'us-west', 'norcal', 'socal']
+block_download = ['africa', 'alps', 'asia', 'australia-oceania', 'britain-and-ireland', 'canada', 'dach', 'europe', 'great-britain' , 'norcal' ,'north-america',
+                  'socal', 'south-africa-and-lesotho', 'south-america', 'us', 'us-midwest', 'us-northeast', 'us-pacific', 'us-south', 'us-west']
+
 
 url = ''
 Map_File_Deleted = 0

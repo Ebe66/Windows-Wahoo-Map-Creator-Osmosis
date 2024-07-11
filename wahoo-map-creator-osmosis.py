@@ -1,3 +1,4 @@
+"""Generates maps for the Wahoo line of bike computers"""
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
@@ -40,13 +41,13 @@ if int(threads) < 1:
 workers = '4'
 
 # Keep (1) or delete (0) the country/region map folders after compression
-# keep_folders = 0
 keep_folders = 1
 generate_elevation = True
 integrate_Wandrer = False
 x_y_processing_mode = False
 Wanted_X = 131
 Wanted_Y = 84
+Process_Routing = False
 
 # End of Configurable Parameters
 
@@ -61,20 +62,20 @@ ID_INDEX_MASK = (2**ID_INDEX_BITS) - 1
 INVALID_ID = (ID_INDEX_MASK << (TILE_INDEX_BITS + LEVEL_BITS)
               ) | (TILE_INDEX_MASK << LEVEL_BITS) | LEVEL_MASK
 
+def get_tile_level(idv):
+    """Get tile level"""
+    return idv & LEVEL_MASK
 
-def get_tile_level(id):
-    return id & LEVEL_MASK
+def get_tile_index(idv):
+    """Get tile index"""
+    return (idv >> LEVEL_BITS) & TILE_INDEX_MASK
 
-
-def get_tile_index(id):
-    return (id >> LEVEL_BITS) & TILE_INDEX_MASK
-
-
-def get_index(id):
-    return (id >> (LEVEL_BITS + TILE_INDEX_BITS)) & ID_INDEX_MASK
-
+def get_index(idv):
+    """Get index"""
+    return (idv >> (LEVEL_BITS + TILE_INDEX_BITS)) & ID_INDEX_MASK
 
 def tiles_for_bounding_box(left, bottom, right, top):
+    """Find Valhalla tiles needed to cover the bounding box """
     # if this is crossing the anti meridian split it up and combine
     if left > right:
         east = tiles_for_bounding_box(left, bottom, 180.0, top)
@@ -98,117 +99,105 @@ def tiles_for_bounding_box(left, bottom, right, top):
     return tiles
 # End Valhalla
 
-
 def get_tile_id(tile_level, lat, lon):
+    """ Get Valhalla tile id """
     level = list(filter(lambda x: x['level'] == tile_level, valhalla_tiles))[0]
     width = int(360 / level['size'])
     return int((lat + 90) / level['size']) * width + int((lon + 180) / level['size'])
 
-
-def get_ll(id):
-    tile_level = get_tile_level(id)
-    tile_index = get_tile_index(id)
+def get_ll(idv):
+    """ Get something for Valhalla ;-) """
+    tile_level = get_tile_level(idv)
+    tile_index = get_tile_index(idv)
     level = list(filter(lambda x: x['level'] == tile_level, valhalla_tiles))[0]
     width = int(360 / level['size'])
     return int(tile_index / width) * level['size'] - 90, (tile_index % width) * level['size'] - 180
 
-# Convert lon./lat. to tile numbers
-
-
 def deg2num(lat_deg, lon_deg, zoom=8):
+    """ Convert lon./lat. to tile numbers """
     lat_rad = math.radians(lat_deg)
     n = 2.0 ** zoom
     xtile = int((lon_deg + 180.0) / 360.0 * n)
     ytile = int((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n)
     return (xtile, ytile)
 
-# Convert tile numbers to lon./lat.
-
-
 def num2deg(xtile, ytile, zoom=8):
+    """ Convert tile numbers to lon./lat. """
     n = 2.0 ** zoom
     lon_deg = xtile / n * 360.0 - 180.0
     lat_rad = math.atan(math.sinh(math.pi * (1 - 2 * ytile / n)))
     lat_deg = math.degrees(lat_rad)
     return (lat_deg, lon_deg)
 
-# Get the Geofabrik outline of the desired country/region from the Geofabrik json file and the
-# download url of the map.
-# input parameter is the name of the desired country/region as use by Geofabric in their json file.
-
-
 def geom(wanted):
-    with open('geofabrik.json', encoding='utf8') as f:
-        data = geojson.load(f)
-    f.close()
+    """ Get the Geofabrik outline of the desired country/region from the Geofabrik json file and the download url of the map.
+    input parameter is the name of the desired country/region as use by Geofabric in their json file. """
+    with open('geofabrik.json', encoding='utf8') as f_gf:
+        data = geojson.load(f_gf)
+    f_gf.close()
 
     # loop through all entries in the json file to find the one we want
     for x in data.features:
         props = x.properties
-        id = props.get('id', '')
-        if id != wanted:
+        idv = props.get('id', '')
+        if idv != wanted:
             continue
         # print (props.get('urls', ''))
         wurls = props.get('urls', '')
         return (x.geometry, wurls.get('pbf', ''))
     return None, None
 
-# Get the map download url from a region with the already loaded json data
-
-
 def find_geofbrik_url(name, geofabrik_json):
+    """ Get the map download url from a region with the already loaded json data """
     for x in geofabrik_json.features:
         props = x.properties
-        id = props.get('id', '')
-        if id != name:
+        idv = props.get('id', '')
+        if idv != name:
             continue
         # print (props.get('urls', ''))
         wurls = props.get('urls', '')
-        return (wurls.get('pbf', ''))
+        return wurls.get('pbf', '')
     return None
 
-# Get the parent map/region of a region from the already loaded json data
-
-
 def find_geofbrik_parent(name, geofabrik_json):
+    """Find the parent country/region of a country/region example find europe for netherlands"""
     for x in geofabrik_json.features:
         props = x.properties
-        id = props.get('id', '')
-        if id != name:
+        idv = props.get('id', '')
+        if idv != name:
             continue
         return (props.get('parent', ''), props.get('id', ''))
     return None, None
 
-# Find the maps to download from Geofabrik for a given range of tiles
-# arguments are
-#   - list of tiles of the desired region bounding box
-#   - name of desired region as used in Geofabrik json file
-#   - polygon of desired region as present in the Geofabrik json file
-
-
-def find_needed_countries(bbox_tiles, wanted_map, xy_mode=False):
+def find_needed_countries(bbox_tiles_l, wanted_map_l, xy_mode=False):
+    """ # Find the maps to download from Geofabrik for a given range of tiles
+    arguments are
+    - list of tiles of the desired region bounding box
+    - name of desired region as used in Geofabrik json file
+    - are we processing a single tile? """
     output = []
 
-    with open('geofabrik.json', encoding='utf8') as f:
-        geofabrik_json_data = geojson.load(f)
-    f.close()
+    with open('geofabrik.json', encoding='utf8') as file_gf:
+        geofabrik_json_data = geojson.load(file_gf)
+    file_gf.close()
 
     # itterate through tiles and find Geofabrik regions that are in the tiles
     counter = 1
-    for tile in bbox_tiles:
+    for tile_l in bbox_tiles_l:
         # Do progress indicator every 50 tiles
         if counter % 50 == 0:
             print(
-                f'Processing tile {counter} of {len(bbox_tiles)+1}', end='\r')
+                f'Processing tile {counter} of {len(bbox_tiles_l)+1}', end='\r')
         counter += 1
 
         parent_added = 0
         force_added = 0
 
-        # example contents of tile: {'index': 0, 'x': 130, 'y': 84, 'tile_left': 2.8125, 'tile_top': 52.48278022207821, 'tile_right': 4.21875, 'tile_bottom': 51.6180165487737}
+        # example contents of tile: {'index': 0, 'x': 130, 'y': 84, 'tile_left': 2.8125, 'tile_top': 52.48278022207821,
+        # 'tile_right': 4.21875, 'tile_bottom': 51.6180165487737}
         # convert tile x/y to tile polygon lon/lat
-        poly = Polygon([(tile["tile_left"], tile["tile_top"]), (tile["tile_right"], tile["tile_top"]), (tile["tile_right"],
-                       tile["tile_bottom"]), (tile["tile_left"], tile["tile_bottom"]), (tile["tile_left"], tile["tile_top"])])
+        poly = Polygon([(tile_l["tile_left"], tile_l["tile_top"]), (tile_l["tile_right"], tile_l["tile_top"]), (tile_l["tile_right"],
+                       tile_l["tile_bottom"]), (tile_l["tile_left"], tile_l["tile_bottom"]), (tile_l["tile_left"], tile_l["tile_top"])])
 
         # (re)initialize list of needed maps and their url's
         must_download_maps = []
@@ -230,7 +219,7 @@ def find_needed_countries(bbox_tiles, wanted_map, xy_mode=False):
                 # check if the region we are processing is needed for the tile we are processing
 
                 # If currently processing country/region IS the desired country/region
-                if regionname == wanted_map:
+                if regionname == wanted_map_l:
                     # Check if it is part of the tile we are processing
                     if rshape.intersects(poly):  # if so
                         if regionname not in must_download_maps and regionname not in geofabrik_regions:
@@ -242,7 +231,7 @@ def find_needed_countries(bbox_tiles, wanted_map, xy_mode=False):
                         continue
 
                 # currently processing country/region is NOT the desired country/region but might be in the tile (neighbouring country)
-                if regionname != wanted_map:
+                if regionname != wanted_map_l:
                     # check if we are processing a country or a sub-region. For countries only process other countries. also block special geofabrik sub regions
                     # processing a country and no special sub-region
                     if parent in geofabrik_regions and regionname not in block_download and regionname not in geofabrik_regions:
@@ -264,13 +253,13 @@ def find_needed_countries(bbox_tiles, wanted_map, xy_mode=False):
                             must_download_urls.append(rurl)
 
         # If this tile contains the desired region, add it to the output
-        # print (f'map= {wanted_map}\tmust_download= {must_download_maps}\tparent_added= {parent_added}\tforce_added= {force_added}')
-        if wanted_map in must_download_maps or parent_added == 1 or force_added == 1 or xy_mode is True:
+        # print (f'map= {wanted_map_l}\tmust_download= {must_download_maps}\tparent_added= {parent_added}\tforce_added= {force_added}')
+        if wanted_map_l in must_download_maps or parent_added == 1 or force_added == 1 or xy_mode is True:
             # first replace any forward slashes with underscores (us/texas to us_texas)
             must_download_maps = [sub.replace(
                 '/', '_') for sub in must_download_maps]
-            output.append({'x': tile['x'], 'y': tile['y'], 'left': tile['tile_left'], 'top': tile['tile_top'],
-                          'right': tile['tile_right'], 'bottom': tile['tile_bottom'], 'countries': must_download_maps, 'urls': must_download_urls})
+            output.append({'x': tile_l['x'], 'y': tile_l['y'], 'left': tile_l['tile_left'], 'top': tile_l['tile_top'],
+                          'right': tile_l['tile_right'], 'bottom': tile_l['tile_bottom'], 'countries': must_download_maps, 'urls': must_download_urls})
         # print (f'\nmust_download: {must_download_maps}')
         # print (f'must_download: {must_download_urls}')
     return output
@@ -283,12 +272,14 @@ OUT_PATH = os.path.join(CurDir, 'Output')
 land_polygons_file = os.path.join(
     CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join(CurDir, 'geofabrik.json')
-geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 'bayern', 'brazil', 'california', 'canada', 'central-america', 'europe', 'france',
-                     'germany', 'great-britain', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'us']
+geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
+                     'bayern', 'brazil', 'california', 'canada', 'europe', 'france',
+                     'germany', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 
+                     'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'united-kingdom' , 'us']
 
 # List of regions to block. these regions are "collections" of other countries/regions/states
-block_download = ['dach', 'alps', 'britain-and-ireland', 'south-africa', 'us-midwest',
-                  'us-northeast', 'us-pacific', 'us-south', 'us-west', 'norcal', 'socal']
+block_download = ['africa', 'alps', 'asia', 'australia-oceania', 'britain-and-ireland', 'canada', 'dach', 'europe', 'great-britain' , 'norcal' ,'north-america',
+                  'russia','socal', 'south-africa-and-lesotho', 'south-america', 'us', 'us-midwest', 'us-northeast', 'us-pacific', 'us-south', 'us-west']
 
 url = ''
 Map_File_Deleted = 0
@@ -350,14 +341,15 @@ if len(sys.argv) != 2:
 wanted_map = sys.argv[1]
 # replace spaces in wanted_map with geofabrik minuses
 wanted_map = wanted_map.replace(" ", "-")
+wanted_map = wanted_map.replace("_", "/")
 wanted_map = wanted_map.lower()
 
 earthexplorer_user = earthexplorer_password = None
 if generate_elevation == 1:
     try:
-        with open('account.json', encoding='utf8') as f:
-            accounts = geojson.load(f)
-        f.close()
+        with open('account.json', encoding='utf8') as File_EE:
+            accounts = geojson.load(File_EE)
+        File_EE.close()
         # print (accounts)
         earthexplorer_user = accounts['earthexplorer-user']
         earthexplorer_password = accounts['earthexplorer-password']
@@ -367,16 +359,16 @@ if generate_elevation == 1:
             "earthexplorer-user": "Username",
             "earthexplorer-password": "Password"
         }
-        f = open('account.json', 'w', encoding='utf8')
-        f.write(geojson.dumps(accounts, indent=4))
-        f.close()
+        File_EE_O = open('account.json', 'w', encoding='utf8')
+        File_EE_O.write(geojson.dumps(accounts, indent=4))
+        File_EE_O.close()
         sys.exit()
 
 if integrate_Wandrer:
     # Check for new Wandrer kmz files in the maps directory. Format must be wandrer*.kmz
     wandrerkmz_files = glob.glob(f'{MAP_PATH}/wandrer*.kmz')
-    if len(wandrerkmz_files):
-        print(f'Unpacking Wandrer KMZ file(s) to KML')
+    if wandrerkmz_files:
+        print('Unpacking Wandrer KMZ file(s) to KML')
         for file in wandrerkmz_files:
             # Unpack to kml
             cmd = ['7za', 'e', '-y', file]
@@ -384,8 +376,8 @@ if integrate_Wandrer:
 
         # Find KML files (could be more then one in a KMZ?)
         wandrerkml_files = glob.glob(f'{MAP_PATH}/wandrer*.kml')
-        if len(wandrerkml_files):
-            print(f'Converting Wandrer KML file(s) to OSM. (This can take a while!)')
+        if wandrerkml_files:
+            print('Converting Wandrer KML file(s) to OSM. (This can take a while!)')
             for file in wandrerkml_files:
                 # Call gpsbabel to convert to osm example gpsbabel -w -r -t -i kml -f file-in -o osm,tag=wandrer:untraveled,tagnd=wandrer:untraveled -F file-out
                 cmd = ['gpsbabel', '-w', '-r', '-t', '-i', 'kml', '-f', file, '-o',
@@ -393,18 +385,18 @@ if integrate_Wandrer:
                 subprocess.run(cmd, check=True, cwd=MAP_PATH)
 
         wandrerosm_files = glob.glob(f'{MAP_PATH}/wandrer*.osm')
-        if len(wandrerosm_files):
+        if wandrerosm_files:
             print(
-                f'Replacing negative ID\'s with Large positive ones and converting to .osm.pbf.')
+                'Replacing negative ID\'s with Large positive ones and converting to .osm.pbf.')
             for file in wandrerosm_files:
                 # Convert negative ID's to large positive numbers
-                with open(file) as f:
+                with open(file, encoding='utf8') as f:
                     osm_data = f.read()
                     f.close()
 
-                    osm_data = osm_data.replace("\'-", "\'20000000000")
+                    osm_data = osm_data.replace("\"-", "\"20000000000")
 
-                    with open(file, 'w') as of:
+                    with open(file, 'w', encoding='utf8') as of:
                         of.write(osm_data)
                         of.close()
 
@@ -415,12 +407,12 @@ if integrate_Wandrer:
                 cmd.append(file)
                 cmd.append('-o='+file.replace(".osm", ".osm.pbf"))
                 # print(cmd)
-                result = subprocess.run(cmd)
+                result = subprocess.run(cmd, check=True)
                 if result.returncode != 0:
                     print(f'Error in OSMConvert with Wandrer file: {file}')
 
         try:
-            print(f'Removing intermediate files and renaming processed input files')
+            print('Removing intermediate files and renaming processed input files')
             for file in wandrerkmz_files:
                 oldbasename = os.path.basename(file)
                 os.rename(file, file.replace(
@@ -440,7 +432,7 @@ To_Old = now - 60 * 60 * 24 * Max_Days_Old
 try:
     FileCreation = os.path.getmtime(geofabrik_json_file)
     if FileCreation < To_Old:
-        print(f'# Deleting old Geofabriks json file')
+        print('# Deleting old Geofabriks json file')
         os.remove(os.path.join(CurDir, 'geofabrik.json'))
         # Force_Processing = 1
 except:
@@ -451,9 +443,9 @@ except:
 if not os.path.exists(geofabrik_json_file) or not os.path.isfile(geofabrik_json_file) or Force_Processing == 1:
     print('# Downloading Geofabrik json file')
     url = 'https://download.geofabrik.de/index-v1.json'
-    r = requests.get(url, allow_redirects=True, stream=True)
+    r = requests.get(url, allow_redirects=True, stream=True, timeout=30)
     if r.status_code != 200:
-        print(f'failed to find or download Geofabrik json file')
+        print('failed to find or download Geofabrik json file')
         sys.exit()
     Download = open(os.path.join(CurDir, 'geofabrik.json'), 'wb')
     for chunk in r.iter_content(chunk_size=10240):
@@ -464,7 +456,7 @@ if not x_y_processing_mode:
     # Check if wanted_map is in the json file and if so get the polygon (shape)
     wanted_map_geom, wanted_url = geom(wanted_map)
     if not wanted_map_geom:
-        # try to prepend us\ to the wanted_map
+        # try to prepend us/ to the wanted_map
         wanted_map_geom, wanted_url = geom('us/'+wanted_map)
         if wanted_map_geom:
             wanted_map = 'us/'+wanted_map
@@ -512,10 +504,10 @@ if not x_y_processing_mode:
 
     # Build list of tiles to process from the bounding box
     bbox_tiles = []
-    for x in range(top_x, bot_x + 1):
-        for y in range(top_y, bot_y + 1):
-            (tile_top, tile_left) = num2deg(x, y)
-            (tile_bottom, tile_right) = num2deg(x+1, y+1)
+    for x_coord in range(top_x, bot_x + 1):
+        for y_coord in range(top_y, bot_y + 1):
+            (tile_top, tile_left) = num2deg(x_coord, y_coord)
+            (tile_bottom, tile_right) = num2deg(x_coord+1, y_coord+1)
             if tile_left < -180:
                 tile_left = -180
             if tile_left > 180:
@@ -532,11 +524,11 @@ if not x_y_processing_mode:
                 tile_bottom = -90
             if tile_bottom > 90:
                 tile_bottom = 90
-            bbox_tiles.append({'x': x, 'y': y, 'tile_left': tile_left, 'tile_top': tile_top,
+            bbox_tiles.append({'x': x_coord, 'y': y_coord, 'tile_left': tile_left, 'tile_top': tile_top,
                               'tile_right': tile_right, 'tile_bottom': tile_bottom})
 
     # Get a list of the Geofabrik maps needed to process these tiles
-    print(f'\nSearching for needed maps, this can take a while.\n')
+    print('\nSearching for needed maps, this can take a while.\n')
     country = find_needed_countries(bbox_tiles, wanted_map)
     # print (f'Country= {country}')
     # sys.exit()
@@ -587,7 +579,7 @@ else:
     (bbox_left, bbox_bottom, bbox_right, bbox_top) = wanted_region.bounds
 
     # wanted_region = bbox_tiles
-    print(f'\nSearching for needed maps, this can take a while.\n')
+    print('\nSearching for needed maps, this can take a while.\n')
     country = find_needed_countries(bbox_tiles, None, xy_mode=True)
     # print (f'Country= {country}')
 
@@ -598,7 +590,7 @@ To_Old = now - 60 * 60 * 24 * Max_Days_Old
 try:
     FileCreation = os.path.getmtime(land_polygons_file)
     if FileCreation < To_Old:
-        print(f'# Deleting old land polygons file')
+        print('# Deleting old land polygons file')
         # Keep pregenerated files to reduce processing time
         # os.remove(os.path.join (CurDir, 'land-polygons-split-4326', 'land_polygons.shp'))
         # Force_Processing = 1
@@ -611,9 +603,9 @@ if not os.path.exists(land_polygons_file) or not os.path.isfile(land_polygons_fi
     print('# Downloading land polygons file')
 #    url = 'https://osmdata.openstreetmap.de/download/land-polygons-split-4326.zip'
     url = 'https://osmdata.openstreetmap.de/download/land-polygons-split-4326.zip'
-    r = requests.get(url, allow_redirects=True, stream=True)
+    r = requests.get(url, allow_redirects=True, stream=True, timeout=30)
     if r.status_code != 200:
-        print(f'failed to find or download land polygons file')
+        print('failed to find or download land polygons file')
         sys.exit()
     Download = open(os.path.join(CurDir, 'land-polygons-split-4326.zip'), 'wb')
     for chunk in r.iter_content(chunk_size=10240):
@@ -623,10 +615,10 @@ if not os.path.exists(land_polygons_file) or not os.path.isfile(land_polygons_fi
     cmd = ['7za', 'x', '-y',
            os.path.join(CurDir, 'land-polygons-split-4326.zip')]
     # print(cmd)
-    result = subprocess.run(cmd)
+    result = subprocess.run(cmd, check=True)
     os.remove(os.path.join(CurDir, 'land-polygons-split-4326.zip'))
     if result.returncode != 0:
-        print(f'Error unpacking land polygons file')
+        print('Error unpacking land polygons file')
         sys.exit()
 
 print('\n\n# check countries .osm.pbf files')
@@ -642,15 +634,13 @@ for tile in country:
 # time.sleep(60)
 
 # Check for expired maps and delete them
-print(f'# Checking for old maps and remove them')
+print('# Checking for old maps and remove them')
 now = time.time()
 To_Old = now - 60 * 60 * 24 * Max_Days_Old
 for c in border_countries:
-    #    map_files = glob.glob(f'{MAP_PATH}/{c}*.osm.pbf')
     # Prevent matching to multiple maps like australia and australia-oceania
     map_files = glob.glob(f'{MAP_PATH}/{c}-latest.osm.pbf')
     if len(map_files) != 1:
-        # map_files = glob.glob(f'{MAP_PATH}/**/{c}*.osm.pbf')
         # Prevent matching to multiple maps like australia and australia-oceania
         map_files = glob.glob(f'{MAP_PATH}/**/{c}-latest.osm.pbf')
     if len(map_files) == 1 and os.path.isfile(map_files[0]):
@@ -680,12 +670,10 @@ for tile in country:
     for c in tile['countries']:  # we want this osm.pbf
         if c not in border_countries:  # and it is not yet in our list of files
             print(f'# Checking mapfile for {c}')
-            # map_files = glob.glob(f'{MAP_PATH}/{c}*.osm.pbf') # Search for it in the map folder
             # Prevent matching to multiple maps like australia and australia-oceania
             # Search for it in the map folder
             map_files = glob.glob(f'{MAP_PATH}/{c}-latest.osm.pbf')
             if len(map_files) != 1:  # not found in the map folder
-                # map_files = glob.glob(f'{MAP_PATH}/**/{c}*.osm.pbf') # and the sub-folders of the map folder
                 # Prevent matching to multiple maps like australia and australia-oceania
                 # and the sub-folders of the map folder
                 map_files = glob.glob(f'{MAP_PATH}/**/{c}-latest.osm.pbf')
@@ -693,7 +681,7 @@ for tile in country:
             if len(map_files) != 1 or not os.path.isfile(map_files[0]):
                 print(f'# Trying to download missing map of {c}.')
                 url = tile['urls'][i]
-                r = requests.get(url, allow_redirects=True, stream=True)
+                r = requests.get(url, allow_redirects=True, stream=True, timeout=30)
                 if r.status_code != 200:
                     print(f'failed to find or download country: {c}')
                     sys.exit()
@@ -713,13 +701,10 @@ for tile in country:
 print('\n\n# filter tags from country osm.pbf files')
 for key, val in border_countries.items():
     # print(key, val)
-    #    outFile = os.path.join(OUT_PATH, f'filtered-{key}.osm.pbf')
-    #    outFileNames = os.path.join(OUT_PATH, f'filtered-{key}Names.osm.pbf')
     outFileo5m = os.path.join(OUT_PATH, f'outFile-{key}.o5m')
     outFileo5mFilteredTemp = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
     outFileo5mFiltered = os.path.join(OUT_PATH, f'outFileFiltered-{key}.o5m')
-    outFileo5mFilteredNames = os.path.join(
-        OUT_PATH, f'outFileFiltered-{key}Names.o5m')
+    outFileo5mFilteredNames = os.path.join(OUT_PATH, f'outFileFiltered-{key}Names.o5m')
 
     # Convert osm.pbf file to o5m for processing with osmfilter
     # print(outFile)
@@ -730,7 +715,7 @@ for key, val in border_countries.items():
         cmd.append(val['map_file'])
         cmd.append('-o='+outFileo5m)
         # print(cmd)
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
             print(f'Error in OSMConvert with country: {key}')
             sys.exit()
@@ -745,7 +730,7 @@ for key, val in border_countries.items():
                    objects_to_keep_without_name)
         cmd.append('-o='+outFileo5mFilteredTemp)
         # print(cmd)
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
             print(f'Error in OSMFilter with country: {key}')
             sys.exit()
@@ -759,7 +744,7 @@ for key, val in border_countries.items():
                    objects_to_keep_with_name)
         cmd.append('-o='+outFileo5mFilteredNames)
         # print(cmd)
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
             print(f'Error in OSMFilter with country: {key}')
             sys.exit()
@@ -771,7 +756,7 @@ for key, val in border_countries.items():
         cmd.append(outFileo5mFilteredNames)
         cmd.append('-o='+outFileo5mFiltered)
         # print(cmd)
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
             print(f'Error in OSMConvert merge with country: {key}')
             sys.exit()
@@ -782,14 +767,13 @@ for key, val in border_countries.items():
 #        os.remove(outFileo5mFilteredNames)
 
     border_countries[key]['filtered_file'] = outFileo5mFiltered
-#    border_countries[key]['filtered_fileNames'] = outFileo5mFilteredNames
 
 print('\n\n# Generate land')
 TileCount = 1
 for tile in country:
     landFile = os.path.join(
-        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land.shp')
-    outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land')
+        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'land.shp')
+    outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'land')
 
     if not os.path.isfile(landFile) or Force_Processing == 1:
         print(
@@ -809,23 +793,23 @@ for tile in country:
         cmd.append(landFile)
         cmd.append(land_polygons_file)
         # print(cmd)
-        subprocess.run(cmd)
+        subprocess.run(cmd, check=True)
 
     if not os.path.isfile(outFile+'1.osm') or Force_Processing == 1:
         cmd = ['python', 'shape2osm.py', '-l', outFile, landFile]
         # print(cmd)
-        subprocess.run(cmd)
+        subprocess.run(cmd, check=True)
     TileCount += 1
 
 print('\n\n# Generate sea')
 TileCount = 1
 for tile in country:
     outFile = os.path.join(
-        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'sea.osm')
+        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'sea.osm')
     if not os.path.isfile(outFile) or Force_Processing == 1:
         print(
             f'# Generate sea {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
-        with open('sea.osm') as f:
+        with open('sea.osm', encoding='utf8') as f:
             sea_data = f.read()
             f.close()
 
@@ -843,7 +827,7 @@ for tile in country:
                     '$RIGHT', f'{tile["right"]+0.1:.6f}')
                 sea_data = sea_data.replace('$TOP', f'{tile["top"]+0.1:.6f}')
 
-            with open(outFile, 'w') as of:
+            with open(outFile, 'w', encoding='utf8') as of:
                 of.write(sea_data)
                 of.close()
     TileCount += 1
@@ -853,52 +837,40 @@ if generate_elevation == 1:
     TileCount = 1
     for tile in country:
         outFile = os.path.join(
-            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation')
+            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'elevation')
         elevation_files = glob.glob(os.path.join(
-            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
+            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'elevation*.pbf'))
+        print (f'\nElevation_files = {elevation_files}')
         if not elevation_files or Force_Processing == 1:
             print(
                 f'# Generate elevation {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
             cmd = ['phyghtmap']
             cmd.append('-a '+f'{tile["left"]}' + ':' + f'{tile["bottom"]}' +
                        ':' + f'{tile["right"]}' + ':' + f'{tile["top"]}')
-            cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=srtm1,view1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
-                       '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}', '--earthexplorer-password='+f'{earthexplorer_password}'])
+            # Old initial version
+            cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000','--max-nodes-per-tile=0',
+                       '--max-nodes-per-way=2000', '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}','--earthexplorer-password='+f'{earthexplorer_password}'])
+            #cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=srtm1,view1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
+            #           '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}', '--earthexplorer-password='+f'{earthexplorer_password}'])
+            #cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view1,srtm1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
+            #           '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}', '--earthexplorer-password='+f'{earthexplorer_password}'])
             # print(cmd)
             # sys.exit()
-            result = subprocess.run(cmd)
+            result = subprocess.run(cmd, check=True)
             if result.returncode != 0:
                 print(
                     f'Error in phyghtmap with tile: {tile["x"]}, {tile["y"]}')
                 sys.exit()
         TileCount += 1
-    # sys.exit()
-    # print('\n\n# Generate elevation data OSM')
-    # TileCount = 1
-    # for tile in country:
-    #    outFile = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation')
-    #    elevation_files = glob.glob(os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.osm'))
-    #    if not elevation_files or Force_Processing == 1:
-    #        print(f'# Generate elevation {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
-    #        cmd = ['phyghtmap']
-    #        cmd.append('-a '+f'{tile["left"]}' + ':' + f'{tile["bottom"]}' + ':' + f'{tile["right"]}' + ':' + f'{tile["top"]}')
-    #        cmd.extend(['-o', f'{outFile}','-s 10', '-c 100,50','--source=view1,view3,srtm3', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000','--max-nodes-per-tile=0','--start-way-id=2000000000','--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}','--earthexplorer-password='+f'{earthexplorer_password}'])
-    #        #print(cmd)
-    #        #sys.exit()
-    #        result = subprocess.run(cmd)
-    #        if result.returncode != 0:
-    #            print(f'Error in phyghtmap with country: {c}')
-    #            sys.exit()
-    #    TileCount += 1
-    # sys.exit()
+    #sys.exit()
 
 print('\n\n# Split filtered country files to tiles')
 
 # Check if there is a wandrer map
 doWandrer = None
-inWandrer_files = None
+inWandrer_files = list()
 if integrate_Wandrer:
-    inWandrer_files = glob.glob(os.path.join(MAP_PATH, f'wandrer*.osm.pbf'))
+    inWandrer_files = glob.glob(os.path.join(MAP_PATH, 'wandrer*.osm.pbf'))
     if inWandrer_files and integrate_Wandrer:
         doWandrer = True
     else:
@@ -911,12 +883,8 @@ for tile in country:
         outFile = os.path.join(
             OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf')
         outMerged = os.path.join(
-            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'merged.osm.pbf')
+            OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'merged.osm.pbf')
         if not os.path.isfile(outMerged) or Force_Processing == 1:
-            # cmd = ['.\\osmosis\\bin\\osmosis.bat', '--rbf',border_countries[c]['filtered_file'],'workers='+workers, '--buffer', 'bufferCapacity=12000', '--bounding-box', 'completeWays=yes', 'completeRelations=yes']
-            # cmd.extend(['left='+f'{tile["left"]}', 'bottom='+f'{tile["bottom"]}', 'right='+f'{tile["right"]}', 'top='+f'{tile["top"]}', '--buffer', 'bufferCapacity=12000', '--wb'])
-            # cmd.append('file='+outFile)
-            # cmd.append('omitmetadata=true')
             cmd = ['osmconvert', '--hash-memory=2500']
             cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
                        ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
@@ -925,32 +893,10 @@ for tile in country:
             cmd.append(border_countries[c]['filtered_file'])
             cmd.append('-o='+outFile)
             # print(cmd)
-            result = subprocess.run(cmd)
+            result = subprocess.run(cmd, check=True)
             if result.returncode != 0:
                 print(f'Error in Osmconvert with country: {c}')
                 sys.exit()
-            # print(border_countries[c]['filtered_file'])
-
-        #outFile = os.path.join(
-        #    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}Names.osm.pbf')
-#        if not os.path.isfile(outFile) or Force_Processing == 1:
-        #if not os.path.isfile(outMerged) or Force_Processing == 1:
-            # cmd = ['.\\osmosis\\bin\\osmosis.bat', '--rbf',border_countries[c]['filtered_file'],'workers='+workers, '--buffer', 'bufferCapacity=12000', '--bounding-box', 'completeWays=yes', 'completeRelations=yes']
-            # cmd.extend(['left='+f'{tile["left"]}', 'bottom='+f'{tile["bottom"]}', 'right='+f'{tile["right"]}', 'top='+f'{tile["top"]}', '--buffer', 'bufferCapacity=12000', '--wb'])
-            # cmd.append('file='+outFile)
-            # cmd.append('omitmetadata=true')
-        #    cmd = ['osmconvert', '-v', '--hash-memory=2500']
-        #    cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
-        #               ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
-        #    cmd.extend(
-        #        ['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
-        #    cmd.append(border_countries[c]['filtered_fileNames'])
-        #    cmd.append('-o='+outFile)
-            # print(cmd)
-        #    result = subprocess.run(cmd)
-        #    if result.returncode != 0:
-        #        print(f'Error in Osmconvert with country: {c}')
-        #        sys.exit()
             # print(border_countries[c]['filtered_file'])
 
         if doWandrer:
@@ -966,9 +912,9 @@ for tile in country:
                     cmd.append(wandrer_map)
                     cmd.append('-o='+outWandrer)
                     # print(cmd)
-                    result = subprocess.run(cmd)
+                    result = subprocess.run(cmd, check=True)
                     if result.returncode != 0:
-                        print(f'Error in Osmconvert while processing Wandrer file')
+                        print('Error in Osmconvert while processing Wandrer file')
                         sys.exit()
     TileCount += 1
 
@@ -978,10 +924,10 @@ for tile in country:
     print(
         f'\n\n# Merging tiles for tile {TileCount} of {len(country)} for Coordinates: {tile["x"]},{tile["y"]}')
     outFile = os.path.join(
-        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'merged.osm.pbf')
+        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'merged.osm.pbf')
     # Check if there are "split*.osm.pbf" files to merge. If not, skip tile
     files_to_merge = glob.glob(os.path.join(
-        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-*.osm.pbf'))
+        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'split-*.osm.pbf'))
     if files_to_merge:
         if not os.path.isfile(outFile) or Force_Processing == 1:
             cmd = [os.path.join(CurDir, 'Osmosis', 'bin', 'osmosis.bat')]
@@ -994,15 +940,10 @@ for tile in country:
                 cmd.append('workers='+workers)
                 if loop > 0:
                     cmd.append('--merge')
-                #cmd.append('--rbf')
-                #cmd.append(os.path.join(
-                #    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{c}.osm.pbf'))
-                #cmd.append('workers='+workers)
-                #cmd.append('--merge')
                 loop += 1
             if generate_elevation == 1:
                 elevation_files = glob.glob(os.path.join(
-                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'elevation*.pbf'))
+                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'elevation*.pbf'))
                 for elevation in elevation_files:
                     cmd.append('--rbf')
                     cmd.append(os.path.join(
@@ -1011,7 +952,7 @@ for tile in country:
                     cmd.append('--merge')
             if doWandrer:
                 wandrer_files = glob.glob(os.path.join(
-                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-wandrer*.osm.pbf'))
+                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'split-wandrer*.osm.pbf'))
                 for wandrer in wandrer_files:
                     cmd.append('--rbf')
                     cmd.append(os.path.join(
@@ -1019,16 +960,16 @@ for tile in country:
                     cmd.append('workers='+workers)
                     cmd.append('--merge')
             land_files = glob.glob(os.path.join(
-                OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'land*.osm'))
+                OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'land*.osm'))
             for land in land_files:
                 cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH,
                            f'{tile["x"]}', f'{tile["y"]}', f'{land}'), '--s', '--m'])
             cmd.extend(['--rx', 'file='+os.path.join(OUT_PATH,
-                       f'{tile["x"]}', f'{tile["y"]}', f'sea.osm'), '--s', '--m'])
+                       f'{tile["x"]}', f'{tile["y"]}', 'sea.osm'), '--s', '--m'])
             cmd.extend(['--tag-transform', 'file=' + os.path.join(CurDir,
                        'tunnel-transform.xml'), '--buffer', '--wb', outFile, 'omitmetadata=true'])
             # print(cmd)
-            result = subprocess.run(cmd)
+            result = subprocess.run(cmd, check=True)
             if result.returncode != 0:
                 print(f'Error in Osmosis with country: {c}')
                 sys.exit()
@@ -1050,12 +991,13 @@ for tile in country:
             cmd.append(
                 f'bbox={tile["bottom"]:.6f},{tile["left"]:.6f},{tile["top"]:.6f},{tile["right"]:.6f}')
             cmd.append('zoom-interval-conf=10,0,17')
-            # cmd.append('way-clipping=false')
             cmd.append('threads='+threads)
+            cmd.append('skip-invalid-relations=true')
+            #cmd.append('type=hd')
             cmd.append('tag-conf-file=' +
                        os.path.join(CurDir, 'tag-wahoo.xml'))
-            # print(cmd)
-            result = subprocess.run(cmd)
+            print(cmd)
+            result = subprocess.run(cmd, check=True)
             if result.returncode != 0:
                 print(f'Error in Osmosis with tile: {tile["x"]}, {tile["y"]}')
                 sys.exit()
@@ -1064,7 +1006,7 @@ for tile in country:
             cmd = ['lzma', 'e', outFile, outFile+'.lzma',
                    f'-mt{threads}', '-d27', '-fb273', '-eos']
             # print(cmd)
-            subprocess.run(cmd)
+            subprocess.run(cmd, check=True)
 
             # Create "tile present" file
             f = open(outFile + '.lzma.18', 'wb')
@@ -1081,7 +1023,7 @@ except:
     pass
 
 # copy the needed tiles to the country folder
-print(f'Copying Wahoo and map tiles to output folders')
+print('Copying Wahoo and map tiles to output folders')
 for tile in country:
     src = os.path.join(f'{OUT_PATH}', f'{tile["x"]}', f'{tile["y"]}.map.lzma')
     # Check if source map.lzma file is available to copy
@@ -1128,11 +1070,9 @@ for tile in country:
             sys.exit()
 
 # Process routing tiles if present
-#IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'000')
-# If above line is commented out and below line uncommented, do not create routing files
-IN_R_PATH = os.path.join(CurDir, f'valhalla_tiles', f'2', f'dummy')
+IN_R_PATH = os.path.join(CurDir, 'valhalla_tiles', '2', '000')
 rtile = None
-if os.path.isdir(IN_R_PATH):
+if os.path.isdir(IN_R_PATH) and Process_Routing is True:
     # Calculate which routing tiles are needed
     routing_tiles = tiles_for_bounding_box(
         bbox_left, bbox_bottom, bbox_right, bbox_top)
@@ -1144,12 +1084,12 @@ if os.path.isdir(IN_R_PATH):
         inRFile = os.path.join(
             IN_R_PATH, f'{str(rtile[1])[0:3]}', f'{str(rtile[1])[3:6]}.gph')
         print(f'inRFile = {inRFile}')
-        outRFile = os.path.join(OUT_PATH, f'{wanted_map}-routing', f'routing',
-                                f'2', f'000', f'{str(rtile[1])[0:3]}', f'{str(rtile[1])[3:6]}.gph')
+        outRFile = os.path.join(OUT_PATH, f'{wanted_map}-routing', 'routing',
+                                '2', '000', f'{str(rtile[1])[0:3]}', f'{str(rtile[1])[3:6]}.gph')
         print(f'outRFile = {outRFile}')
 
         outdir = os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing',
-                              f'routing', f'2', f'000', f'{str(rtile[1])[0:3]}')
+                              'routing', '2', '000', f'{str(rtile[1])[0:3]}')
         if not os.path.isdir(outdir):
             os.makedirs(outdir)
             # print(f'outdir = {outdir}')
@@ -1164,7 +1104,7 @@ if os.path.isdir(IN_R_PATH):
             cmd = ['lzma', 'e', outRFile, outRFile+'.lzma',
                    f'-mt{threads}', '-d27', '-fb273', '-eos']
             # print(cmd)
-            subprocess.run(cmd)
+            subprocess.run(cmd, check=True)
 
             # Create "tile present" file
             f = open(outRFile + '.lzma.18', 'wb')
@@ -1174,21 +1114,21 @@ if os.path.isdir(IN_R_PATH):
             try:
                 os.remove(outRFile)
             except OSError as e:
-                print(f'Error, could not delete routing tile ' + f'{outRFile}')
+                print('Error, could not delete routing tile ' + f'{outRFile}')
 
 
 cmd = ['7za', 'a', '-tzip', wanted_map,
-       os.path.join(f'{OUT_PATH}', f'{wanted_map}', f'*')]
+       os.path.join(f'{OUT_PATH}', f'{wanted_map}', '*')]
 subprocess.run(cmd, check=True, cwd=OUT_PATH)
 
 cmd = ['7za', 'a', '-tzip', wanted_map + '-maps.zip',
-       os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps', f'*')]
+       os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps', '*')]
 subprocess.run(cmd, check=True, cwd=OUT_PATH)
 
 # Compress routing tiles
 if rtile:
-    cmd = ['7za', 'a', '-tzip', wanted_map+f'-routing',
-           os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing', f'*')]
+    cmd = ['7za', 'a', '-tzip', wanted_map+'-routing',
+           os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing', '*')]
     subprocess.run(cmd, check=True, cwd=OUT_PATH)
 
 # if desired, delete the Wahoo and map folders after compression
@@ -1196,16 +1136,16 @@ if keep_folders == 0:
     try:
         shutil.rmtree(os.path.join(f'{OUT_PATH}', f'{wanted_map}'))
     except OSError as e:
-        print(f'Error, could not delete folder ' +
+        print('Error, could not delete folder ' +
               os.path.join(f'{OUT_PATH}', f'{wanted_map}'))
     try:
         shutil.rmtree(os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps'))
     except OSError as e:
-        print(f'Error, could not delete folder ' +
+        print('Error, could not delete folder ' +
               os.path.join(f'{OUT_PATH}', f'{wanted_map}-maps'))
     if rtile:
         try:
             shutil.rmtree(os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing'))
         except OSError as e:
-            print(f'Error, could not delete folder ' +
+            print('Error, could not delete folder ' +
                   os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing'))

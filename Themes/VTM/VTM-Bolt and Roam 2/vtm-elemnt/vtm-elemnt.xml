@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#FFFFFF" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     <stylemenu id="stylemenu" defaultvalue="BOLT_2" defaultlang="en">
-        <layer id="ROAM_2">
+        <layer id="ROAM_2" visible="true">
             <name lang="en" value="Roam2"/>
             <cat id="roam2"/>
             <cat id="trails-osm"/>
         </layer>
-        <layer id="BOLT_2">
+        <layer id="BOLT_2" enabled="true" visible="true">
             <name lang="en" value="Bolt2"/>
             <cat id="bolt2"/>
             <cat id="trails-osm"/>
@@ -674,6 +674,9 @@
                 <line cat="roam2" cap="butt" fade="12" fix="true" stipple="25" stipple-stroke="#FFFFFF" stipple-width="0.7" stroke="#555555" width="3"/>
             </m>
         </m>
+    </m>
+    <m e="way" k="route" v="bicycle|mtb">
+        <line stroke="#FF00FF" width="2.0" cap="butt"/>
     </m>
     <!-- endregion railway -->
     <!-- region place captions -->

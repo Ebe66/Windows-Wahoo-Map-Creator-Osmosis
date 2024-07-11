@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rendertheme xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map-background="#FFFFFF" version="1" xmlns="http://opensciencemap.org/rendertheme" xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
     <stylemenu id="stylemenu" defaultvalue="BOLT_2" defaultlang="en">
-        <layer id="BOLT_2">
+        <layer id="BOLT_2" enabled="true" visible="true">
             <name lang="en" value="Roam"/>
             <cat id="roam"/>
             <cat id="trails-osm"/>

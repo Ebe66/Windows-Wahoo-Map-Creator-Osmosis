@@ -1,0 +1,19 @@
+Usage of ./mapsforge-read:
+  -i string
+      input .map file
+  -lat float
+      latitude (default 285.0511287798066)
+  -lon float
+      longitude (default 380)
+  -pois
+      show pois
+  -way-nodes
+      show ways and nodes
+  -ways
+      show ways
+  -x int
+      tile x (default -1)
+  -y int
+      tile y (default -1)
+  -z int
+      zoom (default 8)

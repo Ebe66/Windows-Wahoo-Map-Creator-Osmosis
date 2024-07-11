@@ -3,51 +3,51 @@
 	version="1" xmlns="http://opensciencemap.org/rendertheme"
 	xsi:schemaLocation="http://opensciencemap.org/rendertheme https://raw.githubusercontent.com/mapsforge/vtm/master/resources/rendertheme.xsd">
 
-	<stylemenu id="stylemenu" defaultvalue="BOLT_2" defaultlang="en">
+	<stylemenu id="stylemenu" defaultvalue="ROAM_2" defaultlang="en">
 
-		<layer id="BOLT_2">
+		<layer id="BOLT_2" visible="true">
 			<name lang="en" value="Bolt2"/>
 			<cat id="bolt2"/>
 			<cat id="trails-osm"/>
 		</layer>
 
-		<layer id="BOLT_2-DARK">
+		<layer id="BOLT_2-DARK" visible="true">
 			<name lang="en" value="Bolt2"/>
 			<cat id="bolt2-dark"/>
 			<cat id="trails-osm"/>
 		</layer>
 
-		<layer id="BOLT_2-TF">
+		<layer id="BOLT_2-TF" visible="true">
 			<name lang="en" value="TF"/>
 			<cat id="bolt2"/>
 			<cat id="trails-tf"/>
 		</layer>
 
-		<layer id="BOLT_2-DARK-TF">
+		<layer id="BOLT_2-DARK-TF" visible="true">
 			<name lang="en" value="TF"/>
 			<cat id="bolt2-dark"/>
 			<cat id="trails-tf"/>
 		</layer>
 
-		<layer id="ROAM_2">
+		<layer id="ROAM_2" enabled="true" visible="true">
 			<name lang="en" value="Roam2"/>
 			<cat id="roam2"/>
 			<cat id="trails-osm"/>
 		</layer>
 
-		<layer id="ROAM_2-DARK">
+		<layer id="ROAM_2-DARK" visible="true">
 			<name lang="en" value="Roam2"/>
 			<cat id="roam2-dark"/>
 			<cat id="trails-osm"/>
 		</layer>
 
-		<layer id="ROAM_2-TF">
+		<layer id="ROAM_2-TF" visible="true">
 			<name lang="en" value="TF"/>
 			<cat id="roam2"/>
 			<cat id="trails-tf"/>
 		</layer>
 
-		<layer id="ROAM_2-DARK-TF">
+		<layer id="ROAM_2-DARK-TF" visible="true">
 			<name lang="en" value="TF"/>
 			<cat id="roam2-dark"/>
 			<cat id="trails-tf"/>
@@ -191,7 +191,7 @@
 		<outline-layer cat="bolt2-dark" id="bolt2-major-roads-dark" stroke="#000000" width="0.75"/>
 		<outline-layer cat="roam2" id="roam2-major-roads" use="bolt2-major-roads"/>
 		<outline-layer cat="roam2-dark" id="roam2-major-roads-dark" use="bolt2-major-roads-dark"/>
-		<outline-layer id="tf:tfd_2" stroke="#46b414" width="1.05"/>
+		<outline-layer id="tf:tfd_2" stroke="#000000" width="1.05"/>
 
 		<!-- the outline of bridges -->
 		<outline-layer id="bridge" stroke="#000000" width="1"/>
@@ -231,7 +231,7 @@
                     <line cat="bolt2" stroke="#000000" width="1.5"/>
 					<line cat="bolt2" stroke="#FFFFFF" width="1.0"/>
 					<line cat="bolt2-dark" stroke="#FFFFFF" width="1.0"/>
-                    <line cat="roam2" stroke="#000000" width="1.0"/>
+                    <line cat="roam2" stroke="#000000" width="1.5"/>
 					<line cat="roam2" stroke="#FFFFFF" width="1.0"/>
 					<line cat="roam2-dark" stroke="#FFFFFF" width="1.0"/>
 				</m>
@@ -403,7 +403,7 @@
                             <line use="bolt2-track-raw-o" width="0.6" stroke="#000000" dasharray="20,10"/>
 							<line use="bolt2-track-raw" width="0.1" stroke="#FFFFFF" dasharray="20,10"/>
 							<line use="bolt2-track-raw-dark" width="0.1" stroke="#FFFFFF" dasharray="20,10"/>
-                            <line use="roam2-track-raw-o" width="0.6" stroke="#FFFFFF" dasharray="20,10"/>
+                            <line use="roam2-track-raw-o" width="0.6" stroke="#000000" dasharray="20,10"/>
 							<line use="roam2-track-raw" width="0.1" stroke="#FFFFFF" dasharray="20,10"/>
 							<line use="roam2-track-raw-dark" width="0.1" stroke="#FFFF00" dasharray="20,10"/>
 						</m>
@@ -539,7 +539,7 @@
                             <line use="bolt2-track-other-o" cap="butt" />
 							<line use="bolt2-track-other" cap="butt" />
 							<line use="bolt2-track-other-dark" cap="butt" />
-                            <line use="roam2-track-other-c" cap="butt" />
+                            <line use="roam2-track-other-o" cap="butt" />
 							<line use="roam2-track-other" cap="butt" />
 							<line use="roam2-track-other-dark" cap="butt" />
 							<line  stroke="#FFFFFF" width="0.5" cap="butt"/>
