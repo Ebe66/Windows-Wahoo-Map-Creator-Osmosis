@@ -206,6 +206,7 @@ if len(sys.argv) != 2:
 wanted_map = sys.argv[1]
 # replace spaces in wanted_map with geofabrik minuses
 wanted_map = wanted_map.replace(" ", "-")
+wanted_map = wanted_map.replace("_", "/") 
 wanted_map = wanted_map.lower()
 
 # is geofabrik json file present and not older then Max_Days_Old?
