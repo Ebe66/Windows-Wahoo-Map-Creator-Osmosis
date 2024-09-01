@@ -1,0 +1,26 @@
+Get pregenerated maps and routing files here:
+http://wahoomaps.higli.de/
+
+1-Sept-2024 
+Added new routing files on the OneDrive (link at the top)
+
+24-Aug-2024 v1.0.0
+Well there have been a lot of changes before this point but as there has never been a changelog before lets call it v1.0.0 ;-)
+Did a new run of all maps excluding Antarctica atm because it will not run correctly.
+New is that for Europe the elevation data used for the creation of the contour lines is using Sonny's Lidarr data which as far as I know is the most accurate out there. 
+If somebody knows better please let me know! By posting in the telegram group: https://t.me/+Mor244hPZw85YTVk
+The elevation for the rest of the world is made from the same data as Wahoo uses for the elevation profile in the routing tiles.
+Wahoo uses Valhalla which uses this data https://registry.opendata.aws/terrain-tiles/ 
+Haven't got a clue as to how complete or accurate it is, but it seemed a good choise seeing that this is the the same data Wahoo uses.
+The only exception to this is about 50-100 tiles of north america which will not render with this data. Here I used view3 from:
+https://viewfinderpanoramas.org/dem3.html
+
+Also new is the highlighting of bicycle and mtb routes on the map!
+Sounds so simple in a single line but it took a lot of time to get there!
+At the moment this is only working with my VTM-Bold and Roam 2 theme in the sample themes folder.
+Routes will show up in pink. Sorry, if you don't like the colour just change it in the theme ;-)
+I can't even use it myself because I'm still on the b/w bolt 1 but at the least I see it as a way to show a prefered route to use as the 
+routes are normally safer/more touristic/quiter etc etc. Use it, don't use it, like it not, let me know in the telegram group above!
+ 
+Request: If you do like my work (the pre-maps and or theme's) please, pretty pleasy let the world know! 
+The more comments or other evidence of them being used I get the more motivation I have to keep doing this!!!   

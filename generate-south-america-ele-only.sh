@@ -1,0 +1,17 @@
+python wmc-e.py argentina
+python wmc-e.py bolivia
+python wmc-e.py brazil
+python wmc-e.py centro-oeste
+python wmc-e.py chile
+python wmc-e.py colombia
+python wmc-e.py ecuador
+python wmc-e.py guyana
+python wmc-e.py nordeste
+python wmc-e.py norte
+python wmc-e.py paraguay
+python wmc-e.py peru
+python wmc-e.py sudeste
+python wmc-e.py sul
+python wmc-e.py suriname
+python wmc-e.py uruguay
+python wmc-e.py venezuela

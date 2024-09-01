@@ -42,10 +42,10 @@ workers = '4'
 
 # Keep (1) or delete (0) the country/region map folders after compression
 keep_folders = 1
-generate_elevation = True
-integrate_Wandrer = False
+generate_elevation = False
+integrate_Wandrer = True
 integrate_Routes = True
-x_y_processing_mode = False
+x_y_processing_mode = True
 Wanted_X = 131
 Wanted_Y = 84
 Process_Routing = False
@@ -273,9 +273,8 @@ OUT_PATH = os.path.join(CurDir, 'Output')
 land_polygons_file = os.path.join(
     CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join(CurDir, 'geofabrik.json')
-# Do not download the countries below because they are comprised of sub-regions. Downloading those sub-regions instead results in faster processing
-geofabrik_regions = ['africa', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
-                     'bayern', 'brazil', 'california', 'canada', 'england', 'europe', 'france',
+geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
+                     'bayern', 'brazil', 'california', 'canada', 'europe', 'france',
                      'germany', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 
                      'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'united-kingdom' , 'us']
 
@@ -365,6 +364,41 @@ if generate_elevation == 1:
         File_EE_O.write(geojson.dumps(accounts, indent=4))
         File_EE_O.close()
         sys.exit()
+        
+# Remove existing files for this tile
+OUT_FILE = os.path.join(CurDir, 'Output/131/84.map.lzma')
+try:
+    os.remove(OUT_FILE)
+except:
+    pass
+
+OUT_FILE = os.path.join(CurDir, 'Output/131/84.map.lzma.18')
+try:
+    os.remove(OUT_FILE)
+except:
+    pass
+
+OUT_FILE = os.path.join(CurDir, 'Output/131/84.map')
+try:
+    os.remove(OUT_FILE)
+except:
+    pass
+
+OUT_FILE = os.path.join(CurDir, 'Output/131/84/merged.osm.pbf')
+try:
+    os.remove(OUT_FILE)
+except:
+    pass
+
+files = glob.glob(os.path.join(CurDir, 'Output', '131','84', 'split*.pbf'))
+if files:
+    for file in files:
+        # delete files
+        #print (file)
+        try:
+            os.remove (file)
+        except:
+            pass
 
 if integrate_Wandrer:
     # Check for new Wandrer kmz files in the maps directory. Format must be wandrer*.kmz
@@ -768,8 +802,6 @@ for key, val in border_countries.items():
 #        os.remove(outFileo5mFilteredNames)
 
     border_countries[key]['filtered_file'] = outFileo5mFiltered
-    
-#sys.exit()
 
 print('\n\n# Generate land')
 TileCount = 1
@@ -844,16 +876,15 @@ if generate_elevation == 1:
         elevation_files = glob.glob(os.path.join(
             OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'elevation*.pbf'))
         # print (f'\nElevation_files = {elevation_files}')
-        #if not elevation_files or Force_Processing == 1:
-        if not elevation_files:
+        if not elevation_files or Force_Processing == 1:
             print(
                 f'# Generate elevation {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
             cmd = ['phyghtmap']
             cmd.append('-a '+f'{tile["left"]}' + ':' + f'{tile["bottom"]}' +
                        ':' + f'{tile["right"]}' + ':' + f'{tile["top"]}')
-            # Old initial version. Used as a fallback now for if the wsl version could not create an elevation file
-            cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view3', '--simplifyContoursEpsilon=0.00001', '--pbf', '--jobs=15', '--start-node-id=20000000000','--max-nodes-per-tile=0',
-                       '--max-nodes-per-way=200', '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour'])
+            # Old initial version
+            cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view1', '--simplifyContoursEpsilon=0.0002', '--pbf', '--jobs=15', '--start-node-id=20000000000','--max-nodes-per-tile=0',
+                       '--max-nodes-per-way=2000', '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour'])
             #cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=srtm1,view1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
             #           '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}', '--earthexplorer-password='+f'{earthexplorer_password}'])
             #cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view1,srtm1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
@@ -921,7 +952,7 @@ for tile in country:
                         print('Error in Osmconvert while processing Wandrer file')
                         sys.exit()
                         
-        # If we want routes? Note: commented out because splitting from an osm file without nodes does not work
+        # If we want routes?
         #if integrate_Routes:
         #    # Is there a source routes file
         #    if os.path.isfile(os.path.join(OUT_PATH, f'routes-{c}.osm')):
@@ -991,8 +1022,6 @@ for tile in country:
                 #        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-routes-{c}.osm.pbf'))
                 #    cmd.append('workers='+workers)
                 #    cmd.append('--merge')
-                # Instead of merging with splitted route files (does not work) merge the whole routes file, the bounding box
-                # is done by Osmosis/mapwriter
                 for c in tile['countries']:
                     cmd.append('--rbf')
                     cmd.append(os.path.join(
@@ -1036,7 +1065,6 @@ for tile in country:
             cmd.append('skip-invalid-relations=true')
             #cmd.append('type=hd')
             cmd.append('tag-conf-file=' +
-                       #os.path.join(CurDir, 'tag-wahoo-z12.xml'))
                        os.path.join(CurDir, 'tag-wahoo.xml'))
             print(cmd)
             result = subprocess.run(cmd, check=True)

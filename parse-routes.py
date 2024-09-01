@@ -6,6 +6,7 @@ import osmium
 REL_TYPES = ["bicycle", "mtb"]
 
 all_ways = {}
+id_counter = 22000000000
 
 class RelationsHandler(osmium.SimpleHandler):
     def __init__(self, all_ways):
@@ -29,13 +30,14 @@ class RelationsHandler(osmium.SimpleHandler):
                     self.all_ways[m.ref].append(relation)
         
 class WayHandler(osmium.SimpleHandler):
-    def __init__(self, all_ways, way_writer):
+    def __init__(self, all_ways):
         osmium.SimpleHandler.__init__(self)
+        global id_counter
         self.all_ways = all_ways
-        self.way_writer = way_writer
-        self.way_id = -800000000000
+        self.way_id = id_counter
 
     def way(self, w):
+        global id_counter
         if w.id in self.all_ways:
             rel_count = len(self.all_ways[w.id])
 
@@ -60,9 +62,28 @@ class WayHandler(osmium.SimpleHandler):
                 else:
                     way = w.replace(id=self.way_id, tags=relation)
 
-                self.way_writer.add_way(way)
-                self.way_id = self.way_id + 1
+class NodeHandler(osmium.SimpleHandler):
+    def __init__(self, all_ways, way_writer):
+        osmium.SimpleHandler.__init__(self)
+        self.all_ways = all_ways
+        self.way_writer = way_writer
+                       
+    def way(self, w):
+        #print (f'{w}')
+        if w.id in self.all_ways:
+            rel_count = len(self.all_ways[w.id])
+
+            for i in range(0, rel_count):
+                relation = self.all_ways[w.id][i]
+
+                self.way_writer.add_way(w)
                 
+    def node(self, n):
+        #print (f'{n}')
+        # Loop through all_ways and see if a way contains the node
+        
+        if n.id in self.all_ways:
+            self.way_writer.add_node(n)
 
 file_name = sys.argv[1]
 output_tmp = sys.argv[1] + ".tmp.xml"
@@ -83,9 +104,12 @@ if os.path.exists(output_tmp):
 if os.path.exists(output_name):
     os.remove(output_name)
 
-way_writer = osmium.SimpleWriter(output_tmp)
-way_parser = WayHandler(all_ways, way_writer)
+way_parser = WayHandler(all_ways)
 way_parser.apply_file(file_name)
+
+way_writer = osmium.SimpleWriter(output_tmp)
+node_parser = NodeHandler(all_ways, way_writer)
+node_parser.apply_file(file_name)
 way_writer.close()
 
 with open(output_name, "w") as output:
