@@ -1,6 +1,11 @@
 Get pregenerated maps and routing files here:
 http://wahoomaps.higli.de/
 
+15-sept-24
+Changed the drawing order of ways in my theme files. Draw highways/streets over paths so that paths don't any longer end in the middle of, larger, ways.
+Which looks way better.
+Thanks to Treee111 (https://github.com/treee111) and the person who figured this out Dengste (https://github.com/dengste)
+
 1-Sept-2024 
 Added new routing files on the OneDrive (link at the top)
 

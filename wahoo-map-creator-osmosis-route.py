@@ -384,7 +384,6 @@ except:
 # If land polygons file does not exist or or Force_Processing active, (re)download it
 if not os.path.exists(land_polygons_file) or not os.path.isfile(land_polygons_file) or Force_Processing == 1:
     print('# Downloading land polygons file')
-#    url = 'https://osmdata.openstreetmap.de/download/land-polygons-split-4326.zip'
     url = 'https://osmdata.openstreetmap.de/download/land-polygons-split-4326.zip'
     r = requests.get(url, allow_redirects=True, stream=True)
     if r.status_code != 200:

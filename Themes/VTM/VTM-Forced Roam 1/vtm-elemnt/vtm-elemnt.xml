@@ -209,55 +209,6 @@
                 </m>
             </m>
             <!-- endregion paths & tracks-->
-            <!-- region not bridges -->
-            <m k="bridge" v="~|no|false">
-                <m e="way" k="highway" v="bridleway" zoom-min="14">
-                    <line cat="roam" stroke="#FFFFFF" width="1.2" dasharray="10,12" cap="round"/>
-                </m>
-                <m e="way" k="highway" v="service" zoom-min="13">
-                    <line cat="roam" stroke="#FFFFFF" outline="roam-minor-roads" width="1.3"/>
-                </m>
-                <m e="way" k="highway" v="construction" zoom-min="10">
-                    <line cat="roam" stroke="#FF0000" width="2" dasharray="15,5" cap="butt"/>
-                </m>
-                <m e="way" k="highway" v="residential|living_street|road|unclassified" zoom-min="14">
-                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="1.5"/>
-                </m>
-                <m e="way" k="highway" v="residential|living_street|road" zoom-min="10" zoom-max="13">
-                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="1.5"/>
-                </m>
-                <m e="way" k="highway" v="road|unclassified" zoom-min="10" zoom-max="13">
-                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="2"/>
-                </m>
-                <m e="way" k="highway" v="tertiary|tertiary_link|secondary_link|secondary" zoom-min="10">
-                    <line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
-                </m>
-                <m e="way" k="highway" v="primary_link|trunk_link|motorway_link|primary|trunk" zoom-min="9">
-                    <line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
-                </m>
-                <m e="way" k="highway" v="motorway" zoom-min="12">
-                    <line cat="roam" outline="roam-highway" stroke="#FF0000" width="4"/>
-                </m>
-                <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
-                    <line cat="roam" outline="highway-roam" stroke="#FF0000" width="4"/>
-                </m>
-                <m e="way" k="wandrer" v="untraveled" zoom-min="14">
-                    <line cat="roam" stroke="#FF0000" outline="roam-major-roads" width="1.5" dasharray="10,12"/>
-                </m>
-                <!-- ferry -->
-                <m k="route">
-                    <m v="ferry">
-      	                <m zoom-min="11">
-         	                <line stroke="#FF0000" width="0.6" dasharray="15,5" cap="butt" />
-                        </m>
-                        <m zoom-min="15">
-         	                <pathText display="always" cat="roam" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#FFFFFF" stroke-width="2.0" zoom-min="15" />
-                        </m>
-                    </m>
-                </m>
-                <!-- endregion ferry -->
-            </m>
-            <!-- endregion not bridges -->
             <!-- region tracks -->
             <m cat="trails-osm" k="access" v="-|private" select="first">  
                 <!-- two color-style for mtb:scale -->              
@@ -419,6 +370,57 @@
                 </m>
             </m>
             <!-- endregion tf-->
+
+            <!-- region not bridges -->
+            <m k="bridge" v="~|no|false">
+                <m e="way" k="highway" v="bridleway" zoom-min="14">
+                    <line cat="roam" stroke="#FFFFFF" width="1.2" dasharray="10,12" cap="round"/>
+                </m>
+                <m e="way" k="highway" v="service" zoom-min="13">
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-minor-roads" width="1.3"/>
+                </m>
+                <m e="way" k="highway" v="construction" zoom-min="10">
+                    <line cat="roam" stroke="#FF0000" width="2" dasharray="15,5" cap="butt"/>
+                </m>
+                <m e="way" k="highway" v="residential|living_street|road|unclassified" zoom-min="14">
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="1.5"/>
+                </m>
+                <m e="way" k="highway" v="residential|living_street|road" zoom-min="10" zoom-max="13">
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="1.5"/>
+                </m>
+                <m e="way" k="highway" v="road|unclassified" zoom-min="10" zoom-max="13">
+                    <line cat="roam" stroke="#FFFFFF" outline="roam-major-roads" width="2"/>
+                </m>
+                <m e="way" k="highway" v="tertiary|tertiary_link|secondary_link|secondary" zoom-min="10">
+                    <line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
+                </m>
+                <m e="way" k="highway" v="primary_link|trunk_link|motorway_link|primary|trunk" zoom-min="9">
+                    <line cat="roam" outline="roam-major-roads" stroke="#FFFF00" width="3.5"/>
+                </m>
+                <m e="way" k="highway" v="motorway" zoom-min="12">
+                    <line cat="roam" outline="roam-highway" stroke="#FF0000" width="4"/>
+                </m>
+                <m e="way" k="highway" v="motorway" zoom-min="8" zoom-max="11">
+                    <line cat="roam" outline="highway-roam" stroke="#FF0000" width="4"/>
+                </m>
+                <m e="way" k="wandrer" v="untraveled" zoom-min="14">
+                    <line cat="roam" stroke="#FF0000" outline="roam-major-roads" width="1.5" dasharray="10,12"/>
+                </m>
+                <!-- ferry -->
+                <m k="route">
+                    <m v="ferry">
+      	                <m zoom-min="11">
+         	                <line stroke="#FF0000" width="0.6" dasharray="15,5" cap="butt" />
+                        </m>
+                        <m zoom-min="15">
+         	                <pathText display="always" cat="roam" fill="#000000" k="name" font-family="sans_serif" font-style="bold" priority="2" size="10" stroke="#FFFFFF" stroke-width="2.0" zoom-min="15" />
+                        </m>
+                    </m>
+                </m>
+                <!-- endregion ferry -->
+            </m>
+            <!-- endregion not bridges -->
+
             <!-- region bridges -->
             <m k="bridge" v="yes|true">
                 <m e="way" k="highway" v="bridleway" zoom-min="12">
