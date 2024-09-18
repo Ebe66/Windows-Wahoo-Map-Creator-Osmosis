@@ -553,7 +553,7 @@
         <caption k="name" font-style="bold" position="above" font-size="10" fill="#000000"/>
     </m>
     <m k="mountain_pass" v="yes" zoom-min="14">
-		<symbol src="icons//symbols/poi/mountain_pass.svg" symbol-percent="100"/>
+		<symbol src="icons/symbols/poi/mountain_pass.svg" symbol-percent="100"/>
 	</m>
 	<m k="mountain_pass" v="yes" zoom-min="15">
         <caption k="ele" font-style="bold" position="below" font-size="10" fill="#000000" />
