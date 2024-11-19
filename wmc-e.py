@@ -5,6 +5,8 @@ Setting up a venv and installing a different python verion in WSL:
 https://cloudbytes.dev/snippets/upgrade-python-to-latest-version-on-ubuntu-linux
 To start venv:
 source wmc/bin/activate 
+Do the thing:
+python wmc-e.py zuid-holland
 To leave venv:
 deactivate
 """

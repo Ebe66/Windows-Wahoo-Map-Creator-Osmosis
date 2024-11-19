@@ -1060,12 +1060,15 @@ for tile in country:
                    mergedFile, 'workers='+workers, '--buffer', '--mw', 'file='+outFile]
             cmd.append(
                 f'bbox={tile["bottom"]:.6f},{tile["left"]:.6f},{tile["top"]:.6f},{tile["right"]:.6f}')
-            cmd.append('zoom-interval-conf=10,0,17')
+            #cmd.append('zoom-interval-conf=10,0,17')
+            cmd.append('zoom-interval-conf=12,0,17')
+            #cmd.append('zoom-interval-conf=5,0,6,8,7,9,11,10,12,15,13,17') # Openandromaps setting
             cmd.append('threads='+threads)
             cmd.append('skip-invalid-relations=true')
             #cmd.append('type=hd')
             cmd.append('tag-conf-file=' +
-                       os.path.join(CurDir, 'tag-wahoo.xml'))
+                       #os.path.join(CurDir, 'tag-wahoo.xml'))
+                       os.path.join(CurDir, 'tag-wahoo-z13.xml'))
             print(cmd)
             result = subprocess.run(cmd, check=True)
             if result.returncode != 0:
