@@ -46,8 +46,8 @@ generate_elevation = False
 integrate_Wandrer = True
 integrate_Routes = True
 x_y_processing_mode = True
-Wanted_X = 131
-Wanted_Y = 84
+Wanted_X = 131 #131 #133
+Wanted_Y = 84 #84 #86
 Process_Routing = False
 
 # End of Configurable Parameters
@@ -273,8 +273,9 @@ OUT_PATH = os.path.join(CurDir, 'Output')
 land_polygons_file = os.path.join(
     CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join(CurDir, 'geofabrik.json')
-geofabrik_regions = ['africa', 'antarctica', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
-                     'bayern', 'brazil', 'california', 'canada', 'europe', 'france',
+# Do not download the countries below because they are comprised of sub-regions. Downloading those sub-regions instead results in faster processing
+geofabrik_regions = ['africa', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
+                     'bayern', 'brazil', 'california', 'canada', 'england', 'europe', 'france',
                      'germany', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 
                      'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'united-kingdom' , 'us']
 
@@ -295,44 +296,47 @@ Map_File_Deleted = 0
 
 # Objects (node/way/relation) to keep with just this tags, discard (almost) all other tags
 objects_to_keep_without_name = 'access=private \
-    admin_level=2 \
-    aeroway=aerodrome =airport =gate =helipad \
-    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =drinking_water =fast_food =fountain =fuel =hospital =ice_cream =pharmacy =police =pub =restaurant =shelter =telephone =toilets =water_point \
+    admin_level=2 =4 \
     area=yes \
+    barrier=block =bollard =gate =lift_gate =retaining_wall \
     bicycle= \
+    boundary=national_park \
     bridge= \
     building=church =cathedral \
+    denomination= \
     emergency=phone \
     foot=yes =designated \
-    highway=abandoned =bus_guideway =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
-    historic=memorial =monument \
-    landuse=forest =building =commercial =industrial =military =residential =reservoir =retail \
-    leisure=picnic_table \
-    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =spring \
+    highway=abandoned =bus_guideway =bus_stop =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
+    landuse=allotments =building =cemetery =commercial =conservation =farm =farmland =farmyard =forest =grass =greenhouse_horticulture =heath =industrial =meadow =military =nature_reserve =orchard =plant_nursery =quarry =railway =recreation_ground =residential =reservoir =retail =track =urban =vineyard =village_green \
+    leisure=common =garden =golf_course =miniature_golf =picnic_table =pitch =playground =sports_centre =stadium =swimming_pool =water_park \
     man_made=cutline =drinking_fountain =pier =water_tap\
     mtb:scale= \
     mtb:scale:uphill= \
+    natural=cave_entrance =coastline =nosea =sea =issea =beach =forest =glacier =grassland =heath =land =marsh =mud =sand =scrub =water =wetland =wood =spring \
+    oneway=yes \
     place=isolated_dwelling =islet =square \
-    railway=abandoned =bus_guideway =disused =funicular =halt =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =station =stop =subway =tram \
-    shop=bakery =bicycle =laundry =mall =supermarket =convenience\
+    railway=abandoned =bus_guideway =crossing =disused =funicular =halt =level_crossing =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =spur =station =stop =subway =turntable =tram \
+    religion= \
     shelter_type=picnic_shelter \
     station=light_rail =subway =halt =stop\
     surface= \
-    tourism=alpine_hut =attraction =hostel =hotel =information =viewpoint \
     tracktype= \
     tunnel= \
     wandrer= \
-    waterway=drain =stream =riverbank \
+    waterway=dam =ditch =dock =drain =lock =stream =riverbank =weir \
     wood=deciduous'
-
+      
 # Objects (node/way/relation) to keep with just this tags AND the name and ele(vation) tag if present , discard (almost) all other tags
-objects_to_keep_with_name = 'historic=ruins =castle \
+objects_to_keep_with_name = 'aeroway=aerodrome =airport =apron =gate =hangar =helipad =runway =taxiway =terminal \
+    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =cinema =college =drinking_water =fast_food =fire_station =fountain =fuel =hospital =ice_cream =kindergarten =library =parking =pharmacy =police =post_box =pub =recycling =restaurant =shelter =school =telephone =theatre =toilets =university =water_point \
+    historic=ruins =castle =memorial =monument\
     leisure=park =nature_reserve \
     mountain_pass= \
     natural=peak =volcano \
-    place=city =hamlet =island =locality =suburb =town =village =country \
+    place=city =country =hamlet =island =locality =neighbourhood =suburb =town =village \
     route=ferry \
-    tourism=museum =zoo \
+    shop=bakery =bicycle =convenience =laundry =mall =organic =supermarket \
+    tourism=museum =zoo =alpine_hut =attraction =camp_site =caravan_site =hostel =hotel =information =picnic_site =viewpoint \
     waterway=canal =river'
 
 if len(sys.argv) != 2:
@@ -737,7 +741,8 @@ print('\n\n# filter tags from country osm.pbf files')
 for key, val in border_countries.items():
     # print(key, val)
     outFileo5m = os.path.join(OUT_PATH, f'outFile-{key}.o5m')
-    outFileo5mFilteredTemp = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
+    outFileo5mFilteredNoNames = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
+    outFileo5mFilteredNoRelationsTemp = os.path.join(OUT_PATH, f'outFileFilteredNoRelations-{key}.o5m')
     outFileo5mFiltered = os.path.join(OUT_PATH, f'outFileFiltered-{key}.o5m')
     outFileo5mFilteredNames = os.path.join(OUT_PATH, f'outFileFiltered-{key}Names.o5m')
 
@@ -755,15 +760,33 @@ for key, val in border_countries.items():
             print(f'Error in OSMConvert with country: {key}')
             sys.exit()
 
+        # Remove relations first to prevent (high)ways used in relations showing up in the filtered without names and filtered with names files
+        print(f'\n\n# Filtering relations out of map of {key}')
+        cmd = ['osmfilter']
+        cmd.append(outFileo5m)
+        #cmd.append('--verbose')
+        #cmd.append('--keep='+objects_to_keep_without_name)
+        #cmd.append('--keep-tags=all type= layer= ' +
+        #           objects_to_keep_without_name)
+        cmd.append('--drop-relations')
+        cmd.append('-o='+outFileo5mFilteredNoRelationsTemp)
+        # print(cmd)
+        result = subprocess.run(cmd, check=True)
+        if result.returncode != 0:
+            print(f'Error in OSMFilter with country: {key}')
+            sys.exit()
+
         # Keep keys/values we want to have without keeping the name key (saving space in the map file)
         print(f'\n\n# Filtering unwanted map objects out of map of {key}')
         cmd = ['osmfilter']
-        cmd.append(outFileo5m)
+        #cmd.append(outFileo5m)
+        cmd.append(outFileo5mFilteredNoRelationsTemp)
         #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_without_name)
         cmd.append('--keep-tags=all type= layer= ' +
                    objects_to_keep_without_name)
-        cmd.append('-o='+outFileo5mFilteredTemp)
+        #cmd.append('--drop-relations')
+        cmd.append('-o='+outFileo5mFilteredNoNames)
         # print(cmd)
         result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
@@ -772,11 +795,13 @@ for key, val in border_countries.items():
 
         # Keep keys/values we want with the name key (cities etc)
         cmd = ['osmfilter']
-        cmd.append(outFileo5m)
+        #cmd.append(outFileo5m)
+        cmd.append(outFileo5mFilteredNoRelationsTemp)
         #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_with_name)
         cmd.append('--keep-tags=all type= name= layer= ele= ' +
                    objects_to_keep_with_name)
+        #cmd.append('--drop-relations')
         cmd.append('-o='+outFileo5mFilteredNames)
         # print(cmd)
         result = subprocess.run(cmd, check=True)
@@ -787,7 +812,7 @@ for key, val in border_countries.items():
         print(f'\n\n# Merging filtered files of {key} in o5m format')
         cmd = ['osmconvert']
         cmd.extend(['--hash-memory=2500'])
-        cmd.append(outFileo5mFilteredTemp)
+        cmd.append(outFileo5mFilteredNoNames)
         cmd.append(outFileo5mFilteredNames)
         cmd.append('-o='+outFileo5mFiltered)
         # print(cmd)
@@ -797,11 +822,14 @@ for key, val in border_countries.items():
             sys.exit()
 
         os.remove(outFileo5m)
-        os.remove(outFileo5mFilteredTemp)
+        os.remove(outFileo5mFilteredNoNames)
+        os.remove(outFileo5mFilteredNoRelationsTemp)
 #        os.remove(outFileo5mFiltered)
-#        os.remove(outFileo5mFilteredNames)
+        os.remove(outFileo5mFilteredNames)
 
     border_countries[key]['filtered_file'] = outFileo5mFiltered
+    
+#sys.exit()
 
 print('\n\n# Generate land')
 TileCount = 1
@@ -876,15 +904,16 @@ if generate_elevation == 1:
         elevation_files = glob.glob(os.path.join(
             OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'elevation*.pbf'))
         # print (f'\nElevation_files = {elevation_files}')
-        if not elevation_files or Force_Processing == 1:
+        #if not elevation_files or Force_Processing == 1:
+        if not elevation_files:
             print(
                 f'# Generate elevation {TileCount} of {len(country)} for Coordinates: {tile["x"]} {tile["y"]}')
             cmd = ['phyghtmap']
             cmd.append('-a '+f'{tile["left"]}' + ':' + f'{tile["bottom"]}' +
                        ':' + f'{tile["right"]}' + ':' + f'{tile["top"]}')
-            # Old initial version
-            cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view1', '--simplifyContoursEpsilon=0.0002', '--pbf', '--jobs=15', '--start-node-id=20000000000','--max-nodes-per-tile=0',
-                       '--max-nodes-per-way=2000', '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour'])
+            # Old initial version. Used as a fallback now for if the wsl version could not create an elevation file
+            cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view3', '--simplifyContoursEpsilon=0.00001', '--pbf', '--jobs=15', '--start-node-id=20000000000','--max-nodes-per-tile=0',
+                       '--max-nodes-per-way=200', '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour'])
             #cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=srtm1,view1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
             #           '--start-way-id=21000000000', '--write-timestamp', '--no-zero-contour', '--earthexplorer-user='+f'{earthexplorer_user}', '--earthexplorer-password='+f'{earthexplorer_password}'])
             #cmd.extend(['-o', f'{outFile}', '-s 10', '-c 100,50', '--source=view1,srtm1,view3,srtm3', '--pbf', '--jobs=15', '--viewfinder-mask=1', '--start-node-id=20000000000', '--max-nodes-per-tile=0',
@@ -952,7 +981,7 @@ for tile in country:
                         print('Error in Osmconvert while processing Wandrer file')
                         sys.exit()
                         
-        # If we want routes?
+        # If we want routes? Note: commented out because splitting from an osm file without nodes does not work
         #if integrate_Routes:
         #    # Is there a source routes file
         #    if os.path.isfile(os.path.join(OUT_PATH, f'routes-{c}.osm')):
@@ -1022,6 +1051,8 @@ for tile in country:
                 #        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-routes-{c}.osm.pbf'))
                 #    cmd.append('workers='+workers)
                 #    cmd.append('--merge')
+                # Instead of merging with splitted route files (does not work) merge the whole routes file, the bounding box
+                # is done by Osmosis/mapwriter
                 for c in tile['countries']:
                     cmd.append('--rbf')
                     cmd.append(os.path.join(

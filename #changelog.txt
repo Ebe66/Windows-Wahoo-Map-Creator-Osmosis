@@ -1,6 +1,18 @@
 Get pregenerated maps and routing files here:
 http://wahoomaps.higli.de/
 
+04-dec-24
+Added new map files for the whole of Europe. More to follow in the coming days.
+What is new/different:
+- All POI's/ways have a zoom-appear level in the range 0-13 in the maps now. So where for example atm's had a zoom-appear level of 17 before (meaning whatever you did in your theme they could only be made visible on the device from zoom level 17 down) they now have a zoom appear of 13.
+The result is that you yourself can now determine, from level 13 on, when you want to display atm's (or pubs or..) by modifying your theme.
+Downside is that if you have a theme that already tried to display atm's on lets say zoom level 14, the screen of your device may be flooded with atm's.
+
+- The new maps should be 90%+ compatible with maps of the just introduced Ace. Almost all of the features used in the Aces theme are included.
+
+18-nov-24
+Added new routing files on the OneDrive (link at the top)
+
 15-sept-24
 Changed the drawing order of ways in my theme files. Draw highways/streets over paths so that paths don't any longer end in the middle of, larger, ways.
 Which looks way better.

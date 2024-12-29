@@ -41,7 +41,7 @@ if int(threads) < 1:
 workers = '4'
 
 # Keep (1) or delete (0) the country/region map folders after compression
-keep_folders = 1
+keep_folders = 0
 generate_elevation = True
 integrate_Wandrer = False
 integrate_Routes = True
@@ -296,44 +296,47 @@ Map_File_Deleted = 0
 
 # Objects (node/way/relation) to keep with just this tags, discard (almost) all other tags
 objects_to_keep_without_name = 'access=private \
-    admin_level=2 \
-    aeroway=aerodrome =airport =gate =helipad \
-    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =drinking_water =fast_food =fountain =fuel =hospital =ice_cream =pharmacy =police =pub =restaurant =shelter =telephone =toilets =water_point \
+    admin_level=2 =4 \
     area=yes \
+    barrier=block =bollard =gate =lift_gate =retaining_wall \
     bicycle= \
+    boundary=national_park \
     bridge= \
     building=church =cathedral \
+    denomination= \
     emergency=phone \
     foot=yes =designated \
-    highway=abandoned =bus_guideway =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
-    historic=memorial =monument \
-    landuse=forest =building =commercial =industrial =military =residential =reservoir =retail \
-    leisure=picnic_table \
-    natural=coastline =nosea =sea =beach =land =scrub =water =wetland =wood =spring \
+    highway=abandoned =bus_guideway =bus_stop =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
+    landuse=allotments =building =cemetery =commercial =conservation =farm =farmland =farmyard =forest =grass =greenhouse_horticulture =heath =industrial =meadow =military =nature_reserve =orchard =plant_nursery =quarry =railway =recreation_ground =residential =reservoir =retail =track =urban =vineyard =village_green \
+    leisure=common =garden =golf_course =miniature_golf =picnic_table =pitch =playground =sports_centre =stadium =swimming_pool =water_park \
     man_made=cutline =drinking_fountain =pier =water_tap\
     mtb:scale= \
     mtb:scale:uphill= \
+    natural=cave_entrance =coastline =nosea =sea =issea =beach =forest =glacier =grassland =heath =land =marsh =mud =sand =scrub =water =wetland =wood =spring \
+    oneway=yes \
     place=isolated_dwelling =islet =square \
-    railway=abandoned =bus_guideway =disused =funicular =halt =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =station =stop =subway =tram \
-    shop=bakery =bicycle =laundry =mall =supermarket =convenience\
+    railway=abandoned =bus_guideway =crossing =disused =funicular =halt =level_crossing =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =spur =station =stop =subway =turntable =tram \
+    religion= \
     shelter_type=picnic_shelter \
     station=light_rail =subway =halt =stop\
     surface= \
-    tourism=alpine_hut =attraction =hostel =hotel =information =viewpoint \
     tracktype= \
     tunnel= \
     wandrer= \
-    waterway=drain =stream =riverbank \
+    waterway=dam =ditch =dock =drain =lock =stream =riverbank =weir \
     wood=deciduous'
-
+      
 # Objects (node/way/relation) to keep with just this tags AND the name and ele(vation) tag if present , discard (almost) all other tags
-objects_to_keep_with_name = 'historic=ruins =castle \
+objects_to_keep_with_name = 'aeroway=aerodrome =airport =apron =gate =hangar =helipad =runway =taxiway =terminal \
+    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =cinema =college =drinking_water =fast_food =fire_station =fountain =fuel =hospital =ice_cream =kindergarten =library =parking =pharmacy =police =post_box =pub =recycling =restaurant =shelter =school =telephone =theatre =toilets =university =water_point \
+    historic=ruins =castle =memorial =monument\
     leisure=park =nature_reserve \
     mountain_pass= \
     natural=peak =volcano \
-    place=city =hamlet =island =locality =suburb =town =village =country \
+    place=city =country =hamlet =island =locality =neighbourhood =suburb =town =village \
     route=ferry \
-    tourism=museum =zoo \
+    shop=bakery =bicycle =convenience =laundry =mall =organic =supermarket \
+    tourism=museum =zoo =alpine_hut =attraction =camp_site =caravan_site =hostel =hotel =information =picnic_site =viewpoint \
     waterway=canal =river'
 
 if len(sys.argv) != 2:
@@ -703,7 +706,8 @@ print('\n\n# filter tags from country osm.pbf files')
 for key, val in border_countries.items():
     # print(key, val)
     outFileo5m = os.path.join(OUT_PATH, f'outFile-{key}.o5m')
-    outFileo5mFilteredTemp = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
+    outFileo5mFilteredNoNames = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
+    outFileo5mFilteredNoRelationsTemp = os.path.join(OUT_PATH, f'outFileFilteredNoRelations-{key}.o5m')
     outFileo5mFiltered = os.path.join(OUT_PATH, f'outFileFiltered-{key}.o5m')
     outFileo5mFilteredNames = os.path.join(OUT_PATH, f'outFileFiltered-{key}Names.o5m')
 
@@ -721,15 +725,33 @@ for key, val in border_countries.items():
             print(f'Error in OSMConvert with country: {key}')
             sys.exit()
 
+        # Remove relations first to prevent (high)ways used in relations showing up in the filtered without names and filtered with names files
+        print(f'\n\n# Filtering relations out of map of {key}')
+        cmd = ['osmfilter']
+        cmd.append(outFileo5m)
+        #cmd.append('--verbose')
+        #cmd.append('--keep='+objects_to_keep_without_name)
+        #cmd.append('--keep-tags=all type= layer= ' +
+        #           objects_to_keep_without_name)
+        cmd.append('--drop-relations')
+        cmd.append('-o='+outFileo5mFilteredNoRelationsTemp)
+        # print(cmd)
+        result = subprocess.run(cmd, check=True)
+        if result.returncode != 0:
+            print(f'Error in OSMFilter with country: {key}')
+            sys.exit()
+
         # Keep keys/values we want to have without keeping the name key (saving space in the map file)
         print(f'\n\n# Filtering unwanted map objects out of map of {key}')
         cmd = ['osmfilter']
-        cmd.append(outFileo5m)
+        #cmd.append(outFileo5m)
+        cmd.append(outFileo5mFilteredNoRelationsTemp)
         #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_without_name)
         cmd.append('--keep-tags=all type= layer= ' +
                    objects_to_keep_without_name)
-        cmd.append('-o='+outFileo5mFilteredTemp)
+        #cmd.append('--drop-relations')
+        cmd.append('-o='+outFileo5mFilteredNoNames)
         # print(cmd)
         result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
@@ -738,11 +760,13 @@ for key, val in border_countries.items():
 
         # Keep keys/values we want with the name key (cities etc)
         cmd = ['osmfilter']
-        cmd.append(outFileo5m)
+        #cmd.append(outFileo5m)
+        cmd.append(outFileo5mFilteredNoRelationsTemp)
         #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_with_name)
         cmd.append('--keep-tags=all type= name= layer= ele= ' +
                    objects_to_keep_with_name)
+        #cmd.append('--drop-relations')
         cmd.append('-o='+outFileo5mFilteredNames)
         # print(cmd)
         result = subprocess.run(cmd, check=True)
@@ -753,7 +777,7 @@ for key, val in border_countries.items():
         print(f'\n\n# Merging filtered files of {key} in o5m format')
         cmd = ['osmconvert']
         cmd.extend(['--hash-memory=2500'])
-        cmd.append(outFileo5mFilteredTemp)
+        cmd.append(outFileo5mFilteredNoNames)
         cmd.append(outFileo5mFilteredNames)
         cmd.append('-o='+outFileo5mFiltered)
         # print(cmd)
@@ -763,9 +787,10 @@ for key, val in border_countries.items():
             sys.exit()
 
         os.remove(outFileo5m)
-        os.remove(outFileo5mFilteredTemp)
+        os.remove(outFileo5mFilteredNoNames)
+        os.remove(outFileo5mFilteredNoRelationsTemp)
 #        os.remove(outFileo5mFiltered)
-#        os.remove(outFileo5mFilteredNames)
+        os.remove(outFileo5mFilteredNames)
 
     border_countries[key]['filtered_file'] = outFileo5mFiltered
     
@@ -1028,7 +1053,7 @@ for tile in country:
     if os.path.isfile(mergedFile):
         if not os.path.isfile(outFile+'.lzma') or Force_Processing == 1:
             cmd = [os.path.join(CurDir, 'Osmosis', 'bin', 'osmosis.bat'), '--rbf',
-                   mergedFile, 'workers='+workers, '--buffer', '--mw', 'file='+outFile]
+                   mergedFile, 'workers='+workers, '--buffer', 'bufferCapacity=120000', '--mw', 'file='+outFile]
             cmd.append(
                 f'bbox={tile["bottom"]:.6f},{tile["left"]:.6f},{tile["top"]:.6f},{tile["right"]:.6f}')
             #cmd.append('zoom-interval-conf=10,0,17')
