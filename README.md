@@ -1,4 +1,23 @@
-!!! This information is severely outdated !!!
+This is my, mostly, Windows version of a map generator for the Wahoo line of bicycle computers.
+
+The whole reason for it's existence is the very, very low update rate from Wahoo itself.
+Other than that it also includes features that are not in the Wahoo maps like extra/other landuse rendering and a lot of different POI's
+
+Before reading further, if you are just looking for new map and routing files have a look here: http://wahoomaps.higli.de/
+Here you'll find map files that I try to update every 3 months, routing files that are updated either every 3 to 6 months and some sample themes that make use of all the extra map features and POI's that I include but generally are not in the Wahoo maps.
+
+It started out as a Windows port of a Linux version by Henk (Intyre on Github) and evolved from there.
+
+Treee111 has made a more user friendly version of my work here https://github.com/treee111/wahooMapsCreator but unfortunately he is not very active on this project anymore.
+And subsequently the version here has some features not found in Treee111's version.
+Also look at his repo for instructions on how to install the maps etc. as it has extensive documentation.
+
+However I would still very much encourage people to use his version over my version here. 
+It takes a lot of, undocumented, work to get this working whereas Treee111's version has an installer for example.
+If you still want to try my version here, time allowing I will try to help people. 
+The best place to reach me and others trying to help people with the Wahoo devices in general is the telegram group here https://t.me/+Mor244hPZw85YTVk
+
+!!! The information below is severely outdated !!!
 
 Version history:
 V1.0 2021-04-09 Initial adaption from Henk's Osmium version
@@ -22,7 +41,7 @@ Example: python3 wahoo-map-creator-osmosis.py netherlands
 or python3 wahoo-map-creator-osmosis.py "united kingdom"
 
 You can get the country/region names to use from this url: https://download.geofabrik.de/
-For the correct name too use if it's not clear, look at the names of the files to download.
+For the correct name to use if it's not clear, look at the names of the files to download.
 For Australia and Oceania for example the filename of the download is
 australia-oceania-latest.osm.pbf
 So australia-oceania will work as well as "australia oceania"
