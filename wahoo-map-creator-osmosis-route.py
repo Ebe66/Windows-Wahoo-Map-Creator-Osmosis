@@ -436,7 +436,7 @@ if os.path.isdir(IN_R_PATH):
         if os.path.isfile(inRFile):
             try:
                 shutil.copy2(inRFile, outRFile)
-            except:
+            except OSError as e:
                 print(f'Error copying routing tile of country {wanted_map}')
                 sys.exit()
 
@@ -446,7 +446,7 @@ if os.path.isdir(IN_R_PATH):
             subprocess.run(cmd)
 
             # Create "tile present" file
-            f = open(outRFile + '.lzma.18', 'wb')
+            f = open(outRFile + '.lzma.20', 'wb')
             f.close()
 
             # Remove copied routing tile
@@ -460,3 +460,10 @@ if rtile:
     cmd = ['7za', 'a', '-tzip', wanted_map+f'-routing',
            os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing', f'*')]
     subprocess.run(cmd, check=True, cwd=OUT_PATH)
+    
+if rtile:
+    try:
+        shutil.rmtree(os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing'))
+    except OSError as e:
+        print('Error, could not delete folder ' +
+                os.path.join(f'{OUT_PATH}', f'{wanted_map}-routing'))

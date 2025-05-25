@@ -46,7 +46,7 @@ generate_elevation = False
 integrate_Wandrer = True
 integrate_Routes = True
 x_y_processing_mode = True
-Wanted_X = 131 #131 #133
+Wanted_X = 131 #131 #130 for HvH
 Wanted_Y = 84 #84 #86
 Process_Routing = False
 
@@ -274,9 +274,9 @@ land_polygons_file = os.path.join(
     CurDir, 'land-polygons-split-4326', 'land_polygons.shp')
 geofabrik_json_file = os.path.join(CurDir, 'geofabrik.json')
 # Do not download the countries below because they are comprised of sub-regions. Downloading those sub-regions instead results in faster processing
-geofabrik_regions = ['africa', 'asia', 'australia-oceania', 'baden-wuerttemberg', 
+geofabrik_regions = ['africa', 'asia', 'australia-oceania', 'baden-wuerttemberg',
                      'bayern', 'brazil', 'california', 'canada', 'england', 'europe', 'france',
-                     'germany', 'india', 'indonesia', 'italy', 'japan', 'netherlands', 
+                     'germany', 'india', 'indonesia', 'italy', 'japan', 'netherlands',
                      'nordrhein-westfalen', 'north-america', 'poland', 'russia', 'south-america', 'spain', 'united-kingdom' , 'us']
 
 # List of regions to block. these regions are "collections" of other countries/regions/states
@@ -294,9 +294,11 @@ Map_File_Deleted = 0
 #
 # If somebody knows of a way to do a tag merge, so the resulting id 123 having all 3 tags, please, pretty please, let me know!
 
-# Objects (node/way/relation) to keep with just this tags, discard (almost) all other tags
-objects_to_keep_without_name = 'access=private \
-    admin_level=2 =4 \
+# Objects (node/way/relation) to keep with just this tags AND the name and ele(vation) tag if present , discard (almost) all other tags
+objects_to_keep_with_name = 'access=private \
+    admin_level=2 =4\
+    aeroway=aerodrome =airport =apron =gate =hangar =helipad =runway =taxiway =terminal \
+    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =cinema =college =drinking_water =fast_food =fire_station =fountain =fuel =hospital =ice_cream =kindergarten =library =parking =pharmacy =police =post_box =pub =recycling =restaurant =shelter =school =telephone =theatre =toilets =university =water_point \
     area=yes \
     barrier=block =bollard =gate =lift_gate =retaining_wall \
     bicycle= \
@@ -307,37 +309,29 @@ objects_to_keep_without_name = 'access=private \
     emergency=phone \
     foot=yes =designated \
     highway=abandoned =bus_guideway =bus_stop =disused =bridleway =byway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =residential =road =secondary =secondary_link =service =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified \
+    historic=ruins =castle =memorial =monument\
     landuse=allotments =building =cemetery =commercial =conservation =farm =farmland =farmyard =forest =grass =greenhouse_horticulture =heath =industrial =meadow =military =nature_reserve =orchard =plant_nursery =quarry =railway =recreation_ground =residential =reservoir =retail =track =urban =vineyard =village_green \
-    leisure=common =garden =golf_course =miniature_golf =picnic_table =pitch =playground =sports_centre =stadium =swimming_pool =water_park \
+    leisure=common =garden =golf_course =miniature_golf =picnic_table =pitch =playground =sports_centre =stadium =swimming_pool =water_park =park =nature_reserve \
     man_made=cutline =drinking_fountain =pier =water_tap\
+    mountain_pass= \
     mtb:scale= \
     mtb:scale:uphill= \
-    natural=cave_entrance =coastline =nosea =sea =issea =beach =forest =glacier =grassland =heath =land =marsh =mud =sand =scrub =water =wetland =wood =spring \
+    natural=cave_entrance =coastline =nosea =sea =issea =beach =forest =glacier =grassland =heath =land =marsh =mud =sand =scrub =water =wetland =wood =spring =peak =volcano \
     oneway=yes \
-    place=isolated_dwelling =islet =square \
+    place=isolated_dwelling =islet =square =city =country =hamlet =island =locality =neighbourhood =suburb =town =village \
     railway=abandoned =bus_guideway =crossing =disused =funicular =halt =level_crossing =light_rail =miniature =monorail =narrow_gauge =platform =preserved =rail =spur =station =stop =subway =turntable =tram \
     religion= \
+    route=ferry \
     shelter_type=picnic_shelter \
-    station=light_rail =subway =halt =stop\
+    shop=bakery =bicycle =convenience =laundry =mall =organic =supermarket \
+    station=light_rail =subway =halt =stop \
     surface= \
+    tourism=museum =zoo =alpine_hut =attraction =camp_site =caravan_site =hostel =hotel =information =picnic_site =viewpoint \
     tracktype= \
     tunnel= \
     wandrer= \
-    waterway=dam =ditch =dock =drain =lock =stream =riverbank =weir \
+    waterway=dam =ditch =dock =drain =lock =stream =riverbank =weir =canal =river \
     wood=deciduous'
-      
-# Objects (node/way/relation) to keep with just this tags AND the name and ele(vation) tag if present , discard (almost) all other tags
-objects_to_keep_with_name = 'aeroway=aerodrome =airport =apron =gate =hangar =helipad =runway =taxiway =terminal \
-    amenity=atm =bar =bench =bicycle_rental =biergarten =bus_station =cafe =cinema =college =drinking_water =fast_food =fire_station =fountain =fuel =hospital =ice_cream =kindergarten =library =parking =pharmacy =police =post_box =pub =recycling =restaurant =shelter =school =telephone =theatre =toilets =university =water_point \
-    historic=ruins =castle =memorial =monument\
-    leisure=park =nature_reserve \
-    mountain_pass= \
-    natural=peak =volcano \
-    place=city =country =hamlet =island =locality =neighbourhood =suburb =town =village \
-    route=ferry \
-    shop=bakery =bicycle =convenience =laundry =mall =organic =supermarket \
-    tourism=museum =zoo =alpine_hut =attraction =camp_site =caravan_site =hostel =hotel =information =picnic_site =viewpoint \
-    waterway=canal =river'
 
 if len(sys.argv) != 2:
     print(f'Usage: {sys.argv[0]} Geofabrik Country or Region name.')
@@ -346,7 +340,7 @@ if len(sys.argv) != 2:
 wanted_map = sys.argv[1]
 # replace spaces in wanted_map with geofabrik minuses
 wanted_map = wanted_map.replace(" ", "-")
-wanted_map = wanted_map.replace("_", "/") 
+wanted_map = wanted_map.replace("_", "/")
 wanted_map = wanted_map.lower()
 
 earthexplorer_user = earthexplorer_password = None
@@ -368,7 +362,7 @@ if generate_elevation == 1:
         File_EE_O.write(geojson.dumps(accounts, indent=4))
         File_EE_O.close()
         sys.exit()
-        
+
 # Remove existing files for this tile
 OUT_FILE = os.path.join(CurDir, 'Output/131/84.map.lzma')
 try:
@@ -741,10 +735,7 @@ print('\n\n# filter tags from country osm.pbf files')
 for key, val in border_countries.items():
     # print(key, val)
     outFileo5m = os.path.join(OUT_PATH, f'outFile-{key}.o5m')
-    outFileo5mFilteredNoNames = os.path.join(OUT_PATH, f'outFileFilteredTemp-{key}.o5m')
-    outFileo5mFilteredNoRelationsTemp = os.path.join(OUT_PATH, f'outFileFilteredNoRelations-{key}.o5m')
     outFileo5mFiltered = os.path.join(OUT_PATH, f'outFileFiltered-{key}.o5m')
-    outFileo5mFilteredNames = os.path.join(OUT_PATH, f'outFileFiltered-{key}Names.o5m')
 
     # Convert osm.pbf file to o5m for processing with osmfilter
     # print(outFile)
@@ -760,75 +751,25 @@ for key, val in border_countries.items():
             print(f'Error in OSMConvert with country: {key}')
             sys.exit()
 
-        # Remove relations first to prevent (high)ways used in relations showing up in the filtered without names and filtered with names files
-        print(f'\n\n# Filtering relations out of map of {key}')
-        cmd = ['osmfilter']
-        cmd.append(outFileo5m)
-        #cmd.append('--verbose')
-        #cmd.append('--keep='+objects_to_keep_without_name)
-        #cmd.append('--keep-tags=all type= layer= ' +
-        #           objects_to_keep_without_name)
-        cmd.append('--drop-relations')
-        cmd.append('-o='+outFileo5mFilteredNoRelationsTemp)
-        # print(cmd)
-        result = subprocess.run(cmd, check=True)
-        if result.returncode != 0:
-            print(f'Error in OSMFilter with country: {key}')
-            sys.exit()
-
-        # Keep keys/values we want to have without keeping the name key (saving space in the map file)
-        print(f'\n\n# Filtering unwanted map objects out of map of {key}')
-        cmd = ['osmfilter']
-        #cmd.append(outFileo5m)
-        cmd.append(outFileo5mFilteredNoRelationsTemp)
-        #cmd.append('--verbose')
-        cmd.append('--keep='+objects_to_keep_without_name)
-        cmd.append('--keep-tags=all type= layer= ' +
-                   objects_to_keep_without_name)
-        #cmd.append('--drop-relations')
-        cmd.append('-o='+outFileo5mFilteredNoNames)
-        # print(cmd)
-        result = subprocess.run(cmd, check=True)
-        if result.returncode != 0:
-            print(f'Error in OSMFilter with country: {key}')
-            sys.exit()
-
         # Keep keys/values we want with the name key (cities etc)
         cmd = ['osmfilter']
-        #cmd.append(outFileo5m)
-        cmd.append(outFileo5mFilteredNoRelationsTemp)
+        cmd.append(outFileo5m)
         #cmd.append('--verbose')
         cmd.append('--keep='+objects_to_keep_with_name)
         cmd.append('--keep-tags=all type= name= layer= ele= ' +
                    objects_to_keep_with_name)
         #cmd.append('--drop-relations')
-        cmd.append('-o='+outFileo5mFilteredNames)
+        cmd.append('-o='+outFileo5mFiltered)
         # print(cmd)
         result = subprocess.run(cmd, check=True)
         if result.returncode != 0:
             print(f'Error in OSMFilter with country: {key}')
             sys.exit()
 
-        print(f'\n\n# Merging filtered files of {key} in o5m format')
-        cmd = ['osmconvert']
-        cmd.extend(['--hash-memory=2500'])
-        cmd.append(outFileo5mFilteredNoNames)
-        cmd.append(outFileo5mFilteredNames)
-        cmd.append('-o='+outFileo5mFiltered)
-        # print(cmd)
-        result = subprocess.run(cmd, check=True)
-        if result.returncode != 0:
-            print(f'Error in OSMConvert merge with country: {key}')
-            sys.exit()
-
         os.remove(outFileo5m)
-        os.remove(outFileo5mFilteredNoNames)
-        os.remove(outFileo5mFilteredNoRelationsTemp)
-#        os.remove(outFileo5mFiltered)
-        os.remove(outFileo5mFilteredNames)
 
     border_countries[key]['filtered_file'] = outFileo5mFiltered
-    
+
 #sys.exit()
 
 print('\n\n# Generate land')
@@ -980,13 +921,13 @@ for tile in country:
                     if result.returncode != 0:
                         print('Error in Osmconvert while processing Wandrer file')
                         sys.exit()
-                        
+
         # If we want routes? Note: commented out because splitting from an osm file without nodes does not work
         #if integrate_Routes:
         #    # Is there a source routes file
         #    if os.path.isfile(os.path.join(OUT_PATH, f'routes-{c}.osm')):
         #        outRoute = os.path.join(OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-routes-{c}.osm.pbf')
-        #        # If the split file is not there yet 
+        #        # If the split file is not there yet
         #        if not os.path.isfile(outRoute) or Force_Processing == 1:
         #            cmd = ['osmconvert', '--hash-memory=2500']
         #            cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +

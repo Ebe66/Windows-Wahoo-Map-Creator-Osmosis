@@ -10,7 +10,7 @@ import sys
 import time
 
 # List of regions to block. these regions are "collections" of other countries/regions/states 
-Block_Download = ['africa', 'alps', 'asia', 'australia-oceania', 'britain-and-ireland', 'canada', 'dach', 'europe', 'great-britain', 'norcal',
+Block_Download = ['africa', 'alps', 'asia', 'australia-oceania', 'britain-and-ireland', 'canada', 'china', 'dach', 'europe', 'great-britain', 'india', 'indonesia', 'japan', 'norcal',
                 'north-america', 'russia', 'socal', 'south-africa-and-lesotho' , 'south-america', 'us', 'us-midwest', 'us-northeast', 'us-pacific', 'us-south', 'us-west']
 
 Download_Missing_Maps = 1
@@ -20,9 +20,10 @@ Max_Days_Old = 30
 #region = 'asia'
 #region = 'australia-oceania'
 #region = 'central-america'
-#region = 'europe'
+#region = 'china'
+region = 'europe'
 #region = 'north-america'
-region = 'russia'
+#region = 'russia'
 #region = 'south-america'
 
 
@@ -143,6 +144,14 @@ with open(outFile, 'w') as of:
             if Country not in Block_Download:
                 of.write (f'python wahoo-map-creator-osmosis-route.py {Country}\n')
     of.close()
+    
+outFile = os.path.join(f'generate-{region}-ele-only.sh')
+with open(outFile, 'w') as of:
+    for Line in List_of_Countries:
+        for Country in Line['countries']:
+            if Country not in Block_Download:
+                of.write (f'python wmc-e.py {Country}\n')
+    of.close()  
 
 outFile = os.path.join(f'maps\\update-{region}.sh')
 with open(outFile, 'w', newline='') as of:

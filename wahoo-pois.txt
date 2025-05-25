@@ -1,0 +1,82 @@
+==== HEADER ====
+fileVersion:              3
+fileSize:                 71510711
+mapDate:                  25 augustus 2024
+boundingBox:              minLatitude=51.618017, minLongitude=4.21875, maxLatitude=52.48278, maxLongitude=5.625
+tilePixelSize:            256
+projectionName:           Mercator
+createdBy:                mapsforge-map-writer-master-SNAPSHOT
+==== POIS ====
+access=acc_no =forestry =permit =private
+aeroway=aerodrome =gate =helipad
+amenity=atm =bank =bar =bench =bicycle_rental =biergarten =bus_station =cafe =charging_station =cinema =doctors =drinking_water =fast_food =ferry_terminal =fire_station =fountain =fuel =grave_yard =hospital =hunting_stand =kindergarten =library =marketplace =parking =pharmacy =place_of_worship =police =post_box =post_office =pub =recycling =restaurant =school =shelter =telephone =theatre =toilets =university
+barrier=block =bollard =border_control =chain =checkpoint =cycle_barrier =gate =kissing_gate =lift_gate =stile =turnstile
+bicycle=bic_designated =bic_destination =bic_no =bic_permissive =bic_private =bic_yes
+boundary=protected_area
+building=yes
+capital=2 =4
+drinking_water=no =yes
+emergency=defibrillator =phone
+ford=fd_yes
+generator:source=solar =wind
+highway=bus_stop =emergency_access_point =mini_roundabout =motorway_junction =passing_place =traffic_signals =turning_circle
+historic=archaeological_site =boundary_stone =castle =memorial =wayside_shrine
+information=board =guidepost =office ladder=ld_yes
+landuse=forest
+leisure=beach_resort =nature_reserve =picnic_table =playground =slipway =swimming_area =water_park
+man_made=surveillance =water_well =windpump
+memorial=plaque =statue =stolperstein =war_memorial
+military=bunker
+natural=bay =cave_entrance =peak =spring =tree
+place=city =hamlet =isolated_dwelling =locality =neighbourhood =quarter =state =suburb =town =village
+power=generator
+railway=crossing =halt =level_crossing =station =tram_stop
+religion=buddhist =christian =hindu =jewish =muslim
+shelter_type=basic_hut =lean_to =picnic_shelter =public_transport =weather_shelter
+shop=bakery =beverages =bicycle =books =butcher =car =chemist =convenience =doityourself =hairdresser =mall =organic =supermarket sport=climbing =swimming
+station=subway
+surface=asphalt =compacted =gravel =paved =raw =rough_paved =smooth_paved =unpaved
+tourism=attraction =camp_site =hostel =hotel =information =museum =picnic_site =viewpoint
+waterway=lock_gate =water_point =waterfall =weir
+whitewater=put_in;egress
+
+==== WAYS ====
+access=acc_no =destination =forestry =permit =private
+admin_level=4
+aeroway=aerodrome =apron =helipad =runway =taxiway =terminal
+amenity=bar =bicycle_rental =biergarten =bus_station =cafe =college =doctors =fast_food =ferry_terminal =fountain =fuel =grave_yard =hospital =kindergarten =marketplace =parking =pharmacy =place_of_worship =police =post_office =pub =recycling =restaurant =school =shelter =theatre =toilets =university
+area:highway=pedestrian
+area=yes
+barrier=block =city_wall =fence =retaining_wall =wall
+bicycle=bic_designated =bic_destination =bic_no =bic_permissive =bic_permit =bic_private =bic_yes
+boundary=protected_area
+bridge=movable
+bridge=yes
+embankment=emb_yes
+foot=ft_designated =ft_destination =ft_no =ft_permissive =ft_permit =ft_private =ft_yes
+ford=fd_yes
+highway=bridleway =construction =cycleway =footway =living_street =motorway =motorway_link =path =pedestrian =primary =primary_link =raceway =residential =road =secondary =secondary_link =service =services =steps =tertiary =tertiary_link =track =trunk =trunk_link =unclassified 
+intermittent=wwi_yes
+landuse=basin =brownfield =cemetery =farmland =forest =grass =greenfield =meadow =military =orchard =quarry =railway =recreation_ground =reservoir =village_green =vineyard
+leaf_type=broadleaved =mixed =needleleaved
+leisure=beach_resort =common =dog_park =garden =golf_course =nature_reserve =park =pitch =playground =slipway =sports_centre =stadium =swimming_area =swimming_pool =water_park
+location=underground
+lock=yes
+natural=beach =grassland =heath =nosea =rock =sand =scree =scrub =sea =water =wetland =wood
+oneway=-1 =no =yes
+piste:difficulty=novice
+piste:type=downhill =snow_park
+place=locality
+protect_class=1 =5
+railway=abandoned =disused =funicular =light_rail =miniature =narrow_gauge =platform =preserved =rail =station =subway=tram
+religion=buddhist =christian =hindu =jewish =muslim
+route=ferry
+seasonal=seas_yes
+shelter_type=lean_to =picnic_shelter =public_transport =weather_shelter
+sport=climbing =golf =shooting =soccer =swimming =tennis
+surface=asphalt =compacted =gravel =paved =raw =rough_paved =smooth_paved =unpaved
+toll=tl_yes
+tracktype=grade1 =grade2 =grade3 =grade4 =grade5
+trail_visibility=bad =excellent =good =horrible =intermediate =no
+tunnel=no =yes
+waterway=canal =dam =dock =drain =lock_gate =river =stream =waterfall =weir
