@@ -62,7 +62,7 @@
 		<osm-tag key="leisure" value="swimming_pool" zoom-appear="13" />
 		<osm-tag key="leisure" value="water_park" zoom-appear="13" />
         <!--<osm-tag key="leisure" value="slipway" zoom-appear="17" />
-        
+
         <osm-tag key="religion" renderable="false" value="buddhist" />
         <osm-tag key="religion" renderable="false" value="christian" />
         <osm-tag key="religion" renderable="false" value="hindu" />
@@ -111,7 +111,7 @@
 		<osm-tag key="tourism" value="museum" zoom-appear="13"/>
         <osm-tag key="tourism" value="picnic_site" zoom-appear="13" />
 		<osm-tag key="tourism" value="viewpoint" zoom-appear="13"/>
-		<osm-tag key="tourism" value="zoo" zoom-appear="13"/>	
+		<osm-tag key="tourism" value="zoo" zoom-appear="13"/>
 		<osm-tag key="historic" value="castle" zoom-appear="13"/>
 		<osm-tag key="historic" value="memorial" zoom-appear="13"/>
 		<osm-tag key="historic" value="monument" zoom-appear="13"/>
@@ -157,7 +157,7 @@
 		<osm-tag key='waterway' value='dock' label-position="true" zoom-appear='10'/>
 		<osm-tag key='waterway' value='drain' label-position="true" zoom-appear='10'/>
 		<osm-tag key='waterway' value='lock' label-position="true" zoom-appear='10'/>
-		<osm-tag key='waterway' value='weir' label-position="true" zoom-appear='10'/> 
+		<osm-tag key='waterway' value='weir' label-position="true" zoom-appear='10'/>
 	</pois>
 	<!-- OTHER POIS -->
     <pois>
@@ -168,10 +168,10 @@
         <osm-tag key="barrier" value="lift_gate" zoom-appear="13" />
 		<osm-tag key="barrier" value="retaining_wall" zoom-appear="13" />
         <!--<osm-tag key="barrier" value="toll_booth" zoom-appear="13" />-->
-        
+
 		<osm-tag key="denomination" value="%s" zoom-appear="13" />
 		<osm-tag key="religion" value="%s" zoom-appear="13" />
-		
+
         <!--<osm-tag key="man_made" value="lighthouse" zoom-appear="17" />
         <osm-tag key="man_made" value="tower" zoom-appear="17" />
         <osm-tag key="man_made" value="windmill" zoom-appear="17" />-->
@@ -265,7 +265,7 @@
 		<osm-tag key='waterway' value='dock' label-position="true" zoom-appear='10'/>
 		<osm-tag key='waterway' value='drain' label-position="true" zoom-appear='10'/>
 		<osm-tag key='waterway' value='lock' label-position="true" zoom-appear='10'/>
-		<osm-tag key='waterway' value='weir' label-position="true" zoom-appear='10'/>   
+		<osm-tag key='waterway' value='weir' label-position="true" zoom-appear='10'/>
 		<osm-tag key="natural" value="forest" label-position="true" zoom-appear="8"/>
 		<osm-tag key="natural" value="peak" zoom-appear="13"/>
 		<osm-tag key="natural" value="spring" zoom-appear="13"/>
@@ -441,7 +441,7 @@
 		<osm-tag key="tourism" value="museum" label-position="true" zoom-appear="13"/>
         <osm-tag key="tourism" value="picnic_site" label-position="true" zoom-appear="13" />
 		<osm-tag key="tourism" value="viewpoint" label-position="true" zoom-appear="13"/>
-		<osm-tag key="tourism" value="zoo" label-position="true" zoom-appear="13"/>			
+		<osm-tag key="tourism" value="zoo" label-position="true" zoom-appear="13"/>
 		<osm-tag key="historic" value="castle" label-position="true" zoom-appear="13"/>
 		<osm-tag key="historic" value="memorial" label-position="true" zoom-appear="13"/>
 		<osm-tag key="historic" value="monument" label-position="true" zoom-appear="13"/>
@@ -506,6 +506,11 @@
 		<osm-tag key="wandrer" value="untraveledunpaved" zoom-appear="13"/>
 		<osm-tag key="wandrer" value="traveled" zoom-appear="13"/>
 		<osm-tag key="wandrer" value="achievementboundary" zoom-appear="8"/>
+		<osm-tag key="squadrats" value="complete" zoom-appear="10"/>
+		<osm-tag key="name" value="squadrats" zoom-appear="10"/>
+		<osm-tag key="name" value="squadratinhos" zoom-appear="10"/>
+		<osm-tag key="name" value="ubersquadrat" zoom-appear="10"/>
+		<osm-tag key="name" value="ubersquadratinho" zoom-appear="10"/>
 	</ways>
 	<!-- OTHER TAGS -->
 	<ways>
