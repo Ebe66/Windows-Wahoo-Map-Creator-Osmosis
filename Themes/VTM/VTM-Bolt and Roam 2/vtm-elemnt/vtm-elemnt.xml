@@ -303,25 +303,25 @@
             </m>
             <!-- endregion paths & tracks-->
             <!-- region tracks -->
-            <m cat="trails-osm" k="access" v="-|private" select="first">  
-                <!-- two color-style for mtb:scale -->              
+            <m cat="trails-osm" k="access" v="-|private" select="first">
+                <!-- two color-style for mtb:scale -->
                 <m e="way" k="mtb:scale" v="0-|0|0+|" zoom-min="12">
                     <line cat="bolt2" stroke="#0000FF" width="3" cap="butt"/>
-                    <line use="bolt2-track-mtb"/> 
+                    <line use="bolt2-track-mtb"/>
                     <line cat="roam2" stroke="#0000FF" width="3" cap="butt"/>
-                    <line use="roam2-track-mtb"/>       
+                    <line use="roam2-track-mtb"/>
                 </m>
                 <m e="way" k="mtb:scale" v="1-|1|1+|" zoom-min="12">
                     <line cat="bolt2" stroke="#FF00FF" width="3"  cap="butt"/>
                     <line use="bolt2-track-mtb"/>
                     <line cat="roam2" stroke="#FF00FF" width="3"  cap="butt"/>
-                    <line use="roam2-track-mtb"/>                
+                    <line use="roam2-track-mtb"/>
                 </m>
                 <m e="way" k="mtb:scale" v="2-|2|2+|" zoom-min="12">
                     <line cat="bolt2" stroke="#FF0000" width="3"  cap="butt"/>
                     <line use="bolt2-track-mtb"/>
                     <line cat="roam2" stroke="#FF0000" width="3"  cap="butt"/>
-                    <line use="roam2-track-mtb"/>                
+                    <line use="roam2-track-mtb"/>
                 </m>
                 <m e="way" k="mtb:scale" v="3-|3|3+|" zoom-min="12">
                     <line cat="bolt2" stroke="#555555" width="3"  cap="butt"/>
@@ -347,19 +347,19 @@
                     <line cat="roam2" stroke="#000000" width="3"  cap="butt"/>
                     <line use="roam2-track-mtb-adv"/>
                 </m>
-                <!-- one color-with dashes style for mtb:scale,not really finished colors only checked for Roam v2 so far --> 
+                <!-- one color-with dashes style for mtb:scale,not really finished colors only checked for Roam v2 so far -->
                 <!--
                 <m e="way" k="mtb:scale" v="0|1-|" zoom-min="12">
                     <line cat="bolt2" stroke="#FF00AA" width="1.5" cap="round"/>
-                    <line cat="roam2" stroke="#FF00AA" width="1.5" cap="round"/>                
+                    <line cat="roam2" stroke="#FF00AA" width="1.5" cap="round"/>
                 </m>
                 <m e="way" k="mtb:scale" v="1|1+|" zoom-min="12">
                     <line cat="bolt2" stroke="#FF00AA" dasharray="50,3,5,3" width="1.5" cap="round"/>
-                    <line cat="roam2" stroke="#FF00AA" dasharray="50,3,5,3" width="1.5" cap="round"/>                
+                    <line cat="roam2" stroke="#FF00AA" dasharray="50,3,5,3" width="1.5" cap="round"/>
                 </m>
                 <m e="way" k="mtb:scale" v="2-|2|2+|3|" zoom-min="12">
                     <line cat="bolt2" stroke="#FF00AA" dasharray="50,3,5,3,5,3" width="1.5" cap="round"/>
-                    <line cat="roam2" stroke="#FF00AA" dasharray="50,3,5,3,5,3" width="1.5" cap="round"/>                
+                    <line cat="roam2" stroke="#FF00AA" dasharray="50,3,5,3,5,3" width="1.5" cap="round"/>
                 </m>
                 -->
                 <m e="way" k="highway" v="footway|pedestrian" zoom-min="14">
@@ -767,7 +767,7 @@
                 <symbol src="icons/symbols/health/hospital.svg" symbol-percent="150"/>
             </m>
             <m v="ice_cream">
-                <symbol src="icons/symbols/amenity/icecream.svg" symbol-percent="130"/>
+                <symbol src="icons/symbols/food/ice_cream.svg" symbol-percent="130"/>
             </m>
             <m v="pharmacy">
                 <symbol src="icons/symbols/health/pharmacy.svg" symbol-percent="150"/>

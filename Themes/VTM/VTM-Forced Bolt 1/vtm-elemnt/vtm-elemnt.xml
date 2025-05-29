@@ -524,7 +524,7 @@
                 <symbol src="icons/symbols/health/hospital.svg" symbol-percent="150"/>
             </m>
             <m v="ice_cream">
-                <symbol src="icons/symbols/amenity/icecream.svg" symbol-percent="130"/>
+                <symbol src="icons/symbols/food/ice_cream.svg" symbol-percent="130"/>
             </m>
             <m v="pharmacy">
                 <symbol src="icons/symbols/health/pharmacy.svg" symbol-percent="150"/>

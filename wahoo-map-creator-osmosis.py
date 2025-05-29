@@ -44,6 +44,7 @@ workers = '4'
 keep_folders = 0
 generate_elevation = True
 integrate_Wandrer = False
+integrate_SquadRats = True
 integrate_Routes = True
 x_y_processing_mode = False
 Wanted_X = 131
@@ -324,6 +325,7 @@ objects_to_keep_with_name = 'access=private \
     route=ferry \
     shelter_type=picnic_shelter \
     shop=bakery =bicycle =convenience =laundry =mall =organic =supermarket \
+    squadrats= \
     station=light_rail =subway =halt =stop \
     surface= \
     tourism=museum =zoo =alpine_hut =attraction =camp_site =caravan_site =hostel =hotel =information =picnic_site =viewpoint \
@@ -424,6 +426,59 @@ if integrate_Wandrer:
                 os.remove(file)
         except:
             pass
+
+if integrate_SquadRats:
+    # Check for new SquadRats kml files in the maps directory. Format must be squadrats*.kml
+    squadratskml_files = glob.glob(f'{MAP_PATH}/squadrats*.kml')
+    if squadratskml_files:
+        print('Converting SquadRats KML file(s) to OSM. (This can take a while!)')
+        for file in squadratskml_files:
+            # Call gpsbabel to convert to osm example gpsbabel -w -r -t -i kml -f file-in -o osm,tag=squadrats:complete,tagnd=squadrats:complete -F file-out
+            cmd = ['gpsbabel', '-w', '-r', '-t', '-i', 'kml', '-f', file, '-o',
+                   'osm,tag=squadrats:complete,tagnd=squadrats:complete', '-F', file.replace(".kml", ".osm")]
+            subprocess.run(cmd, check=True, cwd=MAP_PATH)
+
+    squadratsosm_files = glob.glob(f'{MAP_PATH}/squadrats*.osm')
+    if squadratsosm_files:
+        print(
+            'Replacing negative ID\'s with Large positive ones and converting to .osm.pbf.')
+        for file in squadratsosm_files:
+            # Convert negative ID's to large positive numbers
+            with open(file, encoding='utf8') as f:
+                osm_data = f.read()
+                f.close()
+
+                osm_data = osm_data.replace("\"-", "\"30000000000")
+
+                with open(file, 'w', encoding='utf8') as of:
+                    of.write(osm_data)
+                    of.close()
+
+            # Convert to osm.pbf
+            cmd = ['osmconvert']
+            cmd.extend(['-v', '--hash-memory=2500', '--complete-ways', '--complete-multipolygons',
+                       '--complete-boundaries', '--drop-author', '--drop-version'])
+            cmd.append(file)
+            cmd.append('-o='+file.replace(".osm", ".osm.pbf"))
+            # print(cmd)
+            result = subprocess.run(cmd, check=True)
+            if result.returncode != 0:
+                print(f'Error in OSMConvert with SquadRats file: {file}')
+
+    try:
+        print('Removing intermediate files and renaming processed input files')
+        for file in squadratskml_files:
+            oldbasename = os.path.basename(file)
+            os.rename(file, file.replace(
+                oldbasename, "Processed-"+oldbasename))
+
+        #for file in squadratskml_files:
+        #    os.remove(file)
+
+        for file in squadratsosm_files:
+            os.remove(file)
+    except:
+        pass
 
 # is geofabrik json file present and not older then Max_Days_Old?
 now = time.time()
@@ -846,6 +901,15 @@ if integrate_Wandrer:
         doWandrer = True
     else:
         doWandrer = False
+# Check if there is a SquadRats map
+doSquadRats = None
+inSquadRats_files = list()
+if integrate_SquadRats:
+    inSquadRats_files = glob.glob(os.path.join(MAP_PATH, 'squadrats*.osm.pbf'))
+    if inSquadRats_files and integrate_SquadRats:
+        doSquadRats = True
+    else:
+        doSquadRats = False
 TileCount = 1
 for tile in country:
     for c in tile['countries']:
@@ -886,6 +950,24 @@ for tile in country:
                     result = subprocess.run(cmd, check=True)
                     if result.returncode != 0:
                         print('Error in Osmconvert while processing Wandrer file')
+                        sys.exit()
+
+        if doSquadRats:
+            for squadrats_map in inSquadRats_files:
+                outSquadRats = os.path.join(
+                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'split-{os.path.basename(squadrats_map)}')
+                if not os.path.isfile(outSquadRats) or Force_Processing == 1:
+                    cmd = ['osmconvert', '--hash-memory=2500']
+                    cmd.append('-b='+f'{tile["left"]}' + ',' + f'{tile["bottom"]}' +
+                               ',' + f'{tile["right"]}' + ',' + f'{tile["top"]}')
+                    cmd.extend(
+                        ['--complete-ways', '--complete-multipolygons', '--complete-boundaries'])
+                    cmd.append(squadrats_map)
+                    cmd.append('-o='+outSquadRats)
+                    # print(cmd)
+                    result = subprocess.run(cmd, check=True)
+                    if result.returncode != 0:
+                        print('Error in Osmconvert while processing SquadRats file')
                         sys.exit()
 
         # If we want routes? Note: commented out because splitting from an osm file without nodes does not work
@@ -949,6 +1031,15 @@ for tile in country:
                     cmd.append('--rbf')
                     cmd.append(os.path.join(
                         OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{wandrer}'))
+                    cmd.append('workers='+workers)
+                    cmd.append('--merge')
+            if doSquadRats:
+                squadrats_files = glob.glob(os.path.join(
+                    OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', 'split-squadrats*.osm.pbf'))
+                for squadrats in squadrats_files:
+                    cmd.append('--rbf')
+                    cmd.append(os.path.join(
+                        OUT_PATH, f'{tile["x"]}', f'{tile["y"]}', f'{squadrats}'))
                     cmd.append('workers='+workers)
                     cmd.append('--merge')
             if integrate_Routes:
